@@ -23,7 +23,7 @@ configurations {
 }
 
 repositories {
-	// maven("https://repo.kotlin.link")
+	maven("https://repo.kotlin.link")
 	mavenCentral()
 }
 
@@ -42,6 +42,15 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+
+	// Classification and Clustering
+	implementation("com.github.haifengl:smile-kotlin:3.0.1")
+
+	// numpy
+	implementation("space.kscience:kmath-for-real:0.3.1-dev-RC")
+
+
+
 }
 
 tasks.withType<KotlinCompile> {

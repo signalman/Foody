@@ -23,7 +23,7 @@ configurations {
 }
 
 repositories {
-	maven("https://repo.kotlin.link")
+	// maven("https://repo.kotlin.link")
 	mavenCentral()
 }
 

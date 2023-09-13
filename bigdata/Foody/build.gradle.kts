@@ -23,10 +23,12 @@ configurations {
 }
 
 repositories {
+	maven("https://repo.kotlin.link")
 	mavenCentral()
 }
 
-extra["snippetsDir"] = file("build/generated-snippets")
+//extra["snippetsDir"] = file("build/generated-snippets")
+val snippetsDir by extra { file("build/generated-snippets") } // 변수 변경
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -59,5 +61,26 @@ tasks.test {
 
 tasks.asciidoctor {
 	inputs.dir(snippetsDir)
-	dependsOn(test)
+	//dependsOn(test)
+	dependsOn(tasks.test)
+	doFirst { // 2
+		delete {
+			file("src/main/resources/static/docs")
+		}
+	}
+}
+
+tasks.register("copyHTML", Copy::class) { // 3
+	dependsOn(tasks.asciidoctor)
+	from(file("build/asciidoc/html5"))
+	into(file("src/main/resources/static/docs"))
+}
+
+tasks.build { // 4
+	dependsOn(tasks.getByName("copyHTML"))
+}
+
+tasks.bootJar { // 5
+	dependsOn(tasks.asciidoctor)
+	dependsOn(tasks.getByName("copyHTML"))
 }

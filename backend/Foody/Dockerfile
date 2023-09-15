@@ -17,7 +17,7 @@ RUN chmod +x gradlew
 RUN ./gradlew build -x test
 
 # 런타임 스테이지
-FROM openjdk:17-jre-slim
+FROM openjdk:17-alpine
 
 # 빌드 스테이지에서 생성된 JAR 파일을 복사
 COPY --from=build /workspace/build/libs/*.jar app.jar

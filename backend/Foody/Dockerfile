@@ -10,6 +10,9 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 
+# gradlew에 실행 권한 부여
+RUN chmod +x gradlew
+
 # 빌드 수행
 RUN ./gradlew build -x test
 

@@ -10,5 +10,5 @@ import javax.persistence.Entity;
 @Getter
 public class IngredientCategory extends BaseEntity {
     @Column(nullable = false)
-    String CategoryName;
+    String ingredientCategoryName;
 }

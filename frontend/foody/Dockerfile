@@ -21,7 +21,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx.conf /etc/nginx/conf.d
 
 # 빌드 단계에서 생성된 빌드 아티팩트를 Nginx에 복사
-COPY --from=build /app/build /app/build
+COPY --from=build /app/build /usr/share/nginx/html
 
 # Nginx 포트 설정 (생략 가능)
 EXPOSE 3000

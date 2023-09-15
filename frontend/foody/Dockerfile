@@ -17,8 +17,12 @@ FROM nginx:alpine
 # 빌드 단계에서 생성된 빌드 아티팩트를 Nginx에 복사
 COPY --from=build /app/build /usr/share/nginx/html
 
+run rm /etc/nginx/conf.d/default.conf
+
+COPY ./nginx.conf /etc/nginx/conf.d
+
 # Nginx 포트 설정 (생략 가능)
-EXPOSE 80
+EXPOSE 3000
 
 # Nginx 시작
 CMD ["nginx", "-g", "daemon off;"]

@@ -12,6 +12,13 @@ fun main() {
 
     val list = removeStopWords()
     readAndFilterRecipe(list)
+
+    val map = getReplaceWords()
+    replace(map)
+}
+
+fun replace(map:HashMap<String,String>) {
+
 }
 
 fun removeStopWords(): Set<String> {
@@ -49,4 +56,21 @@ fun readAndFilterRecipe(stopWords: Set<String>) {
     }
 
     writer.close()
+}
+
+fun getReplaceWords(): HashMap<String, String> {
+
+    val resource = ClassPathResource("data/preprocessing/replace.txt")
+    val inputStream = resource.inputStream
+    val reader = BufferedReader(InputStreamReader(inputStream, "UTF-8"))
+
+    val map:HashMap<String, String> = HashMap()
+
+    reader.useLines { lines ->
+        lines.forEach { line ->
+            val cols = line.split(" ", limit = 2)
+        }
+    }
+
+    return map
 }

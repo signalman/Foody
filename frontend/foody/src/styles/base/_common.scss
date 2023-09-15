@@ -1,0 +1,61 @@
+@use '../base/variable' as var;
+
+@font-face {
+	font-family: 'S-CoreDream-3Light';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html,
+body {
+	background-color: var.$white;
+	font-size: 10px;
+	font-weight: normal;
+	position: relative;
+}
+
+// font
+body,
+button,
+input,
+textarea {
+	font-family: 'S-CoreDream-3Light';
+	font-size: 10px;
+	color: var.$black-500;
+	line-height: 1;
+	font-feature-settings: 'tnum';
+}
+
+input[type='number'] {
+	font-feature-settings: 'tnum';
+}
+
+h1 {
+	font-size: var.$h1;
+}
+h2 {
+	font-size: var.$h2;
+}
+h3 {
+	font-size: var.$h3;
+}
+h4 {
+	font-size: var.$h4;
+}
+
+.p0 {
+	font-size: var.$p0;
+}
+.p1 {
+	font-size: var.$p1;
+}
+.p2 {
+	font-size: var.$p2;
+}
+.p3 {
+	font-size: var.$p3;
+}
+.p4 {
+	font-size: var.$p4;
+}

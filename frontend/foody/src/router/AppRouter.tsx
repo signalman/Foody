@@ -1,4 +1,5 @@
 import React from 'react';
+import 'styles/index.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from 'components/page/HomePage';
 import MealPage from 'components/page/MealPage';

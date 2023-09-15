@@ -14,4 +14,14 @@ class WordProcessingKtTest {
         assertEquals(1620, result.size)
         assertTrue(result.contains("조금"))
     }
+
+    @Test
+    @DisplayName("split limit처리 성공한다")
+    fun t2() {
+        val str = "하나 두울 셋"
+
+        val arr = str.split(" ", limit = 2)
+        print(arr)
+        assertTrue(arr.size == 2)
+    }
 }

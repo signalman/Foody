@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: 1234
+    url: jdbc:h2:mem:foody
+    username: sa
+    password:
 
   jpa:
     hibernate:
@@ -23,3 +23,11 @@ spring:
             scope:
               - email
               - profile
+jwt:
+  token:
+    secret: ${JWT_SECRET_KEY}
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG

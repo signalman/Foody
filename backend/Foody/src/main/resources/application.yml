@@ -1,7 +1,6 @@
 server:
   port: 80
   servlet:
-    context-path: /api/v1
     encoding:
       charset: UTF-8
       enabled: true

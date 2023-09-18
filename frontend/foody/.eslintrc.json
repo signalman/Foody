@@ -23,6 +23,7 @@
     "prettier"
   ],
   "rules": {
+    "react/jsx-props-no-spreading": ["off"],
     "import/no-extraneous-dependencies": 0,
     "prettier/prettier": [
       "error",

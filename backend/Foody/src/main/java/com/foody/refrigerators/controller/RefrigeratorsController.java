@@ -1,20 +1,18 @@
 package com.foody.refrigerators.controller;
 
+import com.foody.refrigerators.dto.request.InsertIngredientRequest;
 import com.foody.refrigerators.dto.response.SearchIngredientResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/refrigerators")
+@RequestMapping("api/v1/refrigerators")
 @RequiredArgsConstructor
 public class RefrigeratorsController {
 

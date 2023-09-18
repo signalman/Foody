@@ -47,7 +47,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void loginMember(HttpServletResponse response, Authentication authentication, OAuth2User oAuth2User)
+    public TokenResponse loginMember(HttpServletResponse response, Authentication authentication, OAuth2User oAuth2User)
         throws IOException {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String email = (String) attributes.get("email");
@@ -57,18 +57,17 @@ public class MemberService {
         // 가입된 이메일 없음 -> findByEmail에서 처리
         Member member = findByEmail(email);
 
-        String accessToken = jwtProvider.createAccessToken(member.getId(), email, secretKey);
+        String accessToken = jwtProvider.createAccessToken(member.getId(), email, secretKey, true);
         String refreshToken = jwtProvider.createRefreshToken(email, secretKey);
 
         TokenResponse tokenResponse = new TokenResponse(member.getId(), accessToken, refreshToken);
+
         // 토큰 반환
-
-        response.sendRedirect("/");
-
+        return tokenResponse;
     }
 
     @Transactional
-    public void signUpMember(HttpServletResponse response, Authentication authentication,
+    public TokenResponse signUpMember(HttpServletResponse response, Authentication authentication,
         OAuth2User oAuth2User) {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String email = (String) attributes.get("email");
@@ -84,8 +83,13 @@ public class MemberService {
 
         memberRepository.save(member);
 
-        // 추가정보 입력 url로 보낼 예정인데
+        String accessToken = jwtProvider.createAccessToken(member.getId(), email, secretKey, false);
+        String refreshToken = jwtProvider.createRefreshToken(email, secretKey);
 
+        TokenResponse tokenResponse = new TokenResponse(member.getId(), accessToken, refreshToken);
+
+        // 토큰 반환
+        return tokenResponse;
     }
 
     @Transactional(readOnly = true)

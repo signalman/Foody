@@ -16,10 +16,11 @@ public class JwtProvider {
     private final Long accessTokenExpireTimeMs = 3600000L; // 1시간
     private final Long refreshTokenExpireTimeMs = 1209600000L; // 2주일
 
-    public String createAccessToken(Long id, String email, String secretKey) {
+    public String createAccessToken(Long id, String email, String secretKey, Boolean isJoined) {
         Claims claims = Jwts.claims();
         claims.put("id", id);
         claims.put("email", email);
+        claims.put("isJoined", isJoined);
 
         Date now = new Date();
         Date accessTokenExpiration = new Date(now.getTime() + accessTokenExpireTimeMs);

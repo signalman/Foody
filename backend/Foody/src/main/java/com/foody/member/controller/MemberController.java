@@ -1,7 +1,6 @@
-package com.foody.user.controller;
+package com.foody.member.controller;
 
-import com.foody.user.dto.response.TokenResponse;
-import lombok.Getter;
+import com.foody.member.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
-public class UserController {
+@RequestMapping("/api/v1/member")
+public class MemberController {
     // 추가정보 입력 받아서 회원가입
 
     @GetMapping("/test")

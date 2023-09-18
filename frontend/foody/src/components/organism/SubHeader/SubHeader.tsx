@@ -1,8 +1,9 @@
 import React from 'react';
+import './SubHeader.scss';
 import { BiArrowBack } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
 
-function SubHeader({ isBack, title }: { isBack: boolean; title: string }) {
+function SubHeader({ isBack = false, title = '' }: { isBack: boolean; title: string }) {
 	const handleBack = () => {
 		console.log('뒤로가기');
 	};

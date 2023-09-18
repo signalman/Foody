@@ -1,0 +1,24 @@
+@use 'styles/base/variable' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.header-container {
+	position: relative;
+	width: 100%;
+	height: 40px;
+	@include f.flex(row, between, center, 0);
+	padding: 0 16px;
+	background-color: white;
+	color: var.$black-400;
+
+	svg {
+		color: var.$black-400;
+	}
+
+	.sub-header-title {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		font-size: var.$h3;
+	}
+}

@@ -1,0 +1,22 @@
+@use 'styles/base/variable.scss' as var;
+
+@mixin padding-left-right($padding: 0) {
+	padding: 0 $padding;
+}
+
+.layout {
+	width: 100%;
+	@include padding-left-right;
+}
+
+.padding-30 {
+	@include padding-left-right(30px);
+}
+
+.padding-20 {
+	@include padding-left-right(20px);
+}
+
+.padding-10 {
+	@include padding-left-right(10px);
+}

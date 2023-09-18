@@ -1,4 +1,4 @@
-package com.foody.user.dto.response;
+package com.foody.member.dto.response;
 
 public record TokenResponse(
     Long id,

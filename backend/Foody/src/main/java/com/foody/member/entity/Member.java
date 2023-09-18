@@ -1,11 +1,10 @@
-package com.foody.user.entity;
+package com.foody.member.entity;
 
 import com.foody.global.entity.UserInfo;
-import com.foody.user.dto.request.UserJoinRequest;
-import com.foody.user.dto.request.UserSignupRequest;
+import com.foody.member.dto.request.MemberJoinRequest;
+import com.foody.member.dto.request.MemberSignupRequest;
 import java.util.Collection;
 import java.util.Map;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @Entity
-public class User extends UserInfo {
+public class Member extends UserInfo {
 
     private String nickname;
 
@@ -35,22 +34,22 @@ public class User extends UserInfo {
 
     private String profileImg;
 
-    public static User signupUser(UserSignupRequest userSignupRequest) {
-        return User.builder()
-            .email(userSignupRequest.email())
-            .profileImg(userSignupRequest.profileImg())
-            .build();
+    public static Member signupMember(MemberSignupRequest memberSignupRequest) {
+        return Member.builder()
+                     .email(memberSignupRequest.email())
+                     .profileImg(memberSignupRequest.profileImg())
+                     .build();
     }
 
-    public static User fromJoinRequest(UserJoinRequest userJoinRequest) {
-        return User.builder()
-                   .nickname(userJoinRequest.nickname())
-                   .height(userJoinRequest.height())
-                   .weight(userJoinRequest.weight())
-                   .gender(userJoinRequest.gender())
-                   .age(userJoinRequest.age())
-                   .activityLevel(userJoinRequest.activityLevel())
-                   .build();
+    public static Member fromJoinRequest(MemberJoinRequest memberJoinRequest) {
+        return Member.builder()
+                     .nickname(memberJoinRequest.nickname())
+                     .height(memberJoinRequest.height())
+                     .weight(memberJoinRequest.weight())
+                     .gender(memberJoinRequest.gender())
+                     .age(memberJoinRequest.age())
+                     .activityLevel(memberJoinRequest.activityLevel())
+                     .build();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.foody.user.controller;
+package com.foody.member.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

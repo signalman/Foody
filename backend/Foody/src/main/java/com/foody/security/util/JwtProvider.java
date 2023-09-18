@@ -1,7 +1,6 @@
 package com.foody.security.util;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class JwtCreater {
+public class JwtProvider {
 
     private final Long accessTokenExpireTimeMs = 3600000L; // 1시간
     private final Long refreshTokenExpireTimeMs = 1209600000L; // 2주일

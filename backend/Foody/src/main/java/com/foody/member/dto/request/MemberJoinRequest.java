@@ -1,6 +1,6 @@
-package com.foody.user.dto.request;
+package com.foody.member.dto.request;
 
-public record UserJoinRequest(
+public record MemberJoinRequest(
     String nickname,
     float height,
     float weight,

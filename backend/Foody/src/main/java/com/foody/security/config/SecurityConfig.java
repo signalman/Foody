@@ -37,6 +37,7 @@ public class SecurityConfig{
             .authorizeRequests()
             .antMatchers("/").permitAll()
             .antMatchers("/login/**").permitAll()
+            .antMatchers("/refrigerator/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .oauth2Login()

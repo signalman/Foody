@@ -1,2 +1,16 @@
 server:
   port: 80
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+log4jdbc:
+  spylogdelegator:
+    name:
+      net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
+
+  logging:
+    level:
+      com.foody: DEBUG

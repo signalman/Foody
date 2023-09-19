@@ -12,8 +12,9 @@ services:
     build: .
     depends_on:
       - db
+    container_name: back-container
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_PROFILES_ACTIVE: prod

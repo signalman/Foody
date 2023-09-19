@@ -14,7 +14,8 @@ public enum ErrorCode {
     EMAIL_NOT_FOUND("MEM03",HttpStatus.NOT_FOUND,"이메일이 존재하지 않습니다."),
 
      /* RefrigeratorException */
-    INGREDIENT_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료입니다.");
+    INGREDIENT_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료입니다."),
+    INGREDIENT_CATEGORY_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료 카테고리입니다");
 
 
 

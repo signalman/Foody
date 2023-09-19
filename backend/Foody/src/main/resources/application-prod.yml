@@ -42,3 +42,5 @@ logging:
     org.springframework.web: debug
 server:
   port: 8082
+  tomcat:
+    default-locale: ko_KR

@@ -1,0 +1,15 @@
+@use 'styles/base/variable.scss' as var;
+
+.progress {
+	height: 8px;
+    border-radius : 10px;
+	flex : 1;
+}
+
+.green {
+	background-color: var.$primary-green-500;
+}
+
+.lightgreen {
+	background-color: var.$primary-green-200;
+}

@@ -12,7 +12,3 @@ function ProgressStep({ progressState }: ProgressStepProps) {
 }
 
 export default ProgressStep;
-
-// ProgressStep.defaultProps = {
-// 	progressColor: ProgressStepColor.Green,
-// };

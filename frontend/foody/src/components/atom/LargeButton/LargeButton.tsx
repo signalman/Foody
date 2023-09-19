@@ -11,7 +11,7 @@ interface BottomBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 function LargeButton({ value, buttonColor }: BottomBtnProps) {
 	return (
 		<button type="button" className={classNames('button-value', buttonColor)}>
-			<img src="" alt="" /> {value}
+			{value}
 		</button>
 	);
 }

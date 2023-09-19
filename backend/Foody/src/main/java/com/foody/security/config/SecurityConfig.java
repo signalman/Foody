@@ -34,9 +34,8 @@ public class SecurityConfig{
 
             // URL 별 권한 관리 옵션
             .authorizeRequests()
-            .antMatchers("/").permitAll()
-            .antMatchers("/login/**").permitAll()
-            .antMatchers("/refrigerator/**").permitAll()
+            .antMatchers("/api/v1/refrigerator/**").permitAll()
+            .antMatchers("/api/v1/member/**").permitAll()
             .antMatchers("/h2-console/**").permitAll()
             .anyRequest().authenticated()
             .and()

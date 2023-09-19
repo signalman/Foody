@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
     password: 1234
 
@@ -23,3 +23,24 @@ spring:
             scope:
               - email
               - profile
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600 # 데이터 유지 시간
+      cache-null-values: false # NUll 캐싱 여부
+      host: https://j9c106.p.ssafy.io
+      port: 6380
+      password: ${REDIS_PASSWORD}
+
+jwt:
+  token:
+    secret: ${JWT_SECRET_KEY}
+
+logging:
+  level:
+    org.springframework.security: debug
+    org.springframework.web: debug
+server:
+  port: 8082
+  tomcat:
+    default-locale: ko_KR

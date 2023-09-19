@@ -38,7 +38,7 @@ jwt:
 
 logging:
   level:
-    org.springframework.security: info
-    org.springframework.web: info
+    org.springframework.security: debug
+    org.springframework.web: debug
 server:
   port: 8082

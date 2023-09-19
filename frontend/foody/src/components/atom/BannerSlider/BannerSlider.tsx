@@ -1,5 +1,4 @@
 import React from 'react';
-import 'swiper/css';
 import './BannerSlider.scss';
 
 function BannerSlider() {

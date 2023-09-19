@@ -1,0 +1,7 @@
+@use 'styles/base/variable.scss' as var;
+
+.progress-bar {
+	display: flex;
+	gap: 8px;
+    max-width: 360px;
+}

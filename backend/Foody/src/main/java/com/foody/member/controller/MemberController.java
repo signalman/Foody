@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/member")
 public class MemberController {
-    // 추가정보 입력 받아서 회원가입
 
     @GetMapping("/test")
-    public ResponseEntity<TokenResponse> test() {
-        System.out.println("메롱");
-        return ResponseEntity.ok().body(new TokenResponse(1L,"123","123"));
+    public void test() {
+        log.info("=====test=====");
+
     }
+
 }

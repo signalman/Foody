@@ -1,7 +1,7 @@
 package com.foody.refrigerators.entity;
 
 import com.foody.global.entity.BaseEntity;
-import com.foody.user.entity.User;
+import com.foody.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -17,16 +17,16 @@ import javax.persistence.ManyToOne;
 public class RefrigeratorIngredient extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    User user;
+    @JoinColumn(name = "member_id")
+    Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ingredient_id")
     Ingredient ingredient;
 
-    public static RefrigeratorIngredient from(User user, Ingredient ingredient) {
+    public static RefrigeratorIngredient from(Member member, Ingredient ingredient) {
         return RefrigeratorIngredient.builder()
-                .user(user)
+                .member(member)
                 .ingredient(ingredient)
                 .build();
     }

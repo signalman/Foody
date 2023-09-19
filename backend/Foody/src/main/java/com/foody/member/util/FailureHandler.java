@@ -1,4 +1,4 @@
-package com.foody.user.util;
+package com.foody.member.util;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

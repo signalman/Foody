@@ -1,9 +1,11 @@
-package com.foody.user.util;
+package com.foody.member.util;
 
-import com.foody.user.entity.User;
-import com.foody.user.repository.UserRepository;
-import com.foody.user.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foody.member.dto.response.TokenResponse;
+import com.foody.member.repository.MemberRepository;
+import com.foody.member.service.MemberService;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +23,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserRepository userRepository;
-    private final UserService userService;
+    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+
+    private final ObjectMapper objectMapper = new ObjectMapper(); // jSon문자열로의 변환을 위해
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -42,12 +46,28 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         // 회원 가입 여부 판별
-        if (userRepository.existsByEmail(email)) { // 이미 존재, 로그인 진행
+        if (memberRepository.existsByEmail(email)) { // 이미 존재, 로그인 진행
             log.info("{} need ======login======", email);
-            userService.loginUser(response, authentication, oAuth2User);
+            TokenResponse tokenResponse = memberService.loginMember(response, authentication, oAuth2User);
+            // 응답 보내기
+            String jsonTokenResponse = objectMapper.writeValueAsString(tokenResponse);
+
+            response.setContentType("application/json;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.print(jsonTokenResponse);
+            out.flush();
+            log.info("done?");
+
         } else { // 나머지 회원 가입진행(DB에 저장) 이후 추가 정보 받아야함
             log.info("{} need ======join======", email);
-            userService.signUpUser(response, authentication, oAuth2User);
+            TokenResponse tokenResponse = memberService.signUpMember(response, authentication, oAuth2User);
+            // 응답 보내기
+            String jsonTokenResponse = objectMapper.writeValueAsString(tokenResponse);
+
+            response.setContentType("application/json;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.print(jsonTokenResponse);
+            out.flush();
         }
     }
 }

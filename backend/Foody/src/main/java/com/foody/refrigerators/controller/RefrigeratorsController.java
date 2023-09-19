@@ -1,6 +1,7 @@
 package com.foody.refrigerators.controller;
 
 import com.foody.global.entity.UserInfo;
+import com.foody.refrigerators.dto.request.InsertCustomIngredientRequest;
 import com.foody.refrigerators.dto.request.InsertIngredientRequest;
 import com.foody.refrigerators.dto.response.SearchIngredientResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
@@ -29,10 +30,19 @@ public class RefrigeratorsController {
 
     @PostMapping("/")
     public ResponseEntity<String> registerIngredient(
-            @RequestBody InsertIngredientRequest insertIngredientRequest,
+            @RequestBody List<Integer> ingredients,
             @AuthenticationPrincipal UserInfo userInfo
     ) {
-        refrigeratorsService.insertIngredient(userInfo.getEmail(), insertIngredientRequest);
+        refrigeratorsService.insertIngredient(userInfo.getEmail(), ingredients);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/ingredient")
+    public ResponseEntity<String> registerCustomIngredient(
+            @RequestBody List<InsertCustomIngredientRequest> ingredients,
+            @AuthenticationPrincipal UserInfo userInfo
+    ) {
+        refrigeratorsService.insertCustomIngredient(userInfo.getEmail(), ingredients);
         return ResponseEntity.ok().build();
     }
 }

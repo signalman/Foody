@@ -52,6 +52,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
             // 응답 보내기
             String jsonTokenResponse = objectMapper.writeValueAsString(tokenResponse);
 
+            System.out.println("asdfasdfasdfasddf");
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.print(jsonTokenResponse);

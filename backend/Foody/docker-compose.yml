@@ -2,6 +2,7 @@ version: '3'
 services:
   db:
     image: mysql:8.0.34
+    container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: foody

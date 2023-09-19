@@ -23,3 +23,11 @@ spring:
             scope:
               - email
               - profile
+jwt:
+  token:
+    secret: ${JWT_SECRET_KEY}
+
+logging:
+  level:
+    org.springframework.security: info
+    org.springframework.web: info

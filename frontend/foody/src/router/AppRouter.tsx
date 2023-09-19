@@ -6,6 +6,7 @@ import MealPage from 'components/page/MealPage';
 import RefriPage from 'components/page/RefriPage';
 import RecommendPage from 'components/page/RecommendPage';
 import DevPage from 'components/page/DevPage';
+import LoginPage from 'components/page/LoginPage';
 
 function AppRouter() {
 	return (
@@ -15,6 +16,7 @@ function AppRouter() {
 				<Route path="/meal" element={<MealPage />} />
 				<Route path="/refri" element={<RefriPage />} />
 				<Route path="/recommend" element={<RecommendPage />} />
+				<Route path="/login" element={<LoginPage />} />
 
 				<Route path="/dev" element={<DevPage />} />
 			</Routes>

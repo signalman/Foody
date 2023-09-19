@@ -3,4 +3,9 @@ enum LargeButtonColor {
 	Gray = 'gray',
 }
 
+export enum ProgressStepColor {
+	Green = 'green',
+	LightGreen = 'light-green',
+}
+
 export default LargeButtonColor;

@@ -10,6 +10,9 @@ function LoginTemplate({ children }: { children: ReactNode[] }) {
 				<div className="main-logo">{children[0]}</div>
 			</div>
 			<div>{children[1]}</div>
+			<div>{children[2]}</div>
+			<div>{children[3]}</div>
+			<div>{children[4]}</div>
 		</Layout>
 	);
 }

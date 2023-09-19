@@ -23,6 +23,15 @@ spring:
             scope:
               - email
               - profile
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600 # 데이터 유지 시간
+      cache-null-values: false # NUll 캐싱 여부
+      host: https://j9c106.p.ssafy.io
+      port: 6380
+      password: ${REDIS_PASSWORD}
+
 jwt:
   token:
     secret: ${JWT_SECRET_KEY}

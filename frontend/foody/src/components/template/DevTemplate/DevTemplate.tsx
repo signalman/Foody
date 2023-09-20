@@ -13,7 +13,7 @@ function DevTemplate() {
 	const check = [true, true, false, false, false];
 
 	return (
-		<Layout padding={LayoutPadding.md}>
+		<Layout padding={LayoutPadding.p20}>
 			<LargeButton imgsrc="" value="hi" buttonColor={LargeButtonColor.Green} />
 			<LargeButton imgsrc={GoogleLogo} value="hi" buttonColor={LargeButtonColor.Gray} />
 			<ToggleSwitch isRefri onText="냉장고" offText="선반" />

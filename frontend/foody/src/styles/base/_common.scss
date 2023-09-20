@@ -59,3 +59,57 @@ h4 {
 .p4 {
 	font-size: var.$p4;
 }
+
+#root {
+	max-width: 500px;
+	margin: 0 auto;
+}
+
+.mb-0 {
+	margin-bottom: 0;
+}
+.mt-0 {
+	margin-top: 0;
+}
+.ml-0 {
+	margin-left: 0;
+}
+.mr-0 {
+	margin-right: 0;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+.mt-20 {
+	margin-top: 20px;
+}
+.mt-30 {
+	margin-top: 30px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+.mb-20 {
+	margin-bottom: 20px;
+}
+.mb-30 {
+	margin-bottom: 30px;
+}
+.mb-tabbar {
+	margin-bottom: 100px;
+}
+
+.p-0 {
+	padding: 0;
+}
+.p-10 {
+	padding: 0 10px;
+}
+.p-20 {
+	padding: 0 20px;
+}
+.p-30 {
+	padding: 0 30px;
+}

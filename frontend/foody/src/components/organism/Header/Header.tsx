@@ -3,6 +3,7 @@ import './Header.scss';
 import logoImg from 'assets/icons/headerLogo.png';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { GoBell } from 'react-icons/go';
+import { Link } from 'react-router-dom';
 
 function Header() {
 	const [newNoti, setNewNoti] = useState(false);
@@ -22,9 +23,9 @@ function Header() {
 			<button type="button" onClick={handleMenu}>
 				<AiOutlineMenu size={16} />
 			</button>
-			<div className="header-logo-container">
+			<Link to="/" className="header-logo-container">
 				<img src={logoImg} alt="logo" />
-			</div>
+			</Link>
 			<button type="button" className={newNoti ? 'bell' : ''} onClick={handleNotice}>
 				<GoBell size={17} />
 			</button>

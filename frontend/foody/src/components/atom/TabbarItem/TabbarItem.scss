@@ -1,0 +1,13 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.tabbar-item-container {
+	a {
+		color: var.$black-400;
+		@include f.flex(column, center);
+
+		svg {
+			width: 20px;
+		}
+	}
+}

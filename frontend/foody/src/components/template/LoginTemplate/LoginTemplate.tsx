@@ -5,7 +5,7 @@ import Layout from '../Layout/Layout';
 
 function LoginTemplate({ children }: { children: ReactNode[] }) {
 	return (
-		<Layout padding={LayoutPadding.md}>
+		<Layout padding={LayoutPadding.p20}>
 			<div className="main-div">
 				<div className="main-logo">{children[0]}</div>
 			</div>

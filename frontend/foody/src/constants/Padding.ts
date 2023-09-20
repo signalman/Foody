@@ -1,8 +1,8 @@
 enum LayoutPadding {
-	lg = 'padding-30',
-	md = 'padding-20',
-	sm = 'padding-10',
-	full = 'padding-0',
+	p30 = 'p-30',
+	p20 = 'p-20',
+	p10 = 'p-10',
+	p0 = 'p-0',
 }
 
 export default LayoutPadding;

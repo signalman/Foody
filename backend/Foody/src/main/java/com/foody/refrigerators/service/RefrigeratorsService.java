@@ -4,6 +4,7 @@ import com.foody.global.exception.ErrorCode;
 import com.foody.member.entity.Member;
 import com.foody.member.service.MemberService;
 import com.foody.refrigerators.dto.request.InsertCustomIngredientRequest;
+import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.dto.response.SearchIngredientResponse;
 import com.foody.refrigerators.entity.CustomIngredient;
 import com.foody.refrigerators.entity.Ingredient;
@@ -87,5 +88,21 @@ public class RefrigeratorsService {
 
     }
 
+    public void resetRefrigerator(String email) {
+        Member member = memberService.findByEmail(email);
+
+        List<CustomIngredient> customIngredients = customIngredientRepository.findAllByMember(member);
+        customIngredientRepository.deleteAllInBatch(customIngredients);
+
+        List<RefrigeratorIngredient> ingredients = refrigeratorIngredientRepository.findAllByMember(member);
+        refrigeratorIngredientRepository.deleteAllInBatch(ingredients);
+
+    }
+
+    public List<UserRefrigeratorResponse> getUserRefrigerator(String email) {
+        Member member = memberService.findByEmail(email);
+
+        return null;
+    }
 
 }

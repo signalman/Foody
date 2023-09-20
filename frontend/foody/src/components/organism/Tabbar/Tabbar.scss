@@ -10,6 +10,7 @@
 	max-width: 500px;
 	height: 60px;
 	background-color: transparent;
+	z-index: var.$tabbar-z-index;
 
 	ul {
 		position: relative;

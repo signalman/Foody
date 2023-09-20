@@ -1,4 +1,4 @@
-package com.foody.member.util;
+package com.foody.security.util;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,12 +11,14 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class FailureHandler implements AuthenticationFailureHandler {
+public class OAuth2LoginFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException, ServletException {
-
-        log.debug("{}", exception);
+        
+        // 에러 코드 전달
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("Authentication failed: " + exception.getMessage());
     }
 }

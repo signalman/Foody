@@ -2,15 +2,18 @@ import React, { HTMLAttributes, ReactNode } from 'react';
 import './Layout.scss';
 import classNames from 'classnames';
 import LayoutPadding from 'constants/Padding';
+import LayoutBottomMargin, { LayoutTopMargin } from 'constants/Margin';
 
 interface LayoutProps extends HTMLAttributes<HTMLDivElement> {
 	children: ReactNode;
+	marginTop?: LayoutTopMargin;
+	marginBottom?: LayoutBottomMargin;
 	padding?: LayoutPadding;
 }
 
-function Layout({ children, padding, ...rest }: LayoutProps) {
+function Layout({ children, marginTop, marginBottom, padding, ...rest }: LayoutProps) {
 	return (
-		<div className={classNames('layout', padding)} {...rest}>
+		<div className={classNames('layout', marginTop, marginBottom, padding)} {...rest}>
 			{children}
 		</div>
 	);
@@ -19,5 +22,7 @@ function Layout({ children, padding, ...rest }: LayoutProps) {
 export default Layout;
 
 Layout.defaultProps = {
-	padding: LayoutPadding.full,
+	marginTop: LayoutTopMargin.mt0,
+	marginBottom: LayoutBottomMargin.mb0,
+	padding: LayoutPadding.p0,
 };

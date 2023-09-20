@@ -76,6 +76,12 @@
 			// 	box-shadow: -2px -15px 0 0 var.$white;
 			// }
 
+			button {
+				width: 100%;
+				height: 100%;
+				border-radius: 50px;
+			}
+
 			.plus-icon {
 				color: var.$white;
 			}

@@ -65,31 +65,40 @@ h4 {
 	margin: 0 auto;
 }
 
-.mb-0,
-.mt-0,
-.ml-0,
+.mb-0 {
+	margin-bottom: 0;
+}
+.mt-0 {
+	margin-top: 0;
+}
+.ml-0 {
+	margin-left: 0;
+}
 .mr-0 {
-	margin: 0;
+	margin-right: 0;
 }
 
 .mt-10 {
-	margin: 10px 0 0;
+	margin-top: 10px;
 }
 .mt-20 {
-	margin: 20px 0 0;
+	margin-top: 20px;
 }
 .mt-30 {
-	margin: 30px 0 0;
+	margin-top: 30px;
 }
 
 .mb-10 {
-	margin: 0 0 10px;
+	margin-bottom: 10px;
 }
 .mb-20 {
-	margin: 0 0 20px;
+	margin-bottom: 20px;
 }
 .mb-30 {
-	margin: 0 0 30px;
+	margin-bottom: 30px;
+}
+.mb-tabbar {
+	margin-bottom: 100px;
 }
 
 .p-0 {

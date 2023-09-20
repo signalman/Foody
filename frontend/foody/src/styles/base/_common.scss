@@ -64,3 +64,43 @@ h4 {
 	max-width: 500px;
 	margin: 0 auto;
 }
+
+.mb-0,
+.mt-0,
+.ml-0,
+.mr-0 {
+	margin: 0;
+}
+
+.mt-10 {
+	margin: 10px 0 0;
+}
+.mt-20 {
+	margin: 20px 0 0;
+}
+.mt-30 {
+	margin: 30px 0 0;
+}
+
+.mb-10 {
+	margin: 0 0 10px;
+}
+.mb-20 {
+	margin: 0 0 20px;
+}
+.mb-30 {
+	margin: 0 0 30px;
+}
+
+.p-0 {
+	padding: 0;
+}
+.p-10 {
+	padding: 0 10px;
+}
+.p-20 {
+	padding: 0 20px;
+}
+.p-30 {
+	padding: 0 30px;
+}

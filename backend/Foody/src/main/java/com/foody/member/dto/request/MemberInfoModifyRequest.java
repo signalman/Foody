@@ -1,7 +1,6 @@
 package com.foody.member.dto.request;
 
-public record MemberJoinRequest(
-    String email,
+public record MemberInfoModifyRequest(
     String nickname,
     float height,
     float weight,

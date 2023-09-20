@@ -1,6 +1,7 @@
 package com.foody.member.entity;
 
 import com.foody.global.entity.UserInfo;
+import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.MemberSignupRequest;
 import java.util.Collection;
@@ -41,15 +42,22 @@ public class Member extends UserInfo {
                      .build();
     }
 
-    public static Member fromJoinRequest(MemberJoinRequest memberJoinRequest) {
-        return Member.builder()
-                     .nickname(memberJoinRequest.nickname())
-                     .height(memberJoinRequest.height())
-                     .weight(memberJoinRequest.weight())
-                     .gender(memberJoinRequest.gender())
-                     .age(memberJoinRequest.age())
-                     .activityLevel(memberJoinRequest.activityLevel())
-                     .build();
+    public void joinMember(MemberJoinRequest memberJoinRequest) {
+        this.nickname = memberJoinRequest.nickname();
+        this.height = memberJoinRequest.height();
+        this.weight = memberJoinRequest.weight();
+        this.gender = memberJoinRequest.gender();
+        this.age = memberJoinRequest.age();
+        this.activityLevel = memberJoinRequest.activityLevel();
+    }
+
+    public void modifyMember(MemberInfoModifyRequest memberInfoModifyRequest) {
+        this.nickname = memberInfoModifyRequest.nickname();
+        this.height = memberInfoModifyRequest.height();
+        this.weight = memberInfoModifyRequest.weight();
+        this.gender = memberInfoModifyRequest.gender();
+        this.age = memberInfoModifyRequest.age();
+        this.activityLevel = memberInfoModifyRequest.activityLevel();
     }
 
     @Override

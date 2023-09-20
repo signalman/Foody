@@ -61,3 +61,9 @@ tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
 }
+
+asciidoctor {
+    dependsOn test
+    inputs.dir snippetsDir
+    outputDir file('src/docs/asciidoc')
+}

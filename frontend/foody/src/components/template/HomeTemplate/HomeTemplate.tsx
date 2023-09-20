@@ -1,24 +1,26 @@
 import React, { ReactNode } from 'react';
 import LayoutPadding from 'constants/Padding';
 import Header from 'components/organism/Header/Header';
+import { LayoutTopMargin } from 'constants/Margin';
 import Layout from '../Layout/Layout';
+import ContentsLayout from '../ContentsLayout/ContentsLayout';
 
 function HomeTemplate({ children }: { children: ReactNode[] }) {
 	return (
 		<>
 			<Header />
-			<Layout padding={LayoutPadding.md}>
+			<Layout marginTop={LayoutTopMargin.mt20} padding={LayoutPadding.p20}>
 				{/* 인사말 */}
-				<div>{children[0]}</div>
+				<ContentsLayout>{children[0]}</ContentsLayout>
 
 				{/* 배너 */}
-				<div>{children[1]}</div>
+				<ContentsLayout>{children[1]}</ContentsLayout>
 
 				{/* 오늘의 식사 칼로리 정보 */}
-				<div>{children[2]}</div>
+				<ContentsLayout>{children[2]}</ContentsLayout>
 
 				{/* 메뉴 목록 */}
-				<div>{children[3]}</div>
+				<ContentsLayout>{children[3]}</ContentsLayout>
 			</Layout>
 		</>
 	);

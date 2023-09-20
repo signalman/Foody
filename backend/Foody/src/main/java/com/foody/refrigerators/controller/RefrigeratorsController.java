@@ -45,4 +45,23 @@ public class RefrigeratorsController {
         refrigeratorsService.insertCustomIngredient(userInfo.getEmail(), ingredients);
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping("/")
+//    public ResponseEntity<List<>> getUserRefrigerator(@AuthenticationPrincipal UserInfo userInfo) {
+//
+//
+//    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<String> resetRefrigerator(@AuthenticationPrincipal UserInfo userInfo) {
+        refrigeratorsService.resetRefrigerator(userInfo.getEmail());
+        return ResponseEntity.ok().build();
+    }
+
+//    @DeleteMapping("/")
+//    public ResponseEntity<String> deleteIngredient(
+//            @AuthenticationPrincipal UserInfo userInfo
+//            ) {
+//        return ResponseEntity.ok().build();
+//    }
 }

@@ -1,4 +1,5 @@
 enum LayoutBottomMargin {
+	mbTabbar = 'mb-tabbar',
 	mb30 = 'mb-30',
 	mb20 = 'mb-20',
 	mb10 = 'mb-10',

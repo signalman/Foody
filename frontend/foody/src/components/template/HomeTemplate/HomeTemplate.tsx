@@ -9,7 +9,7 @@ function HomeTemplate({ children }: { children: ReactNode[] }) {
 	return (
 		<>
 			<Header />
-			<Layout marginTop={LayoutTopMargin.mt20} marginBottom={LayoutBottomMargin.mbTabbar} padding={LayoutPadding.p20}>
+			<Layout marginTop={LayoutTopMargin.mt10} marginBottom={LayoutBottomMargin.mbTabbar} padding={LayoutPadding.p20}>
 				{/* 인사말 */}
 				<ContentsLayout>{children[0]}</ContentsLayout>
 

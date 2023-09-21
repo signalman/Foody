@@ -1,0 +1,25 @@
+@use 'styles/base/variable' as var;
+
+.custom-bottom-sheet-container {
+	position: relative;
+	z-index: 1100;
+}
+
+.sheetcontent-container {
+	width: 100%;
+	height: 90%;
+	padding: 0 20px 75px;
+	position: absolute;
+	bottom: 0;
+	overflow: auto;
+	background-color: var.$white;
+	font-size: var.$p2;
+
+	// 스크롤 제거
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+	&::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera*/
+	}
+	//
+}

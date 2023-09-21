@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import './Tabbar.scss';
 import TabbarItem from 'components/atom/TabbarItem/TabbarItem';
 import TABBER_MENUS from 'constants/Tabbar';
 import { BiPlus } from 'react-icons/bi';
 
-function Tabbar() {
+function Tabbar({ setOpen }: { setOpen: Dispatch<React.SetStateAction<boolean>> }) {
 	const handleAddDayMeal = () => {
-		alert('오늘의 식단 추가');
+		console.log('클릭');
+		setOpen((prev) => !prev);
 	};
 
 	return (

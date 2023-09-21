@@ -6,10 +6,10 @@ import MealPage from 'components/page/MealPage';
 import RefriPage from 'components/page/RefriPage';
 import RecommendPage from 'components/page/RecommendPage';
 import DevPage from 'components/page/DevPage';
-import Tabbar from 'components/organism/Tabbar/Tabbar';
 import LoginPage from 'components/page/LoginPage';
 import NotFoundPage from 'components/page/NotFoundPage';
 import SignupPage from 'components/page/SignupPage';
+import RegistTodayMeal from 'components/molecule/RegistTodayMeal/RegistTodayMeal';
 
 function AppRouter() {
 	return (
@@ -29,7 +29,7 @@ function AppRouter() {
 				<Route path="/notfound" element={<NotFoundPage />} />
 			</Routes>
 
-			<Tabbar />
+			<RegistTodayMeal />
 		</BrowserRouter>
 	);
 }

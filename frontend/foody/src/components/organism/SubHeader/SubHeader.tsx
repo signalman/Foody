@@ -15,7 +15,7 @@ function SubHeader({ isBack = false, title = '' }: { isBack: boolean; title: str
 	return (
 		<header className="header-container">
 			<button type="button" onClick={isBack ? handleBack : handleClose}>
-				{isBack ? <BiArrowBack size={16} /> : <AiOutlineClose size={16} />}
+				{isBack ? <BiArrowBack size={24} /> : <AiOutlineClose size={24} />}
 			</button>
 			<h1 className="sub-header-title">{title}</h1>
 		</header>

@@ -21,13 +21,13 @@ function Header() {
 	return (
 		<header className="header-container">
 			<button type="button" onClick={handleMenu}>
-				<AiOutlineMenu size={16} />
+				<AiOutlineMenu size={24} />
 			</button>
 			<Link to="/" className="header-logo-container">
 				<img src={logoImg} alt="logo" />
 			</Link>
 			<button type="button" className={newNoti ? 'bell' : ''} onClick={handleNotice}>
-				<GoBell size={17} />
+				<GoBell size={25} />
 			</button>
 		</header>
 	);

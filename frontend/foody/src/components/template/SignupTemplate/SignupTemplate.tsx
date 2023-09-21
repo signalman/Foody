@@ -17,6 +17,7 @@ function SignupTemplate({ children }: { children: ReactNode[] }) {
 				<ContentsLayout>{children[3]}</ContentsLayout>
 				<ContentsLayout>{children[4]}</ContentsLayout>
 				<ContentsLayout>{children[5]}</ContentsLayout>
+				<ContentsLayout>{children[6]}</ContentsLayout>
 			</Layout>
 		</>
 	);

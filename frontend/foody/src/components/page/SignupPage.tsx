@@ -21,28 +21,40 @@ function SignupPage() {
 	// 다섯 번째 스텝
 	const [move, setMove] = useState<number>(1);
 
-	const [index, setIndex] = useState<number>(0);
-	const check2 = [true, false, false, false, false];
+	// 프로그레스 바 설정
+	const [index, setIndex] = useState<number>(1);
+
+	const [bar, setBar] = useState([true, false, false, false, false]);
 
 	const nextButton = () => {
-		check2[index] = true;
+		const updateBar = [...bar];
 		setIndex(index + 1);
+		updateBar[index] = true;
+		setBar(updateBar);
 	};
 
 	return (
 		<SignupTemplate>
-			<ProgressBar ProgressCheck={check2} />
-			<SignupStep1 nextButton={nextButton} setNickname={setNickname} nickname={nickname} />
-			<SignupStep2 nextButton={nextButton} selectGender={selectGender} setSelectGender={setSeleteGender} />
-			<SignupStep3 nextButton={nextButton} setAge={setAge} age={age} />
-			<SignupStep4
-				nextButton={nextButton}
-				height={height}
-				weight={weight}
-				setHeight={setHeight}
-				setWeight={setWeight}
-			/>
-			<SignupStep5 nextButton={nextButton} move={move} setMove={setMove} />
+			<ProgressBar ProgressCheck={bar} />
+			{index === 1 && <SignupStep1 nextButton={nextButton} setNickname={setNickname} nickname={nickname} />}
+			{index === 2 && (
+				<SignupStep2 nextButton={nextButton} selectGender={selectGender} setSelectGender={setSeleteGender} />
+			)}
+			{index === 3 && <SignupStep3 nextButton={nextButton} setAge={setAge} age={age} />}
+			{index === 4 && (
+				<SignupStep4
+					nextButton={nextButton}
+					height={height}
+					weight={weight}
+					setHeight={setHeight}
+					setWeight={setWeight}
+				/>
+			)}
+			{index === 5 && <SignupStep5 nextButton={nextButton} move={move} setMove={setMove} />}
+			<span>
+				닉네임 : {nickname} 성별 : {selectGender} 나이 : {age} 키 : {height} 몸무게 : {weight} 활동량 : {move}
+				인덱스 : {index}
+			</span>
 		</SignupTemplate>
 	);
 }

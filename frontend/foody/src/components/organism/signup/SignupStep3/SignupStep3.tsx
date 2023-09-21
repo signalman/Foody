@@ -5,26 +5,32 @@ import LargeButtonColor from 'constants/color';
 import React, { useEffect, useState } from 'react';
 
 interface SignupStep3Props {
-	value: string;
-	setValue: (value: string) => void;
+	age: string;
+	setAge: (age: string) => void;
+	nextButton: () => void;
 }
 
-function SignupStep3({ value, setValue }: SignupStep3Props) {
+function SignupStep3({ age, setAge, nextButton }: SignupStep3Props) {
 	const [check, setCheck] = useState(false);
 
 	useEffect(() => {
-		if (value.length > 0) {
+		if (age.length > 0) {
 			setCheck(true);
 		} else {
 			setCheck(false);
 		}
-	}, [value]);
+	}, [age]);
 
 	return (
 		<div className="step3-container">
 			<SignupTitle value="나이를 알려주세요" />
-			<UnderlineInput onChangeValue={setValue} placeholder="나이" unit="" value={value} />
-			<LargeButton imgsrc="" value="확인" buttonColor={check ? LargeButtonColor.Green : LargeButtonColor.Gray} />
+			<UnderlineInput onChangeValue={setAge} placeholder="나이" unit="" value={age} />
+			<LargeButton
+				buttonClick={nextButton}
+				imgsrc=""
+				value="다음"
+				buttonColor={check ? LargeButtonColor.Green : LargeButtonColor.Gray}
+			/>
 		</div>
 	);
 }

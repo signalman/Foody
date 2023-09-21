@@ -1,0 +1,59 @@
+@use 'styles/base/variable.scss' as var;
+
+.input-container {
+	position: relative;
+	height: 80px;
+	line-height: 80px;
+	margin-bottom: 20px;
+}
+
+input {
+	position: absolute;
+	width: 100%;
+	outline: none;
+	font-size: var.$h2;
+	padding: 0 10px;
+	line-height: 80px;
+	border: none;
+	border-bottom: 1px solid var.$black-100;
+	background: transparent;
+	transition: 0.1s ease;
+}
+
+.labelline {
+	position: absolute;
+	font-size: var.$h3;
+	color: var.$black-100;
+	padding: 0 15px;
+	margin: 0 -10px;
+	transition: 0.2s ease;
+}
+
+input:focus,
+input:valid {
+	color: var.$primary-green-500;
+	border-bottom: 2px solid var.$primary-green-500;
+}
+
+input:focus + .labelline,
+input:valid + .labelline {
+	color: var.$primary-green-500;
+	height: 30px;
+	line-height: 30px;
+	transform: translate(0px, -5px) scale(0.88);
+}
+
+.unit-value {
+	color: var.$black-400;
+	font-size: var.$h2;
+	font-weight: var.$fw-400;
+}
+
+.cm {
+	position: absolute;
+	top: 0;
+	right: 15px;
+	color: var.$black-400;
+	font-size: var.$h2;
+	font-weight: var.$fw-400;
+}

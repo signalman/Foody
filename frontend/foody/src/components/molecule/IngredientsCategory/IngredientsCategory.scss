@@ -1,0 +1,49 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.slider-container {
+	padding: 0 20px;
+	overflow-x: scroll;
+	overflow-y: visible;
+	// 스크롤 제거
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+	&::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera*/
+	}
+	//
+}
+
+.ingredients-category-container {
+	@include f.flex(row, start);
+	height: 130px;
+
+	img {
+		width: 80px;
+	}
+
+	li,
+	button {
+		@include f.flex(column, center, center, 10px);
+		height: 100%;
+	}
+
+	li {
+		background-color: var.$white;
+		border-radius: 10px;
+
+		.active {
+			background-color: blue;
+		}
+	}
+	button {
+		padding: 10px;
+		.desc-wrap {
+			@include f.flex(column, between);
+			gap: 8px;
+		}
+		svg {
+			color: var.$black-100;
+		}
+	}
+}

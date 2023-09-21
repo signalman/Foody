@@ -2,8 +2,8 @@ package com.foody.refrigerators.controller;
 
 import com.foody.global.entity.UserInfo;
 import com.foody.refrigerators.dto.request.InsertCustomIngredientRequest;
-import com.foody.refrigerators.dto.request.InsertIngredientRequest;
 import com.foody.refrigerators.dto.response.SearchIngredientResponse;
+import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class RefrigeratorsController {
 
     @PostMapping("/")
     public ResponseEntity<String> registerIngredient(
-            @RequestBody List<Integer> ingredients,
+            @RequestBody List<Long> ingredients,
             @AuthenticationPrincipal UserInfo userInfo
     ) {
         refrigeratorsService.insertIngredient(userInfo.getEmail(), ingredients);
@@ -46,11 +46,10 @@ public class RefrigeratorsController {
         return ResponseEntity.ok().build();
     }
 
-//    @GetMapping("/")
-//    public ResponseEntity<List<>> getUserRefrigerator(@AuthenticationPrincipal UserInfo userInfo) {
-//
-//
-//    }
+    @GetMapping("/")
+    public ResponseEntity<List<UserRefrigeratorResponse>> getUserRefrigerator(@AuthenticationPrincipal UserInfo userInfo) {
+        return ResponseEntity.ok().body(refrigeratorsService.getUserRefrigerator(userInfo.getEmail()));
+    }
 
     @DeleteMapping("/")
     public ResponseEntity<String> resetRefrigerator(@AuthenticationPrincipal UserInfo userInfo) {
@@ -58,10 +57,9 @@ public class RefrigeratorsController {
         return ResponseEntity.ok().build();
     }
 
-//    @DeleteMapping("/")
-//    public ResponseEntity<String> deleteIngredient(
-//            @AuthenticationPrincipal UserInfo userInfo
-//            ) {
-//        return ResponseEntity.ok().build();
-//    }
+    @DeleteMapping("/{ingredientId}")
+    public ResponseEntity<String> deleteIngredient(@AuthenticationPrincipal UserInfo userInfo, @RequestParam Long ingredientId) {
+        refrigeratorsService.deleteUserIngredient(userInfo.getEmail(), ingredientId);
+        return ResponseEntity.ok().build();
+    }
 }

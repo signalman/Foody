@@ -1,0 +1,7 @@
+@use 'styles/base/variable.scss' as var;
+
+.title {
+	color: var.$black-500;
+	font-size: var.$h1;
+	font-weight: var.$fw-600;
+}

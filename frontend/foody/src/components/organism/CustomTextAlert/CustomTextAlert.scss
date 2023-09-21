@@ -1,0 +1,61 @@
+@use 'styles/base/variable' as var;
+@use 'styles/mixins/flex' as f;
+
+.react-confirm-alert-overlay {
+	background: var.$black-alpa-50;
+	z-index: 9999;
+
+	.react-confirm-alert {
+		width: 100%;
+	}
+}
+
+.popup-overlay {
+	@include f.flex(column, between, start);
+
+	margin: 0 40px;
+	max-width: 500px;
+	min-height: 160px;
+	padding: 20px 20px;
+	background: var.$white;
+	border-radius: 10px;
+
+	h3 {
+		margin-bottom: 14px;
+		font-weight: bold;
+	}
+
+	p {
+		margin-bottom: 20px;
+		font-size: 1.25rem;
+		line-height: 20px;
+	}
+
+	.btn-group {
+		align-self: flex-end;
+
+		button {
+			min-width: 80px;
+			padding: 8px 10px;
+			font-size: var.$p3;
+			font-weight: var.$fw-400;
+			border-radius: 4px;
+			margin-right: 10px;
+			color: var.$white;
+
+			&:last-child {
+				background-color: var.$black-300;
+				margin-right: 0;
+				color: var.$white;
+			}
+
+			&.btn-danger {
+				background-color: var.$danger;
+			}
+
+			&.btn-confirm {
+				background-color: var.$primary-green-500;
+			}
+		}
+	}
+}

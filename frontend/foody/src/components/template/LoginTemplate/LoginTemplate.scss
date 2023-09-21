@@ -1,0 +1,11 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.main-div {
+	@include f.flex(column, center, center, 0);
+}
+
+.main-logo {
+	width: 240px;
+	height: 235px;
+}

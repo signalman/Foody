@@ -16,8 +16,8 @@ public enum ErrorCode {
 
      /* RefrigeratorException */
     INGREDIENT_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료입니다."),
-    INGREDIENT_CATEGORY_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료 카테고리입니다");
-
+    INGREDIENT_CATEGORY_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료 카테고리입니다."),
+    USER_INGREDIENT_NOT_FOUND("REFRI08", HttpStatus.NOT_FOUND, "사용자의 냉장고에 존재하지 않는 재료입니다.");
 
 
     private final String code;

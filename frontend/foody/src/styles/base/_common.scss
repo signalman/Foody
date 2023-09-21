@@ -25,6 +25,7 @@ textarea {
 	color: var.$black-500;
 	line-height: 1;
 	font-feature-settings: 'tnum';
+	-webkit-tap-highlight-color: transparent; // 눌렀을 때 파란 배경 제거
 }
 
 input[type='number'] {

@@ -1,0 +1,11 @@
+@use 'styles/base/variable' as var;
+@use 'styles/mixins/flex' as f;
+
+.page-title-container {
+	@include f.flex(row, between, center);
+	padding: 0 20px;
+
+	h2 {
+		font-weight: var.$fw-600;
+	}
+}

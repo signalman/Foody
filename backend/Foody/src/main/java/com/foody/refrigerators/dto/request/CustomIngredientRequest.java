@@ -1,6 +1,6 @@
 package com.foody.refrigerators.dto.request;
 
-public record InsertCustomIngredientRequest (
+public record CustomIngredientRequest(
         Long ingredientCategoryId,
         String ingredientName
 ) {

@@ -19,7 +19,7 @@ public class ServiceTest {
         Member member = Member.builder()
             .email("lkm454545@gmail.com")
             .nickname("세바스찬")
-            .height(187.46f)
+            .height(187.46)
             .weight(78.87f)
             .age(25)
             .activityLevel(1)

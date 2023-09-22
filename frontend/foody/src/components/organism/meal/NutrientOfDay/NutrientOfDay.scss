@@ -1,0 +1,12 @@
+@use 'styles/base/variable.scss' as var;
+
+.box {
+	height: 160px;
+	border: 1px solid var.$black-100;
+}
+
+.nutrient-of-day-title {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}

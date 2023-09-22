@@ -1,0 +1,6 @@
+@use 'styles/base/variable.scss' as var;
+
+.meal-information {
+	height: 565px;
+	background-color: var.$black-100;
+}

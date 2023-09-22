@@ -3,8 +3,8 @@ package com.foody.member.dto.request;
 public record MemberJoinRequest(
     String email,
     String nickname,
-    float height,
-    float weight,
+    double height,
+    double weight,
     int gender,
     int age,
     int activityLevel

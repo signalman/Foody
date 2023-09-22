@@ -1,0 +1,7 @@
+@use 'styles/base/variable.scss' as var;
+
+.carlorie-check-table {
+	width: 130px;
+	height: 150px;
+	border: 1px solid var.$black-100;
+}

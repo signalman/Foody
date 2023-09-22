@@ -30,9 +30,9 @@ public class JwtProvider {
             .get("email", String.class);
     }
 
-    public boolean isExpired(String token, String secretkey) {
+    public boolean isExpired(String token, String secretKey) {
         return Jwts.parserBuilder()
-            .setSigningKey(secretkey)
+            .setSigningKey(secretKey)
             .build()
             .parseClaimsJws(token)
             .getBody()

@@ -28,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailService customUserDetailService;
     private final JwtProvider jwtProvider;
 
-    @Value("${jwt.token.secret}")
+    @Value("{JWT_SECRET_KEY}")
     private String secretKey;
 
     @Override
@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
             // token 정보
-            log.info(accesstoken);
+            log.info("======================'{}'======================",accesstoken);
 
             // 토큰이 유효한지
             if(jwtProvider.isExpired(accesstoken, secretKey)) {

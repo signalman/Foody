@@ -1,31 +1,27 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import './ToggleSwitch.scss';
-import useToggle from 'hooks/useToggle';
 
 interface ToggleSwitchProps {
-	isRefri: boolean;
+	type: boolean;
+	setType: Dispatch<React.SetStateAction<boolean>>;
 	onText: string;
 	offText: string;
 }
 
-function ToggleSwitch({ isRefri, onText, offText }: ToggleSwitchProps) {
-	const [check, setCheck] = useToggle(isRefri);
-	console.log(check);
+function ToggleSwitch({ type, setType, onText, offText }: ToggleSwitchProps) {
 	return (
-		<div className="flex justify-center">
-			<div className={`toggle-switch ${check ? 'checked' : 'unchecked'}`}>
-				<button
-					type="button"
-					className={`switch ${check ? 'checked' : 'unchecked'}`}
-					onClick={() => {
-						setCheck();
-					}}
-				>
-					<span className={`on-text ml-2 ${check ? 'checked' : 'unchecked'}`}>{onText}</span>
-					<span className={`off-text ml-16 ${check ? 'checked' : 'unchecked'}`}>{offText}</span>
-					<div className={`slider ${check ? 'checked' : 'unchecked'}`} />
-				</button>
-			</div>
+		<div className={`toggle-switch ${type ? 'checked' : 'unchecked'}`}>
+			<button
+				type="button"
+				className={`switch ${type ? 'checked' : 'unchecked'}`}
+				onClick={() => {
+					setType((prev) => !prev);
+				}}
+			>
+				<span className={`on-text ml-2 ${type ? 'checked' : 'unchecked'}`}>{onText}</span>
+				<span className={`off-text ml-16 ${type ? 'checked' : 'unchecked'}`}>{offText}</span>
+				<div className={`slider ${type ? 'checked' : 'unchecked'}`} />
+			</button>
 		</div>
 	);
 }

@@ -49,11 +49,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             String accessToken = tokenResponse.accessToken();
             String refreshToken = tokenResponse.refreshToken();
+            String user = "1";
 
-            String formattedRedirectUrl = String.format("%s?accessToken=%s&refreshToken=%s",
+            String formattedRedirectUrl = String.format("%s?accessToken=%s&refreshToken=%s&user=%s",
                 redirectUrl,
                 URLEncoder.encode(accessToken, "UTF-8"),
-                URLEncoder.encode(refreshToken, "UTF-8"));
+                URLEncoder.encode(refreshToken, "UTF-8"),
+                URLEncoder.encode(user, "UTF-8"));  // user 값을 인코딩하여 추가
+
 
 //            response.sendRedirect(redirectUrl);
             response.sendRedirect(formattedRedirectUrl);
@@ -67,11 +70,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             String accessToken = tokenResponse.accessToken();
             String refreshToken = tokenResponse.refreshToken();
+            String user = "0";
 
-            String formattedRedirectUrl = String.format("%s?accessToken=%s&refreshToken=%s",
+            String formattedRedirectUrl = String.format("%s?accessToken=%s&refreshToken=%s&user=%s",
                 redirectUrl,
                 URLEncoder.encode(accessToken, "UTF-8"),
-                URLEncoder.encode(refreshToken, "UTF-8"));
+                URLEncoder.encode(refreshToken, "UTF-8"),
+                URLEncoder.encode(user, "UTF-8"));
 
 //            response.sendRedirect(redirectUrl);
             response.sendRedirect(formattedRedirectUrl);

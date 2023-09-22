@@ -4,9 +4,12 @@ import com.foody.global.entity.UserInfo;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.MemberSignupRequest;
+import com.foody.recommendednutrient.entity.RecommendedNutrient;
 import java.util.Collection;
 import java.util.Map;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,9 +26,9 @@ public class Member extends UserInfo {
 
     private String nickname;
 
-    private float height;
+    private double height;
 
-    private float weight;
+    private double weight;
 
     private int gender;
 
@@ -34,6 +37,11 @@ public class Member extends UserInfo {
     private int activityLevel;
 
     private String profileImg;
+
+    @OneToOne
+    @JoinColumn(name = "recommended_nutrient_id")
+    private RecommendedNutrient recommendedNutrient;
+
 
     public static Member signupMember(MemberSignupRequest memberSignupRequest) {
         return Member.builder()

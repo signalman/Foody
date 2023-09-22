@@ -6,20 +6,12 @@
 }
 
 .sheetcontent-container {
+	max-width: 500px;
 	width: 100%;
 	height: 90%;
+	margin: 0 auto;
 	padding: 0 20px 75px;
-	position: absolute;
-	bottom: 0;
 	overflow: auto;
 	background-color: var.$white;
 	font-size: var.$p2;
-
-	// 스크롤 제거
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
-	&::-webkit-scrollbar {
-		display: none; /* Chrome, Safari, Opera*/
-	}
-	//
 }

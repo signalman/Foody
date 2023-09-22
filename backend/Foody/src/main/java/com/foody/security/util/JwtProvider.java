@@ -23,7 +23,7 @@ public class JwtProvider {
 
     public String getEmail(String token, String secretKey){
         return Jwts.parserBuilder()
-            .setSigningKey(secretKey)
+            .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
             .build()
             .parseClaimsJws(token)
             .getBody()
@@ -32,7 +32,7 @@ public class JwtProvider {
 
     public boolean isExpired(String token, String secretKey) {
         return Jwts.parserBuilder()
-            .setSigningKey(secretKey)
+            .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
             .build()
             .parseClaimsJws(token)
             .getBody()
@@ -87,7 +87,7 @@ public class JwtProvider {
         try{
             // 전달 받은 RefreshToken에서 정보 추출
             Claims claims = Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+                .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                 .build()
                 .parseClaimsJws(refreshToken)
                 .getBody();

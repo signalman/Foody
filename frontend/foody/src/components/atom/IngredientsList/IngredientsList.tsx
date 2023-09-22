@@ -4,8 +4,8 @@ import { IngridientItem } from 'constants/category';
 import formatDate from 'utils/common/formatDate';
 import classNames from 'classnames';
 import CustomTextAlert from 'components/organism/CustomTextAlert/CustomTextAlert';
-import toast from 'react-hot-toast';
 import { DUMMY_INGREDIENTS_ITEM_INFO_LIST } from 'constants/dummy';
+import toast from 'react-hot-toast';
 import IngredientsListItem from '../IngredientsListItem/IngredientsListItem';
 import IngredientsListItemInfo from '../IngredientsListItemInfo/IngredientsListItemInfo';
 
@@ -25,10 +25,12 @@ function IngredientsList({ ingredientsList, type }: { ingredientsList: Ingridien
 			title: `재료 정보`,
 			// desc: `재료명\n아래 재료가 냉장고에서 삭제됩니다.`,
 			contents: <IngredientsListItemInfo infoList={DUMMY_INGREDIENTS_ITEM_INFO_LIST} />,
+			isDelete: true,
 			closeBtnTitle: '닫기',
 			params: {},
 			onAction: () => {
-				toast.success('삭제됐습니다~');
+				// TODOS: 재료 삭제
+				toast.success('삭제');
 			},
 		});
 	};

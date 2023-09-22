@@ -1,5 +1,6 @@
 package com.foody.member.controller;
 
+import com.foody.member.dto.request.CheckNicknameRequest;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.RefreshTokenRequest;
@@ -30,9 +31,9 @@ public class MemberController {
 
     // 닉네임 중복 검사
     @GetMapping("/check/{nickname}")
-    public ResponseEntity<String> checkNickname(@PathVariable String nickname) {
-        log.debug("'{}' check exists", nickname);
-        memberService.isNicknameDuplicated(nickname);
+    public ResponseEntity<String> checkNickname(@RequestBody CheckNicknameRequest checkNicknameRequest) {
+        log.debug("'{}' check exists", checkNicknameRequest.nickname());
+        memberService.isNicknameDuplicated(checkNicknameRequest.nickname());
 
         return ResponseEntity.noContent().build();
     }

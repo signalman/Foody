@@ -5,6 +5,7 @@
 	padding: 0 20px;
 	overflow-x: scroll;
 	overflow-y: visible;
+	white-space: nowrap;
 	// 스크롤 제거
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
@@ -15,11 +16,10 @@
 }
 
 .ingredients-category-container {
-	@include f.flex(row, start);
-	height: 130px;
+	@include f.flex(row, start, center, 4px);
 
 	img {
-		width: 80px;
+		width: 70px;
 	}
 
 	li,
@@ -31,18 +31,33 @@
 	li {
 		background-color: var.$white;
 		border-radius: 10px;
+		transition: all 0.1s ease-in-out;
 
-		.active {
-			background-color: blue;
+		&.active {
+			// background-color: var.$border-100;
+			// background-color: var.$primary-green-alpa-10;
+			background-color: var.$primary-green-100;
+
+			svg {
+				// transform: scaleY(1);
+				transform: rotate(0);
+			}
 		}
 	}
+
 	button {
-		padding: 10px;
+		padding: 12px 4px 8px;
+		width: 120px;
 		.desc-wrap {
 			@include f.flex(column, between);
-			gap: 8px;
+			gap: 4px;
+			height: 100%;
 		}
+
 		svg {
+			// transform: scaleY(-1);
+			transform: rotate(180deg);
+			transition: all 0.3s ease-in-out;
 			color: var.$black-100;
 		}
 	}

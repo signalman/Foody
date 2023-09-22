@@ -12,6 +12,7 @@ function RefriPage() {
 	const [categoryList, setCategoryList] = useState(REFI_CATEGORY_LIST);
 
 	useEffect(() => {
+		setSelectedCategory('모든 재료');
 		if (type) {
 			setTitle('나의 냉장고');
 			setCategoryList(REFI_CATEGORY_LIST);

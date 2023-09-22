@@ -15,7 +15,10 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN("MEM04", HttpStatus.BAD_REQUEST, "유효한 토큰이 아닙니다."),
 
      /* RefrigeratorException */
-    INGREDIENT_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료입니다.");
+    INGREDIENT_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료입니다."),
+
+    // RecommendedNutrient
+    RECOMMENED_NOT_FOUND("RECOM01", HttpStatus.NOT_FOUND, "정보가 존재하지 않습니다.");
 
 
 

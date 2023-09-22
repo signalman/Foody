@@ -15,8 +15,8 @@ function CustomBottomSheet({ children, open, setOpen }: CustomBottomSheetProps) 
 		<div className="custom-bottom-sheet-container">
 			<BottomSheet open={open} onDismiss={() => setOpen(false)}>
 				<SheetContent>
-					<div className="sheetcontent-container">{children}</div>
-					<div style={{ height: '60vh' }} />
+					<div className="sheetcontent-container no-scrollbar">{children}</div>
+					{/* <div style={{ height: '60vh' }} /> */}
 				</SheetContent>
 			</BottomSheet>
 		</div>

@@ -6,7 +6,8 @@ import classNames from 'classnames';
 
 interface ICustomTextAlertProps {
 	title: string;
-	desc: string;
+	desc?: string;
+	contents?: JSX.Element;
 	confirmBtnTitle?: string;
 	closeBtnTitle: string;
 	params: object;
@@ -27,16 +28,19 @@ function Item({ text }: { text: string }) {
 }
 
 function CustomTextAlert(props: ICustomTextAlertProps) {
-	const { title, desc, confirmBtnTitle, closeBtnTitle, params, onAction } = props;
+	const { title, desc, contents, confirmBtnTitle, closeBtnTitle, params, onAction } = props;
 	// 제목, 내용, 버튼 내용, 인자, confirm 함수, close 함수
 	return confirmAlert({
 		customUI: ({ onClose }) => (
 			<div className="popup-overlay">
 				<div>
 					<h3>{title}</h3>
-					<p>
-						<Item text={desc} />
-					</p>
+					{desc && (
+						<p>
+							<Item text={`${desc}`} />
+						</p>
+					)}
+					{contents && contents}
 				</div>
 				<div className="btn-group">
 					{confirmBtnTitle && (

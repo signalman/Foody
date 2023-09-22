@@ -7,13 +7,14 @@
 
 	.react-confirm-alert {
 		width: 100%;
+		margin: 0 20px;
 	}
 }
 
 .popup-overlay {
 	@include f.flex(column, between, start);
 
-	margin: 0 40px;
+	margin: 0 auto;
 	max-width: 500px;
 	min-height: 160px;
 	padding: 20px 20px;

@@ -1,16 +1,31 @@
 package com.foody.recommendednutrient.dto.response;
 
-public record RecommendedNutrientResponse(
-    float energy,
-    float carbohydrates, // 탄수화물
-    float protein, // 단백질
-    float dietaryFiber, // 식이섬유
-    float calcium,// 칼슘
-    float sodium, // 나트륨
-    float iron, // 철분
-    float fats, // 지방
-    float vitaminA, // 비타민A
-    float vitaminC // 비타민C
-) {
+import com.foody.recommendednutrient.entity.RecommendedNutrient;
 
+public record RecommendedNutrientResponse(
+    double energy,
+    double carbohydrates, // 탄수화물
+    double protein, // 단백질
+    double dietaryFiber, // 식이섬유
+    double calcium,// 칼슘
+    double sodium, // 나트륨
+    double iron, // 철분
+    double fats, // 지방
+    double vitaminA, // 비타민A
+    double vitaminC // 비타민C
+) {
+    public RecommendedNutrientResponse(RecommendedNutrient recommendedNutrient) {
+        this(
+            recommendedNutrient.getEnergy(),
+            recommendedNutrient.getCarbohydrates(),
+            recommendedNutrient.getProtein(),
+            recommendedNutrient.getDietaryFiber(),
+            recommendedNutrient.getCalcium(),
+            recommendedNutrient.getSodium(),
+            recommendedNutrient.getIron(),
+            recommendedNutrient.getFats(),
+            recommendedNutrient.getVitaminA(),
+            recommendedNutrient.getVitaminC()
+        );
+    }
 }

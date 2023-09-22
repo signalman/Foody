@@ -1,4 +1,5 @@
 import testImg1 from 'assets/icons/Apple.svg';
+import formatDate from 'utils/common/formatDate';
 import { IngridientItem } from './category';
 
 const DUMMY_INGREDIENTS_LIST: IngridientItem[] = [
@@ -130,6 +131,17 @@ export const DUMMY_INGREDIENTS_LIST2: IngridientItem[] = [
 		img: testImg1,
 		text: '노루궁댕이버섯',
 		regiDate: new Date(),
+	},
+];
+
+export const DUMMY_INGREDIENTS_ITEM_INFO_LIST = [
+	{
+		title: '재료명',
+		value: '토마토',
+	},
+	{
+		title: '등록일',
+		value: formatDate(new Date()),
 	},
 ];
 

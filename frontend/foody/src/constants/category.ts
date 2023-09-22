@@ -21,6 +21,13 @@ export interface RefricategoryItem {
 	img: string;
 }
 
+export interface IngridientItem {
+	key: number;
+	text: string;
+	img: string;
+	regiDate: Date;
+}
+
 const REFI_CATEGORY_LIST: RefricategoryItem[] = [
 	{
 		text: '모든 재료',

@@ -30,7 +30,11 @@ function IngredientsCategory({ categoryList, selected, setSelected }: Ingredient
 	};
 
 	return (
-		<ul className="ingredients-category-container slider-container" onWheel={handleScroll} ref={containerRef}>
+		<ul
+			className="ingredients-category-container slider-container no-scrollbar"
+			onWheel={handleScroll}
+			ref={containerRef}
+		>
 			{categoryList.map((v, i) => (
 				<li key={v.text} className={classNames(selected === v.text && 'active')}>
 					<button type="button" onClick={(e) => handleClick(i, e)}>
@@ -38,7 +42,7 @@ function IngredientsCategory({ categoryList, selected, setSelected }: Ingredient
 							<img src={v.img} alt="" />
 							<h4>{v.text}</h4>
 						</div>
-						<MdExpandMore size={20} />
+						<MdExpandMore size={26} />
 					</button>
 				</li>
 			))}

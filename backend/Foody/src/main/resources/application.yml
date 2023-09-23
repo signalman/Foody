@@ -9,3 +9,7 @@ server:
 logging:
   level:
     com.foody: DEBUG
+
+spring:
+  profiles:
+    active: local

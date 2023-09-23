@@ -38,7 +38,7 @@ public class SecurityConfig{
             .authorizeRequests()
             .antMatchers("/api/v1/refrigerator/**").permitAll()
             .antMatchers("/api/v1/member/**").permitAll()
-            .antMatchers("/h2-console/**").permitAll()
+            .antMatchers("/h2-console/**","/docs/**").permitAll()
             .antMatchers("/**").permitAll()
             .anyRequest().authenticated()
             .and()

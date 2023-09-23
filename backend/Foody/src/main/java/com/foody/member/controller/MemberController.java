@@ -1,5 +1,6 @@
 package com.foody.member.controller;
 
+import com.foody.global.service.AmazonS3Service;
 import com.foody.member.dto.request.CheckNicknameRequest;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
@@ -10,6 +11,7 @@ import com.foody.member.service.MemberService;
 import com.foody.security.util.LoginInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -28,10 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final AmazonS3Service amazonS3Service;
 
     // 닉네임 중복 검사
-    @GetMapping("/check/{nickname}")
-    public ResponseEntity<String> checkNickname(@RequestBody CheckNicknameRequest checkNicknameRequest) {
+    @GetMapping("/check")
+    public ResponseEntity<String> checkNickname(@AuthenticationPrincipal LoginInfo loginInfo, @RequestBody CheckNicknameRequest checkNicknameRequest) {
         log.debug("'{}' check exists", checkNicknameRequest.nickname());
         memberService.isNicknameDuplicated(checkNicknameRequest.nickname());
 
@@ -70,7 +75,7 @@ public class MemberController {
 
     // accessToekn 갱신
     @PostMapping("/refresh")
-    public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody final RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<RefreshTokenResponse> refreshToken(@AuthenticationPrincipal LoginInfo loginInfo,@RequestBody final RefreshTokenRequest refreshTokenRequest) {
         log.debug("refresh accessToken");
 
         RefreshTokenResponse refreshTokenResponse = memberService.refreshToken(refreshTokenRequest);
@@ -78,4 +83,10 @@ public class MemberController {
         return ResponseEntity.ok().body(refreshTokenResponse);
     }
 
+    @PostMapping("/test")
+    public ResponseEntity<String> test(@AuthenticationPrincipal LoginInfo loginInfo,
+        @RequestPart(value = "profileImg", required = false) MultipartFile profileImg) {
+         String name = amazonS3Service.uploadFile(profileImg);
+        return ResponseEntity.ok().body(name);
+    }
 }

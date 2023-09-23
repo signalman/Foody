@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './RegistTodayMeal.scss';
 import Tabbar from 'components/organism/Tabbar/Tabbar';
-import classNames from 'classnames';
+import { useRecoilState } from 'recoil';
+import tabbarState, { quickTodayMealRegiState } from 'recoil/atoms/tabbarState';
 import CustomBottomSheet from '../CustomBottomSheet/CustomBottomSheet';
 
 function RegistTodayMeal() {
 	// TODOS: 오늘 식단 값 받아와서(없으면 빈 값) 추가할 수 있도록 바텀시트 띄워주기
-	const [open, setOpen] = useState(false);
+	const [quickTodayMealRegiOn, setQuickTodayMealRegiOn] = useRecoilState(quickTodayMealRegiState);
+	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
 
 	return (
 		<>
-			<div className={classNames(open && 'regist-today-meal-tabbar-container')}>
-				<Tabbar setOpen={setOpen} />
-			</div>
+			{tabbarOn && <Tabbar />}
 
 			<CustomBottomSheet
-				open={open}
+				open={quickTodayMealRegiOn}
 				setOpen={() => {
-					setOpen(!open);
+					setQuickTodayMealRegiOn(!quickTodayMealRegiOn);
+					setTabbarOn(!tabbarOn);
 				}}
 			>
 				<div>식단 추가</div>

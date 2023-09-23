@@ -16,8 +16,9 @@ public class WebClientConfig {
 
     @Bean
     public WebClient webClient() {
+
         return WebClient.builder()
-                .baseUrl("https://openapi.naver.com/v1/search/shop.json?query=")
+                .baseUrl("https://openapi.naver.com/v1/search/shop.json?")
                 .defaultHeader("X-Naver-Client-Id", clientId)
                 .defaultHeader("X-Naver-Client-Secret", clientSecret)
                 .build();

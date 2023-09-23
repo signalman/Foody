@@ -2,14 +2,33 @@ import React from 'react';
 import './SubHeader.scss';
 import { BiArrowBack } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
+import useMovePage from 'hooks/useMovePage';
 
-function SubHeader({ isBack = false, title = '' }: { isBack: boolean; title: string }) {
+function SubHeader({
+	isBack = false,
+	title = '',
+	handleMove = null,
+}: {
+	isBack: boolean;
+	title: string;
+	handleMove: null | (() => void);
+}) {
+	const { goBack } = useMovePage();
+
 	const handleBack = () => {
-		console.log('뒤로가기');
+		if (!handleMove) {
+			goBack();
+			return;
+		}
+		handleMove();
 	};
 
 	const handleClose = () => {
-		console.log('닫기');
+		if (!handleMove) {
+			console.log('닫기');
+			return;
+		}
+		handleMove();
 	};
 
 	return (

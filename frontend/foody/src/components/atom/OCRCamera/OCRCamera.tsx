@@ -25,10 +25,7 @@ function OCRCamera() {
 		photo.height = height;
 
 		const ctx = photo?.getContext('2d');
-		ctx?.scale(-1, 1);
-		ctx?.translate(-1 * width, 0);
 		ctx?.drawImage(video, 0, 0, width, height);
-		ctx?.scale(1, 1);
 		setHasPhoto(true);
 	};
 

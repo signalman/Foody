@@ -6,6 +6,7 @@ import useToggle from 'hooks/useToggle';
 import IngredientsCategory from 'components/molecule/IngredientsCategory/IngredientsCategory';
 import IngredientsList from 'components/atom/IngredientsList/IngredientsList';
 import DUMMY_INGREDIENTS_LIST, { DUMMY_INGREDIENTS_LIST2 } from 'constants/dummy';
+import FloatingMenu from 'components/molecule/FloatingMenu/FloatingMenu';
 
 function RefriPage() {
 	const [type, setType] = useToggle(true); // true: 냉장고, false: 서랍
@@ -13,6 +14,12 @@ function RefriPage() {
 	const [selectedCategory, setSelectedCategory] = useState<string>('모든 재료');
 	const [categoryList, setCategoryList] = useState(REFI_CATEGORY_LIST);
 	const [ingredientsList, setIngredientsList] = useState<IngridientItem[] | null>(null);
+	const [menuOpen, setMenuOpen] = useState(false);
+
+	const handleMenuSelect = (menu: string) => {
+		console.log('선택된 메뉴', menu);
+		setMenuOpen(!menuOpen);
+	};
 
 	useEffect(() => {
 		setSelectedCategory('모든 재료');
@@ -46,6 +53,9 @@ function RefriPage() {
 
 			{/* 재료 목록 */}
 			{ingredientsList && <IngredientsList ingredientsList={ingredientsList} type={type} />}
+
+			{/* 카메라/앨범/검색 메뉴 */}
+			<FloatingMenu menuList={['camera', 'album', 'search']} onMenuSelect={handleMenuSelect} />
 		</RefriTemplate>
 	);
 }

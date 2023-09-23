@@ -1,0 +1,9 @@
+.camera {
+	video {
+		width: 100%;
+		height: auto;
+	}
+	.video-flip {
+		transform: scaleX(-1); /* 좌우 반전 */
+	}
+}

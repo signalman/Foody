@@ -11,4 +11,8 @@ import javax.persistence.Entity;
 public class IngredientCategory extends BaseEntity {
     @Column(nullable = false)
     String ingredientCategoryName;
+
+    @Column(nullable = false)
+    CategoryType categoryType;
+
 }

@@ -1,10 +1,10 @@
 package com.foody.refrigerators.controller;
 
-import com.foody.global.entity.UserInfo;
-import com.foody.refrigerators.dto.request.InsertCustomIngredientRequest;
+import com.foody.refrigerators.dto.request.InsertIngredientRequest;
 import com.foody.refrigerators.dto.response.SearchIngredientResponse;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
+import com.foody.security.util.LoginInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,42 +24,40 @@ public class RefrigeratorsController {
     @GetMapping("/ingredient")
     public ResponseEntity<List<SearchIngredientResponse>> searchIngredient(String keyword) {
         log.debug("keyword : " + keyword);
-        List<SearchIngredientResponse> ingredients = refrigeratorsService.searchIngredient(keyword);
+        List<SearchIngredientResponse> ingredients = refrigeratorsService.searchIngredientList(keyword);
         return ResponseEntity.ok().body(ingredients);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<String> registerIngredient(
-            @RequestBody List<Long> ingredients,
-            @AuthenticationPrincipal UserInfo userInfo
+            @RequestBody InsertIngredientRequest insertIngredients,
+            @AuthenticationPrincipal LoginInfo loginInfo
     ) {
-        refrigeratorsService.insertIngredient(userInfo.getEmail(), ingredients);
+        refrigeratorsService.insertIngredient(loginInfo.email(), insertIngredients.ingredients());
+        refrigeratorsService.insertCustomIngredient(loginInfo.email(), insertIngredients.customIngredients());
         return ResponseEntity.ok().build();
     }
-
-    @PostMapping("/ingredient")
-    public ResponseEntity<String> registerCustomIngredient(
-            @RequestBody List<InsertCustomIngredientRequest> ingredients,
-            @AuthenticationPrincipal UserInfo userInfo
-    ) {
-        refrigeratorsService.insertCustomIngredient(userInfo.getEmail(), ingredients);
-        return ResponseEntity.ok().build();
+    @GetMapping
+    public ResponseEntity<List<UserRefrigeratorResponse>> getUserRefrigerator(@AuthenticationPrincipal LoginInfo loginInfo) {
+        return ResponseEntity.ok().body(refrigeratorsService.getUserRefrigerator(loginInfo.email()));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<UserRefrigeratorResponse>> getUserRefrigerator(@AuthenticationPrincipal UserInfo userInfo) {
-        return ResponseEntity.ok().body(refrigeratorsService.getUserRefrigerator(userInfo.getEmail()));
-    }
-
-    @DeleteMapping("/")
-    public ResponseEntity<String> resetRefrigerator(@AuthenticationPrincipal UserInfo userInfo) {
-        refrigeratorsService.resetRefrigerator(userInfo.getEmail());
+    @DeleteMapping
+    public ResponseEntity<String> resetRefrigerator(@AuthenticationPrincipal LoginInfo loginInfo) {
+        refrigeratorsService.resetRefrigerator(loginInfo.email());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{ingredientId}")
-    public ResponseEntity<String> deleteIngredient(@AuthenticationPrincipal UserInfo userInfo, @RequestParam Long ingredientId) {
-        refrigeratorsService.deleteUserIngredient(userInfo.getEmail(), ingredientId);
+    public ResponseEntity<String> deleteIngredient(@AuthenticationPrincipal LoginInfo loginInfo, @PathVariable Long ingredientId) {
+        refrigeratorsService.deleteUserIngredient(loginInfo.email(), ingredientId);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/receipt")
+    public ResponseEntity<List<SearchIngredientResponse>> getReceiptIngredient(@RequestBody List<String> items) {
+        List<SearchIngredientResponse> ingredientResponses = refrigeratorsService.getReceiptIngredient(items);
+        return ResponseEntity.ok().body(ingredientResponses);
+    }
+
 }

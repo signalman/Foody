@@ -1,7 +1,6 @@
 package com.foody.refrigerators.controller;
 
 import com.foody.refrigerators.dto.request.InsertIngredientRequest;
-import com.foody.refrigerators.dto.response.ReceiptIngredientResponse;
 import com.foody.refrigerators.dto.response.SearchIngredientResponse;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
@@ -25,7 +24,7 @@ public class RefrigeratorsController {
     @GetMapping("/ingredient")
     public ResponseEntity<List<SearchIngredientResponse>> searchIngredient(String keyword) {
         log.debug("keyword : " + keyword);
-        List<SearchIngredientResponse> ingredients = refrigeratorsService.searchIngredient(keyword);
+        List<SearchIngredientResponse> ingredients = refrigeratorsService.searchIngredientList(keyword);
         return ResponseEntity.ok().body(ingredients);
     }
 
@@ -56,8 +55,8 @@ public class RefrigeratorsController {
     }
 
     @PostMapping("/receipt")
-    public ResponseEntity<List<ReceiptIngredientResponse>> getReceiptIngredient(@RequestBody List<String> items) {
-        List<ReceiptIngredientResponse> ingredientResponses = refrigeratorsService.getReceiptIngredient(items);
+    public ResponseEntity<List<SearchIngredientResponse>> getReceiptIngredient(@RequestBody List<String> items) {
+        List<SearchIngredientResponse> ingredientResponses = refrigeratorsService.getReceiptIngredient(items);
         return ResponseEntity.ok().body(ingredientResponses);
     }
 

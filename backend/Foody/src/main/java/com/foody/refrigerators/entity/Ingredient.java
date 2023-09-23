@@ -1,7 +1,6 @@
 package com.foody.refrigerators.entity;
 
 import com.foody.global.entity.BaseEntity;
-import com.foody.refrigerators.dto.request.InsertCustomIngredientRequest;
 import lombok.*;
 
 import javax.persistence.*;

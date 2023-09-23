@@ -1,0 +1,11 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.floating-menu-list {
+	// @include f.flex(row, center, center, 10px);
+
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	justify-content: center;
+	align-items: center;
+}

@@ -6,6 +6,30 @@ server:
       enabled: true
       force: true
 
-logging:
-  level:
-    com.foody: DEBUG
+log4jdbc:
+  spylogdelegator:
+    name:
+      net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
+
+  logging:
+    level:
+      com.foody: DEBUG
+
+cloud:
+  aws:
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+    stack:
+      auto: false
+    region:
+      static: ${S3_REGION}
+      auto: false
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

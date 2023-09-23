@@ -28,7 +28,7 @@ function FloatingMenuItem({
 					setTabbarOn(!tabbarOn);
 				}}
 			>
-				{renderIcon(FloatingMenuListIcons[item], 30)}
+				{renderIcon(FloatingMenuListIcons[item], 25)}
 				<div className="menu-title">{FloatingMenuList[item]}</div>
 			</button>
 		</li>

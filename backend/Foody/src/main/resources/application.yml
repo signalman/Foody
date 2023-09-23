@@ -6,14 +6,9 @@ server:
       enabled: true
       force: true
 
-log4jdbc:
-  spylogdelegator:
-    name:
-      net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
-
-  logging:
-    level:
-      com.foody: DEBUG
+logging:
+  level:
+    com.foody: DEBUG
 
 cloud:
   aws:
@@ -29,6 +24,8 @@ cloud:
       secret-key: ${S3_SECRET_KEY}
 
 spring:
+  profiles:
+    active: local
   servlet:
     multipart:
       max-file-size: 10MB

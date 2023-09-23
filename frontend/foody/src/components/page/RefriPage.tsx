@@ -7,6 +7,7 @@ import IngredientsCategory from 'components/molecule/IngredientsCategory/Ingredi
 import IngredientsList from 'components/atom/IngredientsList/IngredientsList';
 import DUMMY_INGREDIENTS_LIST, { DUMMY_INGREDIENTS_LIST2 } from 'constants/dummy';
 import FloatingMenu from 'components/molecule/FloatingMenu/FloatingMenu';
+import IngredientRegistOCR from 'components/organism/IngredientRegistOCR/IngredientRegistOCR';
 
 function RefriPage() {
 	const [type, setType] = useToggle(true); // true: 냉장고, false: 서랍
@@ -42,6 +43,10 @@ function RefriPage() {
 
 		setIngredientsList(DUMMY_INGREDIENTS_LIST);
 	}, [selectedCategory, type]);
+
+	if (menuOpen) {
+		return <IngredientRegistOCR setOpen={setMenuOpen} />;
+	}
 
 	return (
 		<RefriTemplate>

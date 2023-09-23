@@ -1,19 +1,25 @@
 package com.foody.refrigerators.dto.response;
 
 import com.foody.refrigerators.entity.Ingredient;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-public class SearchIngredientResponse {
-    long ingredientId;
-    String ingredientName;
-
+public record SearchIngredientResponse(
+        Long ingredientId,
+        String ingredientName,
+        Long ingredientCategoryId
+) {
     public SearchIngredientResponse(Ingredient ingredient) {
-        this.setIngredientId(ingredient.getId());
-        this.setIngredientName(ingredient.getIngredientName());
+        this(
+                ingredient.getId(),
+                ingredient.getIngredientName(),
+                ingredient.getIngredientCategory().getId()
+        );
+    }
+
+    public SearchIngredientResponse(String itemName) {
+        this(
+                0L,
+                itemName,
+                0L
+        );
     }
 }

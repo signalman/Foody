@@ -4,9 +4,7 @@ import com.foody.global.exception.ErrorCode;
 import com.foody.member.entity.Member;
 import com.foody.member.service.MemberService;
 import com.foody.refrigerators.dto.request.CustomIngredientRequest;
-import com.foody.refrigerators.dto.response.ReceiptIngredientResponse;
-import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
-import com.foody.refrigerators.dto.response.SearchIngredientResponse;
+import com.foody.refrigerators.dto.response.*;
 import com.foody.refrigerators.entity.*;
 import com.foody.refrigerators.exception.IngredientException;
 import com.foody.refrigerators.repository.IngredientCategoryRepository;
@@ -14,7 +12,6 @@ import com.foody.refrigerators.repository.IngredientRepository;
 import com.foody.refrigerators.repository.RefrigeratorIngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -52,6 +49,10 @@ public class RefrigeratorsService {
                         () -> new IngredientException(ErrorCode.USER_INGREDIENT_NOT_FOUND));
     }
 
+    public boolean existsRefrigeratorIngredient(Member member, Ingredient ingredient) {
+        return refrigeratorIngredientRepository.existsByMemberAndIngredient(member, ingredient);
+    }
+
     public Optional<Ingredient> findCustomIngredient(CustomIngredientRequest ingredient) {
         return ingredientRepository.findIngredientByIngredientNameAndIngredientCategory_Id(ingredient.ingredientName(), ingredient.ingredientCategoryId());
     }
@@ -61,17 +62,23 @@ public class RefrigeratorsService {
         return ingredientRepository.save(Ingredient.from(customIngredient.ingredientName(), ingredientCategory));
     }
 
-    public List<SearchIngredientResponse> searchIngredient(String keyword) {
-        List<SearchIngredientResponse> searchResult = ingredientRepository.findIngredientsByIngredientNameContainingAndIngredientType(keyword, IngredientType.INITIAL)
+    public List<SearchIngredientResponse> searchIngredientList(String keyword) {
+        return ingredientRepository.findIngredientsByIngredientNameContainingAndIngredientType(keyword, IngredientType.INITIAL)
                 .stream().map(SearchIngredientResponse::new).toList();
+    }
 
-//        log.debug("first ingredient name : " + searchResult.get(0).getIngredientName());
-        return searchResult;
+    public Ingredient searchIngredient(String keyword) {
+        return ingredientRepository.findIngredientByIngredientNameAndIngredientType(keyword, IngredientType.INITIAL)
+                .orElseThrow(
+                        () -> new IngredientException(ErrorCode.INGREDIENT_NOT_FOUND)
+                );
+    }
+
+    public boolean existsIngredient(String keyword) {
+        return ingredientRepository.existsByIngredientName(keyword);
     }
 
     public void insertIngredient(String email,List<Long> ingredients) {
-
-        // TODO : 사용자의 냉장고에 이미 재료가 존재하면 다시 저장하지 않음
 
         List<RefrigeratorIngredient> insertIngredients = new ArrayList<>();
 
@@ -81,7 +88,10 @@ public class RefrigeratorsService {
 
             RefrigeratorIngredient refrigeratorIngredient =
                     RefrigeratorIngredient.from(member, ingredient);
-            insertIngredients.add(refrigeratorIngredient);
+
+            if(existsRefrigeratorIngredient(member, ingredient)) {
+                insertIngredients.add(refrigeratorIngredient);
+            }
         }
 
         refrigeratorIngredientRepository.saveAll(insertIngredients);
@@ -99,7 +109,10 @@ public class RefrigeratorsService {
 
             RefrigeratorIngredient refrigeratorIngredient =
                     RefrigeratorIngredient.from(member, ingredient);
-            insertIngredients.add(refrigeratorIngredient);
+
+            if(existsRefrigeratorIngredient(member, ingredient)) {
+                insertIngredients.add(refrigeratorIngredient);
+            }
         }
 
         refrigeratorIngredientRepository.saveAll(insertIngredients);
@@ -129,21 +142,31 @@ public class RefrigeratorsService {
         refrigeratorIngredientRepository.delete(refrigeratorIngredient);
     }
 
-    public List<ReceiptIngredientResponse> getReceiptIngredient(List<String> items) {
+    public List<SearchIngredientResponse> getReceiptIngredient(List<String> itemNames) {
 
-        for(String item : items) {
-            ResponseEntity<String> test = webClient.get()
+        List<SearchIngredientResponse> list = new ArrayList<>();
+
+        for(String itemName : itemNames) {
+            Items items = webClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .queryParam("query", item)
+                            .queryParam("query", itemName)
                             .queryParam("display","1")
                             .build())
                     .retrieve()
-                    .toEntity(String.class)
+                    .bodyToMono(Items.class)
                     .block();
 
-            log.debug(test.toString());
+            log.debug(items.items().toString());
+
+            String itemCategory = items.items().get(0).category4();
+            if(existsIngredient(itemCategory)) {
+                list.add(new SearchIngredientResponse(searchIngredient(itemCategory)));
+            } else {
+                list.add(new SearchIngredientResponse(itemName));
+            }
+
         }
-        return null;
+        return list;
 
     }
 

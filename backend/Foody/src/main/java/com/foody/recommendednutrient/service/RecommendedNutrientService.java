@@ -240,7 +240,7 @@ public class RecommendedNutrientService {
     public RecommendedNutrientResponse getRecommendedNutrient(String email) {
         Member member =memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
 
-        Long id = member.getRecommendedNutrient().getId();
+        Long id = member.getId();
         RecommendedNutrient recommendedNutrient = recommendedNutrientRepository.findById(id).orElseThrow(() -> new RecommendedNutrientException(ErrorCode.RECOMMENED_NOT_FOUND));
 
         return new RecommendedNutrientResponse(recommendedNutrient);

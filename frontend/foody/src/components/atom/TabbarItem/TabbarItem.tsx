@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './TabbarItem.scss';
-import { ITabbarItem } from 'constants/Tabbar';
+import { ITabbarItem } from 'constants/TabbarList';
 import { Link, useLocation } from 'react-router-dom';
 
 function TabbarItem({ menu }: { menu: ITabbarItem }) {

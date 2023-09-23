@@ -143,3 +143,7 @@ h4 {
 		display: none; /* Chrome, Safari, Opera*/
 	}
 }
+
+[data-rsbs-backdrop] {
+	cursor: default !important;
+}

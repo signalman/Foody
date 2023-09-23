@@ -1,0 +1,24 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.ingredients-list-item-info-conatiner {
+	.info-list {
+		@include f.flex(column, start, start, 10px);
+
+		.info-list-item {
+			font-size: var.$p1;
+			font-weight: var.$fw-400;
+
+			.title {
+				font-size: var.$p1;
+				color: var.$black-400;
+				min-width: 80px;
+				display: inline-block;
+			}
+
+			.value {
+				color: var.$black-300;
+			}
+		}
+	}
+}

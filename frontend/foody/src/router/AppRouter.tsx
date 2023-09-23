@@ -10,6 +10,7 @@ import LoginPage from 'components/page/LoginPage';
 import NotFoundPage from 'components/page/NotFoundPage';
 import SignupPage from 'components/page/SignupPage';
 import RegistTodayMeal from 'components/molecule/RegistTodayMeal/RegistTodayMeal';
+import { Toaster } from 'react-hot-toast';
 
 function AppRouter() {
 	return (
@@ -30,6 +31,15 @@ function AppRouter() {
 			</Routes>
 
 			<RegistTodayMeal />
+			<Toaster
+				containerStyle={{
+					top: 10,
+					fontSize: 14,
+				}}
+				toastOptions={{
+					duration: 1500,
+				}}
+			/>
 		</BrowserRouter>
 	);
 }

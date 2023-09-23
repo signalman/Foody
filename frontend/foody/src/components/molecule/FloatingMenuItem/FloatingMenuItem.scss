@@ -1,0 +1,32 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.floating-menu-item-container {
+	@include f.flex(column);
+
+	&:first-child {
+		button {
+			padding-left: 20px;
+		}
+	}
+	&:last-child {
+		button {
+			padding-right: 20px;
+		}
+	}
+
+	button {
+		width: 100%;
+		height: 100%;
+		padding: 10px;
+	}
+
+	svg {
+		color: var.$black-400;
+		margin-bottom: 4px;
+	}
+
+	.menu-title {
+		font-size: var.$p2;
+	}
+}

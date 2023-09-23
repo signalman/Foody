@@ -11,7 +11,7 @@ function HomeTemplate({ children }: { children: ReactNode[] }) {
 			<Header />
 			<Layout marginTop={LayoutTopMargin.mt10} marginBottom={LayoutBottomMargin.mbTabbar} padding={LayoutPadding.p20}>
 				{/* 인사말 */}
-				<ContentsLayout>{children[0]}</ContentsLayout>
+				<ContentsLayout marginBottom={LayoutBottomMargin.mb20}>{children[0]}</ContentsLayout>
 
 				{/* 배너 */}
 				<ContentsLayout>{children[1]}</ContentsLayout>

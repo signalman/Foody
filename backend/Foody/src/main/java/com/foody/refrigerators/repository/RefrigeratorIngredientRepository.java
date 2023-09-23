@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface RefrigeratorIngredientRepository extends JpaRepository<RefrigeratorIngredient, Long> {
     List<RefrigeratorIngredient> findAllByMember(Member member);
     Optional<RefrigeratorIngredient> findByMemberAndIngredient(Member member, Ingredient ingredient);
+    boolean existsByMemberAndIngredient(Member member, Ingredient ingredient);
 }

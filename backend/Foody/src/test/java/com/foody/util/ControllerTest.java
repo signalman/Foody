@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foody.member.controller.MemberController;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
+import com.foody.refrigerator.controller.RefrigeratorControllerTest;
 import com.foody.security.util.JwtProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,7 +28,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest({
-    MemberController.class
+    MemberController.class,
+    RefrigeratorControllerTest.class
 })
 public class ControllerTest {
     // Util

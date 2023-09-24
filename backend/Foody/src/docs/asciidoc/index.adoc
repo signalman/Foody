@@ -12,3 +12,5 @@ endif::[]
 [[MEMBER-API]]
 == Member API
 
+include::controller/member/member.adoc[]
+

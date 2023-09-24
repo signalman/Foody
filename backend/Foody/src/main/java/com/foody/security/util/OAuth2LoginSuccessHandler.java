@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private String redirectUrl = "http://localhost:3000";
+    private String redirectUrl = "https://j9c106.p.ssafy.io";
 
     private final MemberRepository memberRepository;
     private final MemberService memberService;

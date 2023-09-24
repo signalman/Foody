@@ -1,5 +1,5 @@
 const login = () => {
-	const redirectUrl = 'http://localhost/oauth2/authorization/google';
+	const redirectUrl = 'https://j9c106.p.ssafy.io:8082/oauth2/authorization/google';
 	window.location.href = redirectUrl;
 };
 

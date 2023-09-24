@@ -89,4 +89,12 @@ $danger-alpa-60: rgba(255, 79, 79, 0.6);
 // padding
 
 // 레벨
+$has-photo-z-index: 1;
 $tabbar-z-index: 1000;
+$camera-btn-container-z-index: 1000;
+$custom-bottom-sheet-container-z-index: 1100;
+
+$loading-spinner-container-z-index: 2000;
+$receipt-list-conatiner-z-index: 2001;
+
+$react-confirm-alert-overlay-z-index: 9999;

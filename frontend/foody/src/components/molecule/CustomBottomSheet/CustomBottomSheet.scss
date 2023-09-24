@@ -2,7 +2,7 @@
 
 .custom-bottom-sheet-container {
 	position: relative;
-	z-index: 1100;
+	z-index: var.$custom-bottom-sheet-container-z-index;
 }
 
 .sheetcontent-container {

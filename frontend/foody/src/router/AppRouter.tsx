@@ -26,7 +26,7 @@ function AppRouter() {
 
 				<Route path="/dev" element={<DevPage />} />
 
-				<Route path="/*" element={<Navigate replace to="/notfound" />} />
+				{/* <Route path="/*" element={<Navigate replace to="/notfound" />} /> */}
 				<Route path="/notfound" element={<NotFoundPage />} />
 			</Routes>
 

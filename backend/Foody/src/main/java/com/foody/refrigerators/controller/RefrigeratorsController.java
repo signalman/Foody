@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -55,8 +56,8 @@ public class RefrigeratorsController {
     }
 
     @PostMapping("/receipt")
-    public ResponseEntity<List<SearchIngredientResponse>> getReceiptIngredient(@RequestBody List<String> items) {
-        List<SearchIngredientResponse> ingredientResponses = refrigeratorsService.getReceiptIngredient(items);
+    public ResponseEntity<List<SearchIngredientResponse>> getReceiptIngredient(@RequestBody String imgData) {
+        List<SearchIngredientResponse> ingredientResponses = refrigeratorsService.getReceiptIngredient(imgData);
         return ResponseEntity.ok().body(ingredientResponses);
     }
 

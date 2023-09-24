@@ -48,7 +48,7 @@ public class MemberController {
     public ResponseEntity<Void> joinMember(@AuthenticationPrincipal LoginInfo loginInfo, @RequestBody MemberJoinRequest memberJoinRequest) {
         log.debug("{} member request join", memberJoinRequest.email());
 
-        memberService.joinMember(memberJoinRequest);
+        memberService.joinMember(loginInfo.email(), memberJoinRequest);
 
         return ResponseEntity.noContent().build();
     }

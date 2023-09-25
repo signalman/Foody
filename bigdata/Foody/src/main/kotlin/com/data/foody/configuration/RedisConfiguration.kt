@@ -1,5 +1,6 @@
 package com.data.foody.configuration
 
+import com.data.foody.domain.Recipe
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -8,6 +9,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
 
@@ -32,11 +34,11 @@ class RedisConfiguration {
     }
 
     @Bean
-    fun redisTemplate(): RedisTemplate<String, String> {
-        val redisTemplate = RedisTemplate<String, String>()
+    fun redisTemplate(): RedisTemplate<String, Recipe> {
+        val redisTemplate = RedisTemplate<String, Recipe>()
         redisTemplate.setConnectionFactory(redisConnectionFactory())
         redisTemplate.keySerializer = StringRedisSerializer()
-        redisTemplate.valueSerializer = StringRedisSerializer()
+        redisTemplate.valueSerializer = GenericJackson2JsonRedisSerializer() // JSON 직렬화/역직렬화를 위한 Serializer
         return redisTemplate
     }
 

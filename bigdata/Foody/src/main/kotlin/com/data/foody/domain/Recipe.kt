@@ -1,5 +1,8 @@
 package com.data.foody.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true) //  JSON 직렬화/역직렬화 중에 알려지지 않은 속성이 있을 경우 무시
 data class Recipe(
         val recipe_id: Long,
         val ingredients: String,

@@ -55,10 +55,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             String user;
 
             if(memberRepository.checkInfoIsNUll(email) == null){
-                user = "0";
+                user = "1";
             }
             else {
-                user = "1";
+                user = "0";
             }
 
             String formattedRedirectUrl = String.format("%s?accessToken=%s&refreshToken=%s&user=%s",
@@ -69,6 +69,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
 //            response.sendRedirect(redirectUrl);
+            log.info("{} redirectUrl",formattedRedirectUrl);
             response.sendRedirect(formattedRedirectUrl);
 
         } else {
@@ -89,6 +90,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 URLEncoder.encode(user, "UTF-8"));
 
 //            response.sendRedirect(redirectUrl);
+            log.info("{} redirectUrl",formattedRedirectUrl);
             response.sendRedirect(formattedRedirectUrl);
         }
 

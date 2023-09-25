@@ -71,7 +71,7 @@ public class MemberControllerTest extends ControllerTest {
                     fieldWithPath("nickname").description("닉네임"),
                     fieldWithPath("height").description("키"),
                     fieldWithPath("weight").description("몸무게"),
-                    fieldWithPath("gender").description("성별(남자-0, 여자-1)"),
+                    fieldWithPath("gender").description("성별(남자-1, 여자-2)"),
                     fieldWithPath("age").description("나이"),
                     fieldWithPath("activityLevel").description("활동량(1(적다),2(보통),3(많다))")
                 )

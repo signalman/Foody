@@ -14,7 +14,7 @@ class Similarity {
         return cosineSimilarity(vector1, vector2)
     }
 
-    fun TfIdfSimilarity(refrigerator: String, ingredients: String): Double {
+    fun tfidfSimilarity(refrigerator: String, ingredients: String): Double {
         val (bag1, bag2) = prepareBags(refrigerator, ingredients)
         val (vector1, vector2) = vectorizeBags(bag1, bag2)
 

@@ -1,5 +1,12 @@
 @use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
 
 .meal-table {
 	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	.meal-data {
+		@include f.flex(row, around, center);
+	}
 }

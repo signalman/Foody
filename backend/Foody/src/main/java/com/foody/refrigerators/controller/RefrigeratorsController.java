@@ -36,7 +36,7 @@ public class RefrigeratorsController {
     ) {
         refrigeratorsService.insertIngredient(loginInfo.email(), insertIngredients.ingredients());
         refrigeratorsService.insertCustomIngredient(loginInfo.email(), insertIngredients.customIngredients());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
     @GetMapping
     public ResponseEntity<List<UserRefrigeratorResponse>> getUserRefrigerator(@AuthenticationPrincipal LoginInfo loginInfo) {

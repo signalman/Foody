@@ -1,5 +1,6 @@
 package com.data.foody.preprocessing
 
+import org.springframework.core.io.ClassPathResource
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.FileInputStream
@@ -12,13 +13,11 @@ lateinit var map:HashMap<String, Int>
 
 fun main(args: Array<String>) {
 
-//    val elapsedTime = measureTimeMillis {
-//        readCSV()
-//    }
-//    println("Elapsed time: $elapsedTime ms")
+    val elapsedTime = measureTimeMillis {
+        readCSV()
+    }
+    println("Elapsed time: $elapsedTime ms")
     //   test()
-
-    print("적?韜?")
 }
 
 fun test() {
@@ -34,8 +33,9 @@ fun test() {
 
 fun readCSV() {
 
-    val fileName = "filtered_final.csv"
-    val reader = BufferedReader(InputStreamReader(FileInputStream(fileName), "EUC-KR"))
+    val resource = ClassPathResource("data/preprocessing/filtered_final1_modified_replace.csv")
+    val inputStream = resource.inputStream
+    val reader = BufferedReader(InputStreamReader(inputStream, "EUC-KR"))
     val set:HashSet<String> = HashSet()
     map = HashMap()
 //    print(reader.readLine().split(",")[14])
@@ -70,7 +70,7 @@ fun readCSV() {
     }
 
     println("result : Sorted Map convert to txt names - $outputFileNameUTF8Asc, $outputFileNameUTF8Desc")
-
+    println("########## ingredient size : ${map.size}")
 //    preprocessing()
 }
 

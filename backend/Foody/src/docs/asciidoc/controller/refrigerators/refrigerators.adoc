@@ -1,0 +1,9 @@
+=== 재료 검색
+
+==== HTTP Request
+include::{snippets}/refrigerator/searchIngredient/http-request.adoc[]
+include::{snippets}/refrigerator/searchIngredient/request-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerator/searchIngredient/http-response.adoc[]
+include::{snippets}/refrigerator/searchIngredient/response-body.adoc[]

@@ -2,7 +2,6 @@ package com.data.foody.domain
 
 data class Recipe(
         val recipe_id: Long,
-        val name: String,
         val ingredients: String,
         val ingredients_concat: String,
         val ingredient_count: Int,

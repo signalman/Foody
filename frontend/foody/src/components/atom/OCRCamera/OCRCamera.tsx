@@ -1,93 +1,77 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useEffect, useRef, useState } from 'react';
 import './OCRCamera.scss';
-import { BiCamera } from 'react-icons/bi';
+import { BiCamera, BiCheck } from 'react-icons/bi';
+import decodingImage from 'utils/common/base64Decoding';
+import { DUMMY_RECEIPT_LIST } from 'constants/dummy';
+import classNames from 'classnames';
+import ReceiptListType from 'types/receipt';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 function OCRCamera() {
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const photoRef = useRef<HTMLCanvasElement | null>(null);
-	const [hasPhoto, setHasPhoto] = useState(false);
 	const [stream, setStream] = useState<MediaStream | null>(null);
 	const [base64Image, setBase64Image] = useState('');
+	const [hasPhoto, setHasPhoto] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+	const [receptList, setReceptList] = useState<ReceiptListType | null>(null);
+	// const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
 	const takePhoto = () => {
-		const width = 414;
-		const height = width / (16 / 9);
-
 		const video = videoRef.current;
 		const photo = photoRef.current;
 
-		if (!video || !photo) {
-			return;
-		}
-
+		if (!video || !photo) return;
+		const width = video.videoWidth;
+		const height = video.videoHeight;
 		photo.width = width;
 		photo.height = height;
+		console.log(width, height);
 
-		const ctx = photo?.getContext('2d');
-		ctx?.drawImage(video, 0, 0, width, height);
-		setHasPhoto(true);
-	};
-
-	const savePhoto = () => {
-		takePhoto();
-
-		const photo = photoRef.current;
-		if (!photo) {
-			return;
-		}
+		const ctx = photo.getContext('2d');
+		if (!ctx) return;
+		ctx.drawImage(video, 0, 0, width, height);
 
 		const imageDataUrl = photo.toDataURL('image/jpeg');
 		setBase64Image(imageDataUrl);
-		console.log('imageDataUrl', imageDataUrl);
-		console.log('imageDataUrl split', imageDataUrl.split(',')[1]);
+		setHasPhoto(true);
+		// setContainerSize({ width, height });
+		console.log(receptList);
+		setReceptList(DUMMY_RECEIPT_LIST);
+	};
 
-		const downloadLink = document.createElement('a');
-		downloadLink.href = imageDataUrl;
-		downloadLink.download = 'photo.jpg';
-		downloadLink.click();
+	const confirmPhoto = () => {
+		console.log('confirmPhoto');
+		// TODOS : 값을 가지고 검색 menu로 넘어가기
 	};
 
 	const closePhoto = () => {
-		console.log(videoRef);
-		console.log(photoRef);
 		const photo = photoRef.current;
 		if (!photo) {
 			return;
 		}
-
 		const ctx = photo.getContext('2d');
 		if (!ctx) {
 			return;
 		}
-
 		ctx.clearRect(0, 0, photo.width, photo.height);
-		setHasPhoto(false);
 	};
 
 	useEffect(() => {
-		console.log('stream', stream);
-
 		const getVideo = async () => {
-			const constraints = {
-				video: {
-					width: 1920,
-					height: 1280,
-					facingMode: 'environment',
-				},
-			};
-
 			try {
-				await navigator.mediaDevices.getUserMedia(constraints).then((newStream) => {
-					console.log('newStream', newStream);
-					setStream(newStream);
-					const video = videoRef.current;
-					if (!video) {
-						return;
-					}
-					video.srcObject = newStream;
+				const newStream = await navigator.mediaDevices.getUserMedia({ video: true });
+				setStream(newStream);
+				const video = videoRef.current;
+				if (!video) {
+					return;
+				}
+				video.srcObject = newStream;
+
+				video.onloadedmetadata = () => {
 					video.play();
-				});
+				};
 			} catch (err) {
 				console.error(err);
 			}
@@ -107,40 +91,41 @@ function OCRCamera() {
 		};
 	}, [stream, videoRef]);
 
+	useEffect(() => {
+		setIsLoading(true);
+		console.log(decodingImage(base64Image));
+		// TODOS: API 요청해서 값 가져오기
+		// getOCRReceiptIndegredients(uuid(), decodingImage(base64Image)).then((res) => {
+		// 	console.log(res);
+		setIsLoading(false);
+		console.log(DUMMY_RECEIPT_LIST);
+		// setReceptList(DUMMY_RECEIPT_LIST);
+		// });
+	}, [base64Image, hasPhoto]);
+
 	return (
 		<>
-			<div className="camera">
-				<video ref={videoRef} className="video-flip" />
-				{/* <video ref={videoRef} /> */}
-				<button
-					type="button"
-					onClick={savePhoto}
-					style={{
-						fontSize: '1.5rem',
-					}}
-				>
-					저장
-				</button>
-				<br />
-				<button
-					type="button"
-					onClick={closePhoto}
-					style={{
-						fontSize: '1.5rem',
-					}}
-				>
-					다시찍기
-				</button>
+			{isLoading && <LoadingSpinner />}
+
+			<div className="video-container">
+				<video ref={videoRef} className="video" />
 			</div>
-			<div className={`result${hasPhoto ? 'hasPhoto' : ''}`}>
-				<canvas ref={photoRef} />
+			<div className={classNames('canvas-container', hasPhoto && 'has-photo')}>
+				{/* {receptList && <ReceiptList containerSize={containerSize} receiptList={DUMMY_RECEIPT_LIST} />} */}
+				<canvas ref={photoRef} className="canvas" />
 			</div>
+
 			<div className="btn-container">
-				<button type="button" onClick={takePhoto}>
-					<BiCamera size={25} />
-				</button>
+				{hasPhoto ? (
+					<button className="btn-check" type="button" onClick={confirmPhoto}>
+						<BiCheck size={25} />
+					</button>
+				) : (
+					<button type="button" onClick={takePhoto}>
+						<BiCamera size={25} />
+					</button>
+				)}
 			</div>
-			{base64Image}
 		</>
 	);
 }

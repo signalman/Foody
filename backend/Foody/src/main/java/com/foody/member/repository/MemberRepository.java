@@ -15,6 +15,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
 
-    @Query("SELECT m FROM Member m WHERE m.email= :email AND (m.height IS NULL OR m.weight IS NULL OR m.nickname IS NULL)")
+    @Query("SELECT m FROM Member m WHERE m.email= :email AND m.nickname IS NULL")
     Member checkInfoIsNUll(@Param("email") String email);
 }

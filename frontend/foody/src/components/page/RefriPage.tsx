@@ -8,18 +8,21 @@ import IngredientsList from 'components/atom/IngredientsList/IngredientsList';
 import DUMMY_INGREDIENTS_LIST, { DUMMY_INGREDIENTS_LIST2 } from 'constants/dummy';
 import FloatingMenu from 'components/molecule/FloatingMenu/FloatingMenu';
 import IngredientRegistOCR from 'components/organism/IngredientRegistOCR/IngredientRegistOCR';
+import IngredientRegistAlbum from 'components/organism/IngredientRegistAlbum/IngredientRegistAlbum';
+import IngredientSearch from 'components/organism/IngredientSearch/IngredientSearch';
 
 function RefriPage() {
 	const [type, setType] = useToggle(true); // true: 냉장고, false: 서랍
 	const [title, setTitle] = useState<string>('나의 냉장고');
 	const [selectedCategory, setSelectedCategory] = useState<string>('모든 재료');
+	const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
 	const [categoryList, setCategoryList] = useState(REFI_CATEGORY_LIST);
 	const [ingredientsList, setIngredientsList] = useState<IngridientItem[] | null>(null);
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const handleMenuSelect = (menu: string) => {
-		console.log('선택된 메뉴', menu);
 		setMenuOpen(!menuOpen);
+		setSelectedMenu(menu);
 	};
 
 	useEffect(() => {
@@ -45,7 +48,9 @@ function RefriPage() {
 	}, [selectedCategory, type]);
 
 	if (menuOpen) {
-		return <IngredientRegistOCR setOpen={setMenuOpen} />;
+		if (selectedMenu === 'camera') return <IngredientRegistOCR setOpen={setMenuOpen} />;
+		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;
+		return <IngredientSearch setOpen={setMenuOpen} />;
 	}
 
 	return (

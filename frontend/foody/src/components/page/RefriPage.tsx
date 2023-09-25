@@ -8,6 +8,8 @@ import IngredientsList from 'components/atom/IngredientsList/IngredientsList';
 import DUMMY_INGREDIENTS_LIST, { DUMMY_INGREDIENTS_LIST2 } from 'constants/dummy';
 import FloatingMenu from 'components/molecule/FloatingMenu/FloatingMenu';
 import IngredientRegistOCR from 'components/organism/IngredientRegistOCR/IngredientRegistOCR';
+import IngredientRegistAlbum from 'components/organism/IngredientRegistAlbum/IngredientRegistAlbum';
+import IngredientSearch from 'components/organism/IngredientSearch/IngredientSearch';
 
 function RefriPage() {
 	const [type, setType] = useToggle(true); // true: 냉장고, false: 서랍
@@ -47,8 +49,8 @@ function RefriPage() {
 
 	if (menuOpen) {
 		if (selectedMenu === 'camera') return <IngredientRegistOCR setOpen={setMenuOpen} />;
-		if (selectedMenu === 'album') return <div>앨범</div>;
-		return <div>검색</div>;
+		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;
+		return <IngredientSearch setOpen={setMenuOpen} />;
 	}
 
 	return (

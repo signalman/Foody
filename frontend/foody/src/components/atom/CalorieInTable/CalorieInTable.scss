@@ -1,0 +1,55 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.meal-box {
+	@include f.flex(row, between, center);
+	width: 100px;
+	font-size: var.$p4;
+	font-weight: var.$fw-200;
+
+	.meal-check {
+		width: 30px;
+		@include f.flex(row, between, center);
+
+		.meal-color {
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+		}
+
+		.meal-title {
+			color: var.$black-500;
+		}
+	}
+
+	.meal-info {
+		@include f.flex(row, between, center);
+		width: 55px;
+
+		.meal-value {
+			font-size: var.$p2;
+			font-weight: var.$fw-500;
+			color: var.$black-400;
+		}
+
+		.meal-total {
+			color: var.$black-300;
+		}
+	}
+}
+
+.green {
+	background-color: var.$primary-green-500;
+}
+
+.yellow {
+	background-color: var.$primary-yellow-500;
+}
+
+.orange {
+	background-color: var.$primary-orange-500;
+}
+
+.blue {
+	background-color: var.$primary-blue;
+}

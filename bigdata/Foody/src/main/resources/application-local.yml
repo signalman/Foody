@@ -1,14 +1,6 @@
 spring:
-  main.allow-bean-definition-overriding: true
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/foody?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: root123
+  redis:
+    host: localhost
+    port: 6379
+    password: ${REDIS_PASSWORD}
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true

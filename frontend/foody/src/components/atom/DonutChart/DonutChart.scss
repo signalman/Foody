@@ -1,0 +1,35 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.chart-box {
+	width: 180px;
+	height: 180px;
+	position: relative;
+}
+
+.text-box {
+	@include f.flex(column, center, center, 8px);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+
+	p {
+		font-size: var.$p3;
+	}
+
+	h3 {
+		font-size: var.$h3;
+	}
+
+	h1 {
+		color: var.$primary-orange-500;
+		font-size: var.$h1;
+	}
+}
+
+.calorie-text {
+	color: var.$black-400;
+	font-weight: var.$fw-500;
+}

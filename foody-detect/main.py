@@ -1,36 +1,40 @@
 from flask import Flask, request, jsonify
 import torch
-from pathlib import Path
-import subprocess
+import os
+from PIL import Image
 import sys
-sys.path.append('./yolov5')
+import uuid
 
+sys.path.append('./yolov5')
 from detect import run
 
 # YOLOv5 모델 로드 (여기서는 yolov5s 모델을 사용한다고 가정)
 model_path = './models/best.pt'  # 모델 파일의 경로 (적절하게 수정)
 model = torch.load(model_path, map_location=torch.device('cpu'))
-# model.eval()  # 평가 모드로 설정
 app = Flask(__name__)
 
 @app.route('/detect', methods=['POST'])
 def detect():
+    if not os.path.exists('tmp'):
+        os.makedirs('tmp')
     image = request.files.get('image')
     if not image:
-        return jsonify({'error': 'No image provided'}), 400
-    # 이미지 저장 (임시)
-    # image_path = Path('./tmp/tmp.png')
-    # image.save(image_path)
+        return jsonify({'error': '파일이 없습니다.'}), 400
 
-    image_extension = Path(image.filename).suffix
+    # UUID를 사용하여 고유한 파일 이름 생성
+    file_name = f"{uuid.uuid4()}.jpg"
+    filePath = os.path.join("tmp", file_name)
+    image.save(filePath)
 
-    # 이미지 저장 (임시)
-    image_path = Path(f'./tmp/tmp{image_extension}')
-    print(image_path)
-    image.save(image_path)
+    # 이미지 파일인지 확인
+    try:
+        Image.open(filePath)
+    except IOError:
+        os.remove(filePath)
+        return jsonify({'error': '이미지 파일이 아닙니다.'}), 400
 
     foody_detect = run('./models/best.pt',
-        image_path,
+        filePath,
         'data/coco128.yaml', # dataset.yaml path
         (640, 640),  # inference size (height, width)
         0.25,  # confidence threshold
@@ -58,7 +62,7 @@ def detect():
         False,  # use OpenCV DNN for ONNX inference
         1 # video frame-rate stride)
     )
-    image_path.unlink()
+    os.remove(filePath)
     return foody_detect
 
 if __name__ == '__main__':

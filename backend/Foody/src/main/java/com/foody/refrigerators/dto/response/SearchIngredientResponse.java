@@ -14,12 +14,4 @@ public record SearchIngredientResponse(
                 ingredient.getIngredientCategory().getId()
         );
     }
-
-    public SearchIngredientResponse(String itemName) {
-        this(
-                0L,
-                itemName,
-                0L
-        );
-    }
 }

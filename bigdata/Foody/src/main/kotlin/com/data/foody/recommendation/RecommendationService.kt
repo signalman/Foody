@@ -11,4 +11,17 @@ class RecommendationService (private val redisTemplate: RedisTemplate<String, Re
         return redisTemplate.keys("*")
     }
 
+    fun findAllValues() : List<Recipe>? {
+        val keys = findAllKeys()
+        val recipes: MutableList<Recipe> = mutableListOf()
+
+        recipes.forEach { x ->
+            redisTemplate.opsForValue().get(x)?.let {
+                recipes.add(it)
+            }
+        }
+
+        return recipes
+    }
+
 }

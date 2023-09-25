@@ -1,10 +1,14 @@
 package com.foody.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foody.global.service.AmazonS3Service;
 import com.foody.member.controller.MemberController;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
-import com.foody.refrigerator.controller.RefrigeratorControllerTest;
+import com.foody.refrigerators.controller.RefrigeratorsController;
+import com.foody.refrigerators.repository.IngredientRepository;
+import com.foody.refrigerators.service.RefrigeratorsService;
+import com.foody.security.service.CustomUserDetailService;
 import com.foody.security.util.JwtProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -29,7 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest({
     MemberController.class,
-    RefrigeratorControllerTest.class
+    RefrigeratorsController.class
 })
 public class ControllerTest {
     // Util
@@ -38,15 +42,19 @@ public class ControllerTest {
     @Autowired protected ObjectMapper objectMapper;
 
     @MockBean protected JwtProvider jwtProvider;
+    @MockBean protected AmazonS3Service amazonS3Service;
+    @MockBean protected CustomUserDetailService customUserDetailService;
 
     @Value("${jwt.token.secret}")
     protected String secretKey;
 
     // Service
     @MockBean protected MemberService memberService;
+    @MockBean protected RefrigeratorsService refrigeratorsService;
 
     // Repository
     @MockBean protected MemberRepository memberRepository;
+    @MockBean protected IngredientRepository ingredientRepository;
 
     protected String createToken(String email, String secretKey) {
 

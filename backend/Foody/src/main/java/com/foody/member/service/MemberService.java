@@ -111,8 +111,8 @@ public class MemberService {
     public void joinMember(String email, MemberJoinRequest memberJoinRequest) {
         // 나머지 정보 저장
         Member member = findByEmail(email);
-        recommendedNutrientService.createRecommendedNutrient(memberJoinRequest.email());
         member.joinMember(memberJoinRequest);
+        recommendedNutrientService.createRecommendedNutrient(memberJoinRequest.email());
     }
 
     public void logout(LoginInfo loginInfo) {

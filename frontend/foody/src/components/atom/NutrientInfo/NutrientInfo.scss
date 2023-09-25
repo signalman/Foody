@@ -1,0 +1,17 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.small-box {
+	@include f.flex(row, around, center, 0px);
+	.nutrient-value {
+		font-weight: var.$fw-500;
+		font-size: var.$p2;
+		color: var.$black-400;
+	}
+
+	.nutrient-total {
+		font-weight: var.$fw-500;
+		font-size: var.$p4;
+		color: var.$black-200;
+	}
+}

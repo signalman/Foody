@@ -1,6 +1,7 @@
 import testImg1 from 'assets/icons/Apple.svg';
 import formatDate from 'utils/common/formatDate';
 import ReceiptListType from 'types/receipt';
+import { CustomIngredientItemType } from 'types/refrigerator';
 import { IngridientItem } from './category';
 
 const DUMMY_INGREDIENTS_LIST: IngridientItem[] = [
@@ -211,5 +212,16 @@ export const DUMMY_RECEIPT_LIST: ReceiptListType = {
 		},
 	],
 };
+
+export const DUMMY_CUSTOM_INGREDIENT_LIST: CustomIngredientItemType[] = [
+	{
+		ingredientCategoryId: 1,
+		ingredientName: '수박',
+	},
+	{
+		ingredientCategoryId: 2,
+		ingredientName: '사과',
+	},
+];
 
 export default DUMMY_INGREDIENTS_LIST;

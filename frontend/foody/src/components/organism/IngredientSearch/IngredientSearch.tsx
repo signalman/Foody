@@ -9,7 +9,9 @@ import LargeButton from 'components/atom/LargeButton/LargeButton';
 import LargeButtonColor from 'constants/color';
 import getSearchIndegredients from 'utils/api/ingredient';
 import formatSearchResultList from 'utils/common/ingredient';
-import { IngridientSearchItem } from 'types/refrigerator';
+import { CustomIngredientItemType, IngridientSearchItem } from 'types/refrigerator';
+import { DUMMY_CUSTOM_INGREDIENT_LIST } from 'constants/dummy';
+import toast from 'react-hot-toast';
 import SubHeader from '../SubHeader/SubHeader';
 import SelectIngredientList from '../../molecule/SelectIngredientList/SelectIngredientList';
 import IngredientSearchResultList from '../../molecule/IngredientSearchResultList/IngredientSearchResultList';
@@ -19,6 +21,7 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [searchResultList, setSearchResultList] = useState<IngridientSearchItem[] | null>(null);
 	const [selectedIngredientList, setSelectedIngredientList] = useState<IngridientSearchItem[] | null>(null);
+	const [customIngredientList] = useState<CustomIngredientItemType[]>(DUMMY_CUSTOM_INGREDIENT_LIST);
 
 	const handleMove = () => {
 		setOpen((prev) => !prev);
@@ -27,6 +30,7 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 
 	const handleWrite = () => {
 		console.log('handleWrite');
+		toast.success('재료 직접 등록');
 	};
 
 	const handleIngredientSelect = (idx: number) => {
@@ -45,6 +49,22 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 		}
 		const newSelectIngredientList = selectedIngredientList.filter((item) => item.key !== key);
 		setSelectedIngredientList(newSelectIngredientList);
+	};
+
+	const handleSubmitIngredientRegist = () => {
+		if (selectedIngredientList && selectedIngredientList.length !== 0) {
+			console.log('등록');
+			console.log(customIngredientList);
+			setOpen(false);
+			setTabbarOn(!tabbarOn);
+			toast.success('재료 등록 성공');
+			// createIngredientList(
+			// 	selectedIngredientList.map((item) => item.key),
+			// 	customIngredientList,
+			// ).then((res) => {
+			// 	console.log(res);
+			// });
+		}
 	};
 
 	useEffect(() => {
@@ -81,8 +101,18 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 				/>
 
 				{/* Floating 메뉴 */}
+				<div />
 
 				{/* 검색/등록 버튼 */}
+				<LargeButton
+					buttonColor={
+						selectedIngredientList && selectedIngredientList.length !== 0
+							? LargeButtonColor.Green
+							: LargeButtonColor.Gray
+					}
+					value="재료 등록하기"
+					buttonClick={handleSubmitIngredientRegist}
+				/>
 			</SearchTemplate>
 		</div>
 	);

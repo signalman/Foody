@@ -1,0 +1,18 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+	background-color: var.$primary-green-500;
+}
+
+.calendar-box {
+	@include f.flex(row, between, center);
+
+	button {
+		svg {
+			color: var.$black-400;
+		}
+	}
+}

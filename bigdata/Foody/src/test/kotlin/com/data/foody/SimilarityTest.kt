@@ -30,4 +30,11 @@ class SimilarityTest {
 
     }
 
+    @Test
+    @DisplayName("자카드유사도 계산된다")
+    fun jaccardSimilarity() {
+
+        val result = round(algorithm.jaccardSimilarity(sentence1, sentence2), 3)
+        assertEquals(result, 0.429)
+    }
 }

@@ -30,9 +30,6 @@ class Similarity {
         val normA = norm(vec1)
         val normB = norm(vec2)
 
-        println("dotProduct : $dotProduct")
-        println("normA : $normA")
-        println("normA : $normB")
         return if (normA > 0.0 && normB > 0.0) dotProduct / (normA * normB) else 1.0
     }
 

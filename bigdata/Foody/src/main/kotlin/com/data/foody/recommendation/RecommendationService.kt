@@ -11,8 +11,11 @@ class RecommendationService(private val dataService: DataService) {
     suspend fun getRecommendationByIngredients(ingredients: String): String {
         val allRecipes = dataService.findAllValuesWithCoroutine()
 
+        // 재료의 수가 5개 이상인 레시피만 필터링
+        val filteredRecipes = allRecipes?.filter { it.ingredient_count >= 5 }
+
         // 각 레시피에 대해 유사도 계산
-        val similarityScores = allRecipes?.map { recipe ->
+        val similarityScores = filteredRecipes?.map { recipe ->
             val score = similarity.cosineSimilarity(ingredients, recipe.ingredients_concat)
             Pair(recipe, score)
         }

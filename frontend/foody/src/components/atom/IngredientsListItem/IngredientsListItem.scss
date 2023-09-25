@@ -8,6 +8,7 @@
 	border-radius: 10px;
 
 	button {
+		width: 100%;
 		height: 100%;
 		padding: 14px;
 		@include f.flex(column, center, center, 10px);

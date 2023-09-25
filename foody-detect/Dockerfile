@@ -13,9 +13,17 @@ RUN apt-get update && apt-get install -y \
 # 의존성 파일들을 컨테이너에 복사
 COPY requirements.txt requirements.txt
 
+# 환경 변수로 UTF-8과 타임존 설정
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    TZ=Asia/Seoul
+
 # 의존성 설치
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
+
+# 타임존 설정
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # 모든 파일을 컨테이너에 복사
 COPY . .

@@ -1,9 +1,29 @@
 === 재료 검색
 
 ==== HTTP Request
-include::{snippets}/refrigerator/searchIngredient/http-request.adoc[]
-include::{snippets}/refrigerator/searchIngredient/request-parameters.adoc[]
+include::{snippets}/refrigerators/searchIngredient/http-request.adoc[]
+include::{snippets}/refrigerators/searchIngredient/request-parameters.adoc[]
 
 ==== HTTP Response
-include::{snippets}/refrigerator/searchIngredient/http-response.adoc[]
-include::{snippets}/refrigerator/searchIngredient/response-body.adoc[]
+include::{snippets}/refrigerators/searchIngredient/http-response.adoc[]
+include::{snippets}/refrigerators/searchIngredient/response-body.adoc[]
+
+=== 사용자 냉장고에 재료 등록
+
+==== HTTP Request
+include::{snippets}/refrigerators/registerIngredient/http-request.adoc[]
+include::{snippets}/refrigerators/registerIngredient/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/registerIngredient/http-response.adoc[]
+include::{snippets}/refrigerators/registerIngredient/response-body.adoc[]
+
+=== 사용자 냉장고 조회
+
+==== HTTP Request
+include::{snippets}/refrigerators/getUserRefrigerator/http-request.adoc[]
+include::{snippets}/refrigerators/getUserRefrigerator/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/getUserRefrigerator/http-response.adoc[]
+include::{snippets}/refrigerators/getUserRefrigerator/response-body.adoc[]

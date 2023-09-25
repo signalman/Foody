@@ -51,6 +51,9 @@ dependencies {
 	// numpy
 	implementation("space.kscience:kmath-for-real:0.3.1-dev-RC")
 
+	//csv reader for JVM platform
+	implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.2")
+
 
 
 }

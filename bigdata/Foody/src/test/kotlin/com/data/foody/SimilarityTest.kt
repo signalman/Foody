@@ -9,17 +9,25 @@ import smile.math.MathEx.round
 class SimilarityTest {
 
     private val algorithm = Similarity()
+    private val sentence1 = "토마스가 가고 싶은 나라는 콜롬비아"
+    private val sentence2 = "루나가 가고 싶은 나라는 포르투갈"
 
     @Test
     @DisplayName("코사인유사도 계산된다")
     fun cosineSimilarity() {
 
-        val sentence1 = "토마스가 가고 싶은 나라는 콜롬비아"
-        val sentence2 = "루나가 가고 싶은 나라는 포르투갈"
-
-        val result = round(algorithm.cosineSimilarity(sentence1, sentence2), 2)
+        val result = round(algorithm.cosineSimilarity(sentence1, sentence2), 3)
         print(result)
-        assertEquals(result, 0.6)
+        assertEquals(result, 0.60)
+    }
+
+    @Test
+    @DisplayName("TF-IDF 유사도 계산된다")
+    fun tfidfSimilarity() {
+
+        val result = round(algorithm.tfidfSimilarity(sentence1, sentence2), 3)
+        assertEquals(result, 0.432)
+
     }
 
 }

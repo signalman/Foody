@@ -1,0 +1,36 @@
+@use 'styles/base/variable' as var;
+
+.search-input-container {
+	position: relative;
+
+	input {
+		position: relative;
+		width: 100%;
+		font-size: var.$h3;
+		padding: 10px 12px;
+		border: 1px solid var.$black-100;
+		border-radius: 4px;
+		background: transparent;
+
+		&::placeholder {
+			color: var.$border-400;
+		}
+
+		&:focus {
+			color: var.$black-400;
+			border-color: var.$primary-green-200;
+		}
+
+		&:focus + .search-icon {
+			color: var.$primary-green-200;
+		}
+	}
+
+	.search-icon {
+		color: var.$black-100;
+		position: absolute;
+		top: 50%;
+		right: 10px;
+		transform: translateY(-50%);
+	}
+}

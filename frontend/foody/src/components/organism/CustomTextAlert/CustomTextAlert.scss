@@ -3,7 +3,7 @@
 
 .react-confirm-alert-overlay {
 	background: var.$black-alpa-50;
-	z-index: 9999;
+	z-index: var.$react-confirm-alert-overlay-z-index;
 
 	.react-confirm-alert {
 		width: 100%;

@@ -69,4 +69,14 @@ class RecommendationServiceTest {
         println("Elapsed time: $elapsedTime ms")
 
     }
+
+    @Test
+    @DisplayName("코루틴으로 모든 value 불러와진다")
+    fun shouldFetchAllValuesFromRedisWithCoroutine() = runBlocking {
+        val elapsedTime = measureTimeMillis {
+            val recipes: List<Recipe>? = recommendationService.findAllValuesWithCoroutine()
+            assertEquals(recipes?.size, 120738)
+        }
+        println("Elapsed time: $elapsedTime ms")
+    }
 }

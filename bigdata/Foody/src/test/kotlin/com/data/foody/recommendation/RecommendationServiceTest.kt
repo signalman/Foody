@@ -1,6 +1,9 @@
 package com.data.foody.recommendation
 
 import com.data.foody.domain.Recipe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -26,6 +29,19 @@ class RecommendationServiceTest {
 
         val elapsedTime = measureTimeMillis {
         val keys: Set<String> = redisTemplate.keys("*")
+            assertEquals(keys.size, 120738)
+        }
+
+        println("Elapsed time: $elapsedTime ms")
+    }
+
+    @Test
+    @DisplayName("코루틴으로 redis의 모든 keys 불러와진다")
+    fun shouldFetchAllKeysFromRedisWithRedis() = runBlocking {
+        val elapsedTime = measureTimeMillis {
+            val keys: Set<String> = withContext(Dispatchers.IO) {
+                redisTemplate.keys("*")
+            }
             assertEquals(keys.size, 120738)
         }
 

@@ -2,14 +2,14 @@ package com.data.foody.configuration
 
 import com.data.foody.domain.Recipe
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
-import lombok.extern.slf4j.Slf4j
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.core.io.ClassPathResource
 import org.springframework.data.redis.core.RedisTemplate
 
-@Slf4j
+@Profile("{local, server}")
 @Configuration
 class DataLoaderConfiguration {
 

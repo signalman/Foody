@@ -54,6 +54,9 @@ dependencies {
 	//csv reader for JVM platform
 	implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.2")
 
+	//coroutine
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
 
 
 }

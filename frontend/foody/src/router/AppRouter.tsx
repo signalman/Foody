@@ -10,6 +10,7 @@ import LoginPage from 'components/page/LoginPage';
 import NotFoundPage from 'components/page/NotFoundPage';
 import SignupPage from 'components/page/SignupPage';
 import RegistTodayMeal from 'components/molecule/RegistTodayMeal/RegistTodayMeal';
+import { Toaster } from 'react-hot-toast';
 
 function AppRouter() {
 	return (
@@ -25,11 +26,20 @@ function AppRouter() {
 
 				<Route path="/dev" element={<DevPage />} />
 
-				<Route path="/*" element={<Navigate replace to="/notfound" />} />
+				{/* <Route path="/*" element={<Navigate replace to="/notfound" />} /> */}
 				<Route path="/notfound" element={<NotFoundPage />} />
 			</Routes>
 
 			<RegistTodayMeal />
+			<Toaster
+				containerStyle={{
+					top: 10,
+					fontSize: 14,
+				}}
+				toastOptions={{
+					duration: 1500,
+				}}
+			/>
 		</BrowserRouter>
 	);
 }

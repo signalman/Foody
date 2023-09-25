@@ -4,6 +4,7 @@ import Header from 'components/organism/Header/Header';
 import LayoutBottomMargin, { LayoutLeftRightMargin, LayoutTopMargin } from 'constants/Margin';
 import Layout from '../Layout/Layout';
 import ContentsLayout from '../ContentsLayout/ContentsLayout';
+import FloatingLayout from '../FloatingLayout/FloatingLayout';
 
 function RefriTemplate({ children }: { children: ReactNode[] }) {
 	return (
@@ -20,6 +21,10 @@ function RefriTemplate({ children }: { children: ReactNode[] }) {
 				<ContentsLayout marginBottom={LayoutBottomMargin.mb0} marginLR={LayoutLeftRightMargin.m10}>
 					{children[2]}
 				</ContentsLayout>
+
+				<FloatingLayout>{children[3]}</FloatingLayout>
+
+				<ContentsLayout marginBottom={LayoutBottomMargin.mb0}>{children[4]}</ContentsLayout>
 			</Layout>
 		</>
 	);

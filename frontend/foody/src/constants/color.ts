@@ -8,4 +8,19 @@ export enum ProgressStepColor {
 	LightGreen = 'light-green',
 }
 
+export enum BarColor {
+	Green = 'green',
+	Orange = 'orange',
+	Yellow = 'yellow',
+	Red = 'red',
+	Null = 'noColor',
+}
+
+export enum MealColor {
+	Breakfast = 'yellow',
+	Lunch = 'orange',
+	Dinner = 'green',
+	Snack = 'blue',
+}
+
 export default LargeButtonColor;

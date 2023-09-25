@@ -231,6 +231,7 @@ public class RecommendedNutrientService {
         }
 
         RecommendedNutrient recommendedNutrient = new RecommendedNutrient(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron,fats, vitaminA, vitaminC);
+        member.createNutrient(recommendedNutrient);
 
         recommendedNutrientRepository.save(recommendedNutrient);
 

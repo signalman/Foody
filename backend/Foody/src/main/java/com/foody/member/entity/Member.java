@@ -42,6 +42,9 @@ public class Member extends UserInfo {
     @JoinColumn(name = "recommended_nutrient_id")
     private RecommendedNutrient recommendedNutrient;
 
+    public void createNutrient(RecommendedNutrient recommendedNutrient) {
+        this.recommendedNutrient = recommendedNutrient;
+    }
 
     public static Member signupMember(MemberSignupRequest memberSignupRequest) {
         return Member.builder()

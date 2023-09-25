@@ -1,55 +1,53 @@
 import LoginTemplate from 'components/template/LoginTemplate/LoginTemplate';
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SocialLoginButton from 'components/atom/SocialLoginButton/SocialLoginButton';
 import login from 'utils/api/auth';
 import LocalStorage from 'constants/LocalStorage';
 import { setCookie } from 'constants/Cookie';
 import useMovePage from 'hooks/useMovePage';
-import loginLogo from '../../assets/icons/mainLogo.png';
-import googleLogo from '../../assets/icons/googleLogo.png';
+import { useLocation } from 'react-router-dom';
+import loginLogo from 'assets/icons/mainLogo.png';
+import googleLogo from 'assets/icons/googleLogo.png';
 
-const LoginPage = memo(() => {
+function LoginPage() {
 	const { movePage } = useMovePage();
+	const location = useLocation();
 
-	const fetchRedirectLocation = useCallback(() => {
-		fetch('/login/oauth2/code/google', {
-			redirect: 'manual',
-		}).then((response) => {
-			if (response.status === 200) {
-				const urlParams = new URLSearchParams(window.location.search);
-				const accessToken = urlParams.get('accessToken');
-				const refreshToken = urlParams.get('refreshToken');
-				const user = urlParams.get('user');
+	const [user, setUser] = useState<string | null>(null);
 
-				if (!accessToken || !refreshToken || !user) {
-					throw new Error('No saved Token');
-				}
+	console.log(location.search);
 
-				LocalStorage.setItem('accesstoken', accessToken);
-				setCookie('refreshtoken', refreshToken);
+	useEffect(() => {
+		const urlParams = new URLSearchParams(location.search);
 
-				console.log(user);
+		if (!user && location.search) {
+			const accesstoken = urlParams.get('accessToken');
+			const refreshToken = urlParams.get('refreshToken');
+			const userd = urlParams.get('user');
 
-				if (user === '1') {
-					movePage('/home', null);
-				} else if (user === '0') {
-					movePage('/signup', null);
-				}
+			console.log(accesstoken);
+			console.log(refreshToken);
+			console.log(userd);
+			if (!accesstoken || !refreshToken || !userd) {
+				throw new Error('No saved Token');
 			}
-		});
-	}, [movePage]);
+
+			setUser(userd);
+			LocalStorage.setItem('accesstoken', accesstoken);
+
+			setCookie('refreshtoken', refreshToken);
+		}
+
+		if (user === '1') {
+			movePage('/home', null);
+		} else if (user === '0') {
+			movePage('/signup', null);
+		}
+	}, [user, movePage, location.search]);
 
 	const test2 = () => {
 		login();
 	};
-
-	useEffect(() => {
-		const test = window.location.search;
-
-		if (test !== '') {
-			fetchRedirectLocation();
-		}
-	}, [fetchRedirectLocation]);
 
 	return (
 		<LoginTemplate>
@@ -57,6 +55,6 @@ const LoginPage = memo(() => {
 			<SocialLoginButton value="구글 로그인 test2" logo_src={googleLogo} onclick={test2} />
 		</LoginTemplate>
 	);
-});
+}
 
 export default LoginPage;

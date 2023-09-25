@@ -28,6 +28,8 @@ const LoginPage = memo(() => {
 				LocalStorage.setItem('accesstoken', accessToken);
 				setCookie('refreshtoken', refreshToken);
 
+				console.log(user);
+
 				if (user === '1') {
 					movePage('/home', null);
 				} else if (user === '0') {

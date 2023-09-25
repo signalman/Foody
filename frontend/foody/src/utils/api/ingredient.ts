@@ -1,7 +1,7 @@
 import { instance } from './instance';
 
-export const getRefriIndegredients = async () => {
-	const response = await instance.get('/refrigerators/ingredient?keyword=토마토');
+export const getSearchIndegredients = async (keyword: string) => {
+	const response = await instance.get(`/refrigerators/ingredient?keyword=${keyword}`);
 	return response;
 };
 
@@ -28,4 +28,4 @@ export const getReceiptIndegredients = async () => {
 	return response;
 };
 
-export default getRefriIndegredients;
+export default getSearchIndegredients;

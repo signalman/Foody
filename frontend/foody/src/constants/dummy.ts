@@ -147,7 +147,7 @@ export const DUMMY_INGREDIENTS_ITEM_INFO_LIST = [
 ];
 
 export const DUMMY_RECEIPT_LIST: ReceiptListType = {
-	value: ['맥주', 'asd', 'asf'],
+	value: ['맥주', '광어회', '낙지탕탕이'],
 	boundingPolys: [
 		{
 			vertices: [

@@ -14,6 +14,6 @@ class RecommendationController(private val recommendationService: Recommendation
     @PostMapping("/ingredient")
     suspend fun getRecommendationByIngredient(@RequestBody ingredients: String): ResponseEntity<String> {
 
-        return ResponseEntity.ok().body(recommendationService.getRecommendationByIngredients(ingredients))
+        return ResponseEntity.ok().body(recommendationService.getRecommendationByIngredientsWithCoroutine(ingredients))
     }
 }

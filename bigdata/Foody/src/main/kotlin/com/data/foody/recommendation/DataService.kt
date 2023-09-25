@@ -1,6 +1,5 @@
 package com.data.foody.recommendation
 
-import com.data.foody.algorithm.Similarity
 import com.data.foody.domain.Recipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -10,9 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 
 @Service
-class RecommendationService (private val redisTemplate: RedisTemplate<String, Recipe>) {
-
-    private val similarity = Similarity()
+class DataService (private val redisTemplate: RedisTemplate<String, Recipe>) {
 
     fun findAllKeys() : Set<String>? {
         return redisTemplate.keys("*")

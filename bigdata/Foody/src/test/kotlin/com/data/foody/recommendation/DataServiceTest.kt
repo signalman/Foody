@@ -15,13 +15,13 @@ import kotlin.system.measureTimeMillis
 
 @ActiveProfiles("test")
 @SpringBootTest
-class RecommendationServiceTest {
+class DataServiceTest {
 
     @Autowired
     private lateinit var redisTemplate: RedisTemplate<String, Recipe>
 
     @Autowired
-    private lateinit var recommendationService: RecommendationService
+    private lateinit var dataService: DataService
 
     @Test
     @DisplayName("redis의 모든 keys 불러와진다")
@@ -52,7 +52,7 @@ class RecommendationServiceTest {
     @Test
     @DisplayName("service에서 keys 호출된다")
     fun keysCalledByRecService() {
-        val keys: Set<String>? = recommendationService.findAllKeys()
+        val keys: Set<String>? = dataService.findAllKeys()
 
         assertEquals(keys?.size, 120738)
 
@@ -63,7 +63,7 @@ class RecommendationServiceTest {
     fun shouldFetchAllValuesFromRedis() {
 
         val elapsedTime = measureTimeMillis {
-            val recipes: List<Recipe>? = recommendationService.findAllValues()
+            val recipes: List<Recipe>? = dataService.findAllValues()
             assertEquals(recipes?.size, 120738)
         }
         println("Elapsed time: $elapsedTime ms")
@@ -74,7 +74,7 @@ class RecommendationServiceTest {
     @DisplayName("코루틴으로 모든 value 불러와진다")
     fun shouldFetchAllValuesFromRedisWithCoroutine() = runBlocking {
         val elapsedTime = measureTimeMillis {
-            val recipes: List<Recipe>? = recommendationService.findAllValuesWithCoroutine()
+            val recipes: List<Recipe>? = dataService.findAllValuesWithCoroutine()
             assertEquals(recipes?.size, 120738)
         }
         println("Elapsed time: $elapsedTime ms")

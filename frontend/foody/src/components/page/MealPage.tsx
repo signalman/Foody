@@ -1,4 +1,4 @@
-import MealCalendar from 'components/organism/meal/MealCalendar/MealCalendar';
+import MealCalendar from 'components/atom/MealCalendar/MealCalendar';
 import MealInformation from 'components/organism/meal/MealInformation/MealInformation';
 import MealTable from 'components/organism/meal/MealTable/MealTable';
 import NutrientOfDay from 'components/organism/meal/NutrientOfDay/NutrientOfDay';

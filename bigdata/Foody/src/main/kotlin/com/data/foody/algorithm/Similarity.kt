@@ -7,7 +7,6 @@ import smile.nlp.df
 import smile.nlp.vectorize
 
 class Similarity {
-    var operationCount: Long = 0
 
     fun cosineSimilarity(refrigerator: String, ingredients: String): Double {
         val (bag1, bag2) = prepareBags(refrigerator, ingredients)
@@ -26,8 +25,6 @@ class Similarity {
     }
 
     private fun cosineSimilarity(vec1: DoubleArray, vec2: DoubleArray): Double {
-
-        operationCount += vec1.size + vec2.size
 
         val dotProduct = dot(vec1, vec2)
         val normA = norm(vec1)

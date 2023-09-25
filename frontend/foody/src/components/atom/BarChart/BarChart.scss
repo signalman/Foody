@@ -1,0 +1,30 @@
+@use 'styles/base/variable.scss' as var;
+
+.bar-box {
+	width: 280px;
+	height: 18.334px;
+	border: 1px solid var.$black-100;
+	border-radius: 10px;
+}
+
+.bar-content {
+	height: 10px;
+	margin: 3.75px 5px;
+	border-radius: 10px;
+}
+
+.green {
+	background-color: var.$primary-green-500;
+}
+
+.orange {
+	background-color: var.$primary-orange-500;
+}
+
+.yellow {
+	background-color: var.$primary-yellow-500;
+}
+
+.red {
+	background-color: var.$danger;
+}

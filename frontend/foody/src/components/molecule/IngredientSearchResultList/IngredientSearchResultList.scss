@@ -1,0 +1,38 @@
+@use 'styles/base/variable' as var;
+@use 'styles/mixins/flex' as f;
+
+.ingredient-search-result-list-conatainer {
+	margin-bottom: 20px;
+
+	.ingredient-search-result-list {
+		@include f.flex(column, start, start, 10px);
+
+		.ingredient-search-result-item {
+			width: 100%;
+
+			button {
+				text-align: left;
+				width: 100%;
+				padding: 15px;
+				color: var.$black-400;
+				background-color: var.$white;
+				border: 1px solid var.$border-300;
+				border-radius: 10px;
+				font-size: var.$p1;
+				transition: 0.05s all ease-out;
+
+				&:active {
+					color: var.$white;
+					background-color: var.$primary-green-500;
+				}
+			}
+		}
+	}
+
+	.no-search-ingredients {
+		width: 100%;
+		text-align: center;
+		padding: 15px;
+		color: var.$black-200;
+	}
+}

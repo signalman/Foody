@@ -50,10 +50,7 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 	useEffect(() => {
 		if (searchKeyword !== '') {
 			getSearchIndegredients(searchKeyword).then((res) => {
-				if (res.data && res.data.length > 0) {
-					console.log('formatSearchResultList(res.data)', formatSearchResultList(res.data));
-					setSearchResultList(formatSearchResultList(res.data));
-				}
+				setSearchResultList(formatSearchResultList(res.data));
 			});
 		}
 	}, [searchKeyword]);

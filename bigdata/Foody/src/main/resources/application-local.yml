@@ -1,9 +1,0 @@
-spring:
-  redis:
-    host: localhost
-    port: 6379
-    password: ${REDIS_PASSWORD}
-  mvc:
-    async:
-      request-timeout: 60000
-

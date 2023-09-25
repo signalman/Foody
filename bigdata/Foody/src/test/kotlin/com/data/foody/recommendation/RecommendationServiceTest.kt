@@ -47,4 +47,26 @@ class RecommendationServiceTest {
 
         println("Elapsed time: $elapsedTime ms")
     }
+
+
+    @Test
+    @DisplayName("service에서 keys 호출된다")
+    fun keysCalledByRecService() {
+        val keys: Set<String>? = recommendationService.findAllKeys()
+
+        assertEquals(keys?.size, 120738)
+
+    }
+
+    @Test
+    @DisplayName("redis에서 모든 value 불러와진다")
+    fun shouldFetchAllValuesFromRedis() {
+
+        val elapsedTime = measureTimeMillis {
+            val recipes: List<Recipe>? = recommendationService.findAllValues()
+            assertEquals(recipes?.size, 120738)
+        }
+        println("Elapsed time: $elapsedTime ms")
+
+    }
 }

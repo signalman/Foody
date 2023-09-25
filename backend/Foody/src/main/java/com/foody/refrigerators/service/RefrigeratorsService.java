@@ -15,6 +15,7 @@ import com.foody.refrigerators.repository.IngredientRepository;
 import com.foody.refrigerators.repository.RefrigeratorIngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -31,6 +32,9 @@ public class RefrigeratorsService {
     private final IngredientCategoryRepository ingredientCategoryRepository;
     private final MemberService memberService;
     private final WebClient webClient;
+
+    @Value("${X_OCR_SECRET}")
+    private String OCRSecret;
 
     public IngredientCategory findIngredientCategory(Long ingredientCategoryId) {
         return ingredientCategoryRepository.findById(ingredientCategoryId)
@@ -146,320 +150,437 @@ public class RefrigeratorsService {
 
     public List<SearchIngredientResponse> getReceiptIngredient(String imgData) {
 
-        Map<String, Object> receiptData = WebClient.builder()
-                .baseUrl("https://h06yrkfqdl.apigw.ntruss.com/custom/v1/24865/a3c7f37381726a3c8db098b0146f830eeabd9de71d2b8322576ce264d9730c8f/document/receipt")
-                .defaultHeader("X-OCR-SECRET", "UHFNRFpNZ0NHVFhDc1RrUFVVaEtCVERDdlBPTFJaWFM=")
-                .defaultHeader("Content-Type", "application/json")
-                .build()
-                .post()
-                .body(BodyInserters.fromValue(imgData))
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
+//        Map<String, Object> receiptData = WebClient.builder()
+//                .baseUrl("https://h06yrkfqdl.apigw.ntruss.com/custom/v1/24865/a3c7f37381726a3c8db098b0146f830eeabd9de71d2b8322576ce264d9730c8f/document/receipt")
+//                .defaultHeader("X-OCR-SECRET", OCRSecret)
+//                .defaultHeader("Content-Type", "application/json")
+//                .build()
+//                .post()
+//                .body(BodyInserters.fromValue(imgData))
+//                .retrieve()
+//                .bodyToMono(Map.class)
+//                .block();
 
-        log.debug("영수증 데이터 : {}", receiptData);
+//        log.debug("영수증 데이터 : {}", receiptData);
 
-//        String json = "{\n" +
-//                "    \"version\": \"V2\",\n" +
-//                "    \"requestId\": \"795cf393-1b9f-45b2-b3bf-8960bfa390bb\",\n" +
-//                "    \"timestamp\": 1694138545687,\n" +
-//                "    \"images\": [\n" +
-//                "        {\n" +
-//                "            \"receipt\": {\n" +
-//                "                \"meta\": {\n" +
-//                "                    \"estimatedLanguage\": \"ko\"\n" +
-//                "                },\n" +
-//                "                \"result\": {\n" +
-//                "                    \"subResults\": [\n" +
-//                "                        {\n" +
-//                "                            \"items\": [\n" +
-//                "                                 {\n" +
-//                "                                    \"name\": {\n" +
-//                "                                        \"text\": \"딸기\",\n" +
-//                "                                        \"formatted\": {\n" +
-//                "                                            \"value\": \"딸기\"\n" +
-//                "                                        },\n" +
-//                "                                        \"boundingPolys\": [\n" +
-//                "                                            {\n" +
-//                "                                                \"vertices\": [\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 289.0,\n" +
-//                "                                                        \"y\": 49.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 328.0,\n" +
-//                "                                                        \"y\": 49.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 328.0,\n" +
-//                "                                                        \"y\": 72.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 289.0,\n" +
-//                "                                                        \"y\": 72.0\n" +
-//                "                                                    }\n" +
-//                "                                                ]\n" +
-//                "                                            }\n" +
-//                "                                        ],\n" +
-//                "                                        \"maskingPolys\": []\n" +
-//                "                                    },\n" +
-//                "                                    \"count\": {\n" +
-//                "                                        \"text\": \"1\",\n" +
-//                "                                        \"formatted\": {\n" +
-//                "                                            \"value\": \"1\"\n" +
-//                "                                        },\n" +
-//                "                                        \"boundingPolys\": [\n" +
-//                "                                            {\n" +
-//                "                                                \"vertices\": [\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 517.0,\n" +
-//                "                                                        \"y\": 66.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 529.0,\n" +
-//                "                                                        \"y\": 66.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 529.0,\n" +
-//                "                                                        \"y\": 80.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 517.0,\n" +
-//                "                                                        \"y\": 80.0\n" +
-//                "                                                    }\n" +
-//                "                                                ]\n" +
-//                "                                            }\n" +
-//                "                                        ]\n" +
-//                "                                    },\n" +
-//                "                                    \"price\": {\n" +
-//                "                                        \"price\": {\n" +
-//                "                                            \"text\": \"10,000\",\n" +
-//                "                                            \"formatted\": {\n" +
-//                "                                                \"value\": \"10000\"\n" +
-//                "                                            },\n" +
-//                "                                            \"boundingPolys\": [\n" +
-//                "                                                {\n" +
-//                "                                                    \"vertices\": [\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 552.0,\n" +
-//                "                                                            \"y\": 59.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 613.0,\n" +
-//                "                                                            \"y\": 54.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 615.0,\n" +
-//                "                                                            \"y\": 73.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 554.0,\n" +
-//                "                                                            \"y\": 78.0\n" +
-//                "                                                        }\n" +
-//                "                                                    ]\n" +
-//                "                                                }\n" +
-//                "                                            ]\n" +
-//                "                                        },\n" +
-//                "                                        \"unitPrice\": {\n" +
-//                "                                            \"text\": \"10,000\",\n" +
-//                "                                            \"formatted\": {\n" +
-//                "                                                \"value\": \"10000\"\n" +
-//                "                                            },\n" +
-//                "                                            \"boundingPolys\": [\n" +
-//                "                                                {\n" +
-//                "                                                    \"vertices\": [\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 436.0,\n" +
-//                "                                                            \"y\": 73.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 494.0,\n" +
-//                "                                                            \"y\": 68.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 495.0,\n" +
-//                "                                                            \"y\": 87.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 438.0,\n" +
-//                "                                                            \"y\": 92.0\n" +
-//                "                                                        }\n" +
-//                "                                                    ]\n" +
-//                "                                                }\n" +
-//                "                                            ]\n" +
-//                "                                        }\n" +
-//                "                                    }\n" +
-//                "                                },\n" +
-//                "\t\t\t\t\t\t\t{\n" +
-//                "                                    \"name\": {\n" +
-//                "                                        \"text\": \"대림순두부400g\",\n" +
-//                "                                        \"formatted\": {\n" +
-//                "                                            \"value\": \"대림순두부400g\"\n" +
-//                "                                        },\n" +
-//                "                                        \"boundingPolys\": [\n" +
-//                "                                            {\n" +
-//                "                                                \"vertices\": [\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 269.0,\n" +
-//                "                                                        \"y\": 486.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 409.0,\n" +
-//                "                                                        \"y\": 486.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 409.0,\n" +
-//                "                                                        \"y\": 511.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 269.0,\n" +
-//                "                                                        \"y\": 511.0\n" +
-//                "                                                    }\n" +
-//                "                                                ]\n" +
-//                "                                            }\n" +
-//                "                                        ],\n" +
-//                "                                        \"maskingPolys\": []\n" +
-//                "                                    },\n" +
-//                "                                    \"count\": {\n" +
-//                "                                        \"text\": \"1\",\n" +
-//                "                                        \"formatted\": {\n" +
-//                "                                            \"value\": \"1\"\n" +
-//                "                                        },\n" +
-//                "                                        \"boundingPolys\": [\n" +
-//                "                                            {\n" +
-//                "                                                \"vertices\": [\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 521.0,\n" +
-//                "                                                        \"y\": 513.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 535.0,\n" +
-//                "                                                        \"y\": 513.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 535.0,\n" +
-//                "                                                        \"y\": 533.0\n" +
-//                "                                                    },\n" +
-//                "                                                    {\n" +
-//                "                                                        \"x\": 521.0,\n" +
-//                "                                                        \"y\": 533.0\n" +
-//                "                                                    }\n" +
-//                "                                                ]\n" +
-//                "                                            }\n" +
-//                "                                        ]\n" +
-//                "                                    },\n" +
-//                "                                    \"price\": {\n" +
-//                "                                        \"price\": {\n" +
-//                "                                            \"text\": \"500\",\n" +
-//                "                                            \"formatted\": {\n" +
-//                "                                                \"value\": \"500\"\n" +
-//                "                                            },\n" +
-//                "                                            \"boundingPolys\": [\n" +
-//                "                                                {\n" +
-//                "                                                    \"vertices\": [\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 590.0,\n" +
-//                "                                                            \"y\": 511.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 629.0,\n" +
-//                "                                                            \"y\": 511.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 629.0,\n" +
-//                "                                                            \"y\": 535.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 590.0,\n" +
-//                "                                                            \"y\": 535.0\n" +
-//                "                                                        }\n" +
-//                "                                                    ]\n" +
-//                "                                                }\n" +
-//                "                                            ]\n" +
-//                "                                        },\n" +
-//                "                                        \"unitPrice\": {\n" +
-//                "                                            \"text\": \"500\",\n" +
-//                "                                            \"formatted\": {\n" +
-//                "                                                \"value\": \"500\"\n" +
-//                "                                            },\n" +
-//                "                                            \"boundingPolys\": [\n" +
-//                "                                                {\n" +
-//                "                                                    \"vertices\": [\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 460.0,\n" +
-//                "                                                            \"y\": 511.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 497.0,\n" +
-//                "                                                            \"y\": 511.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 497.0,\n" +
-//                "                                                            \"y\": 534.0\n" +
-//                "                                                        },\n" +
-//                "                                                        {\n" +
-//                "                                                            \"x\": 460.0,\n" +
-//                "                                                            \"y\": 534.0\n" +
-//                "                                                        }\n" +
-//                "                                                    ]\n" +
-//                "                                                }\n" +
-//                "                                            ]\n" +
-//                "                                        }\n" +
-//                "                                    }\n" +
-//                "                                }\n" +
-//                "                            ]\n" +
-//                "                        }\n" +
-//                "                    ],\n" +
-//                "                    \"totalPrice\": {\n" +
-//                "                        \"price\": {\n" +
-//                "                            \"text\": \"33,260\",\n" +
-//                "                            \"formatted\": {\n" +
-//                "                                \"value\": \"33260\"\n" +
-//                "                            },\n" +
-//                "                            \"boundingPolys\": [\n" +
-//                "                                {\n" +
-//                "                                    \"vertices\": [\n" +
-//                "                                        {\n" +
-//                "                                            \"x\": 506.0,\n" +
-//                "                                            \"y\": 771.0\n" +
-//                "                                        },\n" +
-//                "                                        {\n" +
-//                "                                            \"x\": 643.0,\n" +
-//                "                                            \"y\": 773.0\n" +
-//                "                                        },\n" +
-//                "                                        {\n" +
-//                "                                            \"x\": 643.0,\n" +
-//                "                                            \"y\": 800.0\n" +
-//                "                                        },\n" +
-//                "                                        {\n" +
-//                "                                            \"x\": 505.0,\n" +
-//                "                                            \"y\": 798.0\n" +
-//                "                                        }\n" +
-//                "                                    ]\n" +
-//                "                                }\n" +
-//                "                            ]\n" +
-//                "                        }\n" +
-//                "                    }\n" +
-//                "                }\n" +
-//                "            },\n" +
-//                "            \"uid\": \"fddf79594ca9422a942cd63b9a8dba4e\",\n" +
-//                "            \"name\": \"demo\",\n" +
-//                "            \"inferResult\": \"SUCCESS\",\n" +
-//                "            \"message\": \"SUCCESS\",\n" +
-//                "            \"validationResult\": {\n" +
-//                "                \"result\": \"NO_REQUESTED\"\n" +
-//                "            }\n" +
-//                "        }\n" +
-//                "    ]\n" +
-//                "}";
-//        ObjectMapper objectMapper = new ObjectMapper();
-//
-//        Map<String, Object> receiptData = new HashMap<>();
-//        try {
-//            receiptData = objectMapper.readValue(json, Map.class);
-//        } catch (Exception e) {
-//
-//        }
+        String json = "{\n" +
+                "    \"version\": \"V2\",\n" +
+                "    \"requestId\": \"795cf393-1b9f-45b2-b3bf-8960bfa390bb\",\n" +
+                "    \"timestamp\": 1694138545687,\n" +
+                "    \"images\": [\n" +
+                "        {\n" +
+                "            \"receipt\": {\n" +
+                "                \"meta\": {\n" +
+                "                    \"estimatedLanguage\": \"ko\"\n" +
+                "                },\n" +
+                "                \"result\": {\n" +
+                "                    \"subResults\": [\n" +
+                "                        {\n" +
+                "                            \"items\": [\n" +
+                "                                {\n" +
+                "                                    \"name\": {\n" +
+                "                                        \"text\": \"더건강한슬라이스햄100g\",\n" +
+                "                                        \"formatted\": {\n" +
+                "                                            \"value\": \"더건강한슬라이스햄100g\"\n" +
+                "                                        },\n" +
+                "                                        \"boundingPolys\": [\n" +
+                "                                            {\n" +
+                "                                                \"vertices\": [\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 277.0,\n" +
+                "                                                        \"y\": 345.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 486.0,\n" +
+                "                                                        \"y\": 349.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 486.0,\n" +
+                "                                                        \"y\": 375.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 277.0,\n" +
+                "                                                        \"y\": 371.0\n" +
+                "                                                    }\n" +
+                "                                                ]\n" +
+                "                                            }\n" +
+                "                                        ],\n" +
+                "                                        \"maskingPolys\": []\n" +
+                "                                    },\n" +
+                "                                    \"count\": {\n" +
+                "                                        \"text\": \"1\",\n" +
+                "                                        \"formatted\": {\n" +
+                "                                            \"value\": \"1\"\n" +
+                "                                        },\n" +
+                "                                        \"boundingPolys\": [\n" +
+                "                                            {\n" +
+                "                                                \"vertices\": [\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 519.0,\n" +
+                "                                                        \"y\": 371.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 531.0,\n" +
+                "                                                        \"y\": 371.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 531.0,\n" +
+                "                                                        \"y\": 388.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 519.0,\n" +
+                "                                                        \"y\": 388.0\n" +
+                "                                                    }\n" +
+                "                                                ]\n" +
+                "                                            }\n" +
+                "                                        ]\n" +
+                "                                    },\n" +
+                "                                    \"price\": {\n" +
+                "                                        \"price\": {\n" +
+                "                                            \"text\": \"2,000\",\n" +
+                "                                            \"formatted\": {\n" +
+                "                                                \"value\": \"2000\"\n" +
+                "                                            },\n" +
+                "                                            \"boundingPolys\": [\n" +
+                "                                                {\n" +
+                "                                                    \"vertices\": [\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 566.0,\n" +
+                "                                                            \"y\": 364.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 624.0,\n" +
+                "                                                            \"y\": 364.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 624.0,\n" +
+                "                                                            \"y\": 388.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 566.0,\n" +
+                "                                                            \"y\": 388.0\n" +
+                "                                                        }\n" +
+                "                                                    ]\n" +
+                "                                                }\n" +
+                "                                            ]\n" +
+                "                                        },\n" +
+                "                                        \"unitPrice\": {\n" +
+                "                                            \"text\": \"2,000\",\n" +
+                "                                            \"formatted\": {\n" +
+                "                                                \"value\": \"2000\"\n" +
+                "                                            },\n" +
+                "                                            \"boundingPolys\": [\n" +
+                "                                                {\n" +
+                "                                                    \"vertices\": [\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 442.0,\n" +
+                "                                                            \"y\": 371.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 495.0,\n" +
+                "                                                            \"y\": 371.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 495.0,\n" +
+                "                                                            \"y\": 392.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 442.0,\n" +
+                "                                                            \"y\": 392.0\n" +
+                "                                                        }\n" +
+                "                                                    ]\n" +
+                "                                                }\n" +
+                "                                            ]\n" +
+                "                                        }\n" +
+                "                                    }\n" +
+                "                                },\n" +
+                "                                {\n" +
+                "                                    \"name\": {\n" +
+                "                                        \"text\": \"다담순두부찌개양념140g\",\n" +
+                "                                        \"formatted\": {\n" +
+                "                                            \"value\": \"다담순두부찌개양념140g\"\n" +
+                "                                        },\n" +
+                "                                        \"boundingPolys\": [\n" +
+                "                                            {\n" +
+                "                                                \"vertices\": [\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 272.0,\n" +
+                "                                                        \"y\": 438.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 487.0,\n" +
+                "                                                        \"y\": 440.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 487.0,\n" +
+                "                                                        \"y\": 466.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 271.0,\n" +
+                "                                                        \"y\": 463.0\n" +
+                "                                                    }\n" +
+                "                                                ]\n" +
+                "                                            }\n" +
+                "                                        ],\n" +
+                "                                        \"maskingPolys\": []\n" +
+                "                                    },\n" +
+                "                                    \"count\": {\n" +
+                "                                        \"text\": \"1\",\n" +
+                "                                        \"formatted\": {\n" +
+                "                                            \"value\": \"1\"\n" +
+                "                                        },\n" +
+                "                                        \"boundingPolys\": [\n" +
+                "                                            {\n" +
+                "                                                \"vertices\": [\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 521.0,\n" +
+                "                                                        \"y\": 464.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 532.0,\n" +
+                "                                                        \"y\": 464.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 532.0,\n" +
+                "                                                        \"y\": 482.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 521.0,\n" +
+                "                                                        \"y\": 482.0\n" +
+                "                                                    }\n" +
+                "                                                ]\n" +
+                "                                            }\n" +
+                "                                        ]\n" +
+                "                                    },\n" +
+                "                                    \"price\": {\n" +
+                "                                        \"price\": {\n" +
+                "                                            \"text\": \"990\",\n" +
+                "                                            \"formatted\": {\n" +
+                "                                                \"value\": \"990\"\n" +
+                "                                            },\n" +
+                "                                            \"boundingPolys\": [\n" +
+                "                                                {\n" +
+                "                                                    \"vertices\": [\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 589.0,\n" +
+                "                                                            \"y\": 461.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 628.0,\n" +
+                "                                                            \"y\": 461.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 628.0,\n" +
+                "                                                            \"y\": 485.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 589.0,\n" +
+                "                                                            \"y\": 485.0\n" +
+                "                                                        }\n" +
+                "                                                    ]\n" +
+                "                                                }\n" +
+                "                                            ]\n" +
+                "                                        },\n" +
+                "                                        \"unitPrice\": {\n" +
+                "                                            \"text\": \"990\",\n" +
+                "                                            \"formatted\": {\n" +
+                "                                                \"value\": \"990\"\n" +
+                "                                            },\n" +
+                "                                            \"boundingPolys\": [\n" +
+                "                                                {\n" +
+                "                                                    \"vertices\": [\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 459.0,\n" +
+                "                                                            \"y\": 462.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 496.0,\n" +
+                "                                                            \"y\": 462.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 496.0,\n" +
+                "                                                            \"y\": 485.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 459.0,\n" +
+                "                                                            \"y\": 485.0\n" +
+                "                                                        }\n" +
+                "                                                    ]\n" +
+                "                                                }\n" +
+                "                                            ]\n" +
+                "                                        }\n" +
+                "                                    }\n" +
+                "                                },\n" +
+                "                                {\n" +
+                "                                    \"name\": {\n" +
+                "                                        \"text\": \"대림순두부400g\",\n" +
+                "                                        \"formatted\": {\n" +
+                "                                            \"value\": \"대림순두부400g\"\n" +
+                "                                        },\n" +
+                "                                        \"boundingPolys\": [\n" +
+                "                                            {\n" +
+                "                                                \"vertices\": [\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 269.0,\n" +
+                "                                                        \"y\": 486.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 409.0,\n" +
+                "                                                        \"y\": 486.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 409.0,\n" +
+                "                                                        \"y\": 511.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 269.0,\n" +
+                "                                                        \"y\": 511.0\n" +
+                "                                                    }\n" +
+                "                                                ]\n" +
+                "                                            }\n" +
+                "                                        ],\n" +
+                "                                        \"maskingPolys\": []\n" +
+                "                                    },\n" +
+                "                                    \"count\": {\n" +
+                "                                        \"text\": \"1\",\n" +
+                "                                        \"formatted\": {\n" +
+                "                                            \"value\": \"1\"\n" +
+                "                                        },\n" +
+                "                                        \"boundingPolys\": [\n" +
+                "                                            {\n" +
+                "                                                \"vertices\": [\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 521.0,\n" +
+                "                                                        \"y\": 513.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 535.0,\n" +
+                "                                                        \"y\": 513.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 535.0,\n" +
+                "                                                        \"y\": 533.0\n" +
+                "                                                    },\n" +
+                "                                                    {\n" +
+                "                                                        \"x\": 521.0,\n" +
+                "                                                        \"y\": 533.0\n" +
+                "                                                    }\n" +
+                "                                                ]\n" +
+                "                                            }\n" +
+                "                                        ]\n" +
+                "                                    },\n" +
+                "                                    \"price\": {\n" +
+                "                                        \"price\": {\n" +
+                "                                            \"text\": \"500\",\n" +
+                "                                            \"formatted\": {\n" +
+                "                                                \"value\": \"500\"\n" +
+                "                                            },\n" +
+                "                                            \"boundingPolys\": [\n" +
+                "                                                {\n" +
+                "                                                    \"vertices\": [\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 590.0,\n" +
+                "                                                            \"y\": 511.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 629.0,\n" +
+                "                                                            \"y\": 511.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 629.0,\n" +
+                "                                                            \"y\": 535.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 590.0,\n" +
+                "                                                            \"y\": 535.0\n" +
+                "                                                        }\n" +
+                "                                                    ]\n" +
+                "                                                }\n" +
+                "                                            ]\n" +
+                "                                        },\n" +
+                "                                        \"unitPrice\": {\n" +
+                "                                            \"text\": \"500\",\n" +
+                "                                            \"formatted\": {\n" +
+                "                                                \"value\": \"500\"\n" +
+                "                                            },\n" +
+                "                                            \"boundingPolys\": [\n" +
+                "                                                {\n" +
+                "                                                    \"vertices\": [\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 460.0,\n" +
+                "                                                            \"y\": 511.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 497.0,\n" +
+                "                                                            \"y\": 511.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 497.0,\n" +
+                "                                                            \"y\": 534.0\n" +
+                "                                                        },\n" +
+                "                                                        {\n" +
+                "                                                            \"x\": 460.0,\n" +
+                "                                                            \"y\": 534.0\n" +
+                "                                                        }\n" +
+                "                                                    ]\n" +
+                "                                                }\n" +
+                "                                            ]\n" +
+                "                                        }\n" +
+                "                                    }\n" +
+                "                                }\n" +
+                "                            ]\n" +
+                "                        }\n" +
+                "                    ],\n" +
+                "                    \"totalPrice\": {\n" +
+                "                        \"price\": {\n" +
+                "                            \"text\": \"33,260\",\n" +
+                "                            \"formatted\": {\n" +
+                "                                \"value\": \"33260\"\n" +
+                "                            },\n" +
+                "                            \"boundingPolys\": [\n" +
+                "                                {\n" +
+                "                                    \"vertices\": [\n" +
+                "                                        {\n" +
+                "                                            \"x\": 506.0,\n" +
+                "                                            \"y\": 771.0\n" +
+                "                                        },\n" +
+                "                                        {\n" +
+                "                                            \"x\": 643.0,\n" +
+                "                                            \"y\": 773.0\n" +
+                "                                        },\n" +
+                "                                        {\n" +
+                "                                            \"x\": 643.0,\n" +
+                "                                            \"y\": 800.0\n" +
+                "                                        },\n" +
+                "                                        {\n" +
+                "                                            \"x\": 505.0,\n" +
+                "                                            \"y\": 798.0\n" +
+                "                                        }\n" +
+                "                                    ]\n" +
+                "                                }\n" +
+                "                            ]\n" +
+                "                        }\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            },\n" +
+                "            \"uid\": \"fddf79594ca9422a942cd63b9a8dba4e\",\n" +
+                "            \"name\": \"demo\",\n" +
+                "            \"inferResult\": \"SUCCESS\",\n" +
+                "            \"message\": \"SUCCESS\",\n" +
+                "            \"validationResult\": {\n" +
+                "                \"result\": \"NO_REQUESTED\"\n" +
+                "            }\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Map<String, Object> receiptData = new HashMap<>();
+        try {
+            receiptData = objectMapper.readValue(json, Map.class);
+        } catch (Exception e) {
+
+        }
 
         Map<String, Object> receipt = (Map<String, Object>) ((List<Map>) receiptData.get("images")).get(0).get("receipt");
         List<Map> items = (List<Map>) ((List<Map>) ((Map<String, Object>) receipt.get("result")).get("subResults")).get(0).get("items");
@@ -491,8 +612,6 @@ public class RefrigeratorsService {
             log.debug("재료 DB에 존재 여부 : {}", existsIngredient(itemMappingResult));
             if(existsIngredient(itemMappingResult)) {
                 list.add(new SearchIngredientResponse(searchIngredient(itemMappingResult)));
-            } else {
-                list.add(new SearchIngredientResponse(itemName));
             }
         }
 

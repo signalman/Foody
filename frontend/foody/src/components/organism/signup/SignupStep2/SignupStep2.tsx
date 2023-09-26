@@ -8,34 +8,34 @@ import SignupTitle from 'components/atom/SignupTitle/SignupTitle';
 import LargeButton from 'components/atom/LargeButton/LargeButton';
 
 interface SignupStep2Probs {
-	selectGender: string;
-	setSelectGender: Dispatch<SetStateAction<string>>;
+	selectGender: number;
+	setSelectGender: Dispatch<SetStateAction<number>>;
 	nextButton: () => void;
 }
 
 function SignupStep2({ selectGender, setSelectGender, nextButton }: SignupStep2Probs) {
-	const [test, setTest] = useState<string>(selectGender);
+	const [gender, setGender] = useState<number>(selectGender);
 	const [isWomanSelected, setIsWomanSelected] = useState<boolean>(true);
 	const [isManSelected, setIsManSelected] = useState<boolean>(false);
 
 	useEffect(() => {
-		setSelectGender(test);
+		setSelectGender(gender);
 
-		if (test === '여성') {
+		if (gender === 2) {
 			setIsWomanSelected(true);
 			setIsManSelected(false);
-		} else if (test === '남성') {
+		} else if (gender === 1) {
 			setIsWomanSelected(false);
 			setIsManSelected(true);
 		}
-	}, [test, setSelectGender, setIsWomanSelected, setIsManSelected]);
+	}, [setSelectGender, setIsWomanSelected, setIsManSelected, gender]);
 
 	return (
 		<div>
 			<SignupTitle value="성별을 선택해주세요" />
 			<div className="Signup-gender-list">
-				<SignupGenderItem gender="여성" imgsrc={Girl} setTest={setTest} isSelected={isWomanSelected} />
-				<SignupGenderItem gender="남성" imgsrc={Boy} setTest={setTest} isSelected={isManSelected} />
+				<SignupGenderItem gender="여성" imgsrc={Girl} setTest={setGender} isSelected={isWomanSelected} />
+				<SignupGenderItem gender="남성" imgsrc={Boy} setTest={setGender} isSelected={isManSelected} />
 			</div>
 			<LargeButton buttonClick={nextButton} imgsrc="" value="다음" buttonColor={LargeButtonColor.Green} />
 		</div>

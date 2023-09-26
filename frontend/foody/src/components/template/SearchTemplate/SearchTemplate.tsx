@@ -5,10 +5,11 @@ import LayoutBottomMargin, { LayoutLeftRightMargin, LayoutTopMargin } from '../.
 import Layout from '../Layout/Layout';
 import ContentsLayout from '../ContentsLayout/ContentsLayout';
 import FloatingLayout from '../FloatingLayout/FloatingLayout';
+import BottomButtonLayout from '../BottomButtonLayout/BottomButtonLayout';
 
 function SearchTemplate({ children }: { children: ReactNode[] }) {
 	return (
-		<Layout marginTop={LayoutTopMargin.mt10} padding={LayoutPadding.p10}>
+		<Layout marginTop={LayoutTopMargin.mt10} marginBottom={LayoutBottomMargin.mbTabbar} padding={LayoutPadding.p10}>
 			{/* 인풋 */}
 			<ContentsLayout marginBottom={LayoutBottomMargin.mb20}>{children[0]}</ContentsLayout>
 
@@ -29,7 +30,7 @@ function SearchTemplate({ children }: { children: ReactNode[] }) {
 			<FloatingLayout>{children[4]}</FloatingLayout>
 
 			{/* 검색/등록 버튼 */}
-			<ContentsLayout marginBottom={LayoutBottomMargin.mb0}>{children[5]}</ContentsLayout>
+			<BottomButtonLayout>{children[5]}</BottomButtonLayout>
 		</Layout>
 	);
 }

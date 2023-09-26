@@ -2,11 +2,13 @@ package com.foody.recipe.repository;
 
 import com.foody.recipe.entity.Recipe;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class RecipeJDBCRepository implements RecipeCustomRepository{
@@ -14,7 +16,16 @@ public class RecipeJDBCRepository implements RecipeCustomRepository{
     private final JdbcTemplate jdbcTemplate;
     @Override
     public void bulkInsert(List<Recipe> recipes) {
-        batchInsert(1000, recipes);
+
+        int batchSize = 1000;
+        for (int i = 0; i < recipes.size(); i += batchSize) {
+            List<Recipe> batch = recipes.subList(i, Math.min(i + batchSize, recipes.size()));
+            batchInsert(batch);
+
+            if (i % 5000 == 0 || i == recipes.size() - 1) {  // 5000번째나 마지막 배치의 경우 로그 출력
+                log.info("Inserted {} out of {} recipes.", i + batch.size(), recipes.size());
+            }
+        }
     }
 
     @Override
@@ -26,11 +37,11 @@ public class RecipeJDBCRepository implements RecipeCustomRepository{
         return count > 0;
     }
 
-    private void batchInsert(int batchSize, List<Recipe> recipes) {
+    private void batchInsert(List<Recipe> recipes) {
         String sql = "INSERT INTO recipe (id, name, ingredient, description, url, difficulty, servers, " +
                 "food_method, food_situation, food_ingredients, food_types) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.batchUpdate(sql, recipes, batchSize, (ps, recipe) -> {
+        jdbcTemplate.batchUpdate(sql, recipes, 1000, (ps, recipe) -> {
             ps.setLong(1, recipe.getId());
             ps.setString(2, recipe.getName());
             ps.setString(3, recipe.getIngredient());

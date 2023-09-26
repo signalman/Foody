@@ -61,14 +61,14 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 		if (selectedIngredientList && selectedIngredientList.length !== 0) {
 			console.log('등록');
 			console.log(customIngredientList);
-			setOpen(false);
-			setTabbarOn(!tabbarOn);
 			createIngredientList(
 				selectedIngredientList.map((item) => item.key),
 				customIngredientList,
 			).then((res) => {
 				if (res.status === 204) {
 					toast.success('재료 등록에 성공하였습니다.');
+					setOpen(false);
+					setTabbarOn(!tabbarOn);
 				} else {
 					toast.error('재료 등록에 실패하였습니다.');
 				}

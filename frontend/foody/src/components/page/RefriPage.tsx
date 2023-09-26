@@ -85,7 +85,7 @@ function RefriPage() {
 			<IngredientsCategory categoryList={categoryList} selected={selectedCategory} setSelected={setSelectedCategory} />
 
 			{/* 재료 목록 */}
-			{ingredientsList && <IngredientsList ingredientsList={ingredientsList} type={type} />}
+			<IngredientsList ingredientsList={ingredientsList} type={type} />
 
 			{/* 카메라/앨범/검색 메뉴 */}
 			<FloatingMenu menuList={['camera', 'album', 'search']} onMenuSelect={handleMenuSelect} />

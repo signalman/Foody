@@ -1,5 +1,8 @@
 package com.foody.recipe.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,8 @@ class RecipeUtilsTest {
         for (String step : steps) {
             System.out.println(step);
         }
+
+        assertEquals(steps.size(), 6);
     }
 
     @Test
@@ -29,6 +34,7 @@ class RecipeUtilsTest {
 
         System.out.println(parsers);
 
+        assertNotNull(parsers);
     }
 
 }

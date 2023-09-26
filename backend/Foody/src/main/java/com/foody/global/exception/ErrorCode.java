@@ -28,7 +28,10 @@ public enum ErrorCode {
     FILE_UPLOAD_FAIL("AWS01", HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패하였습니다."),
 
     /* RecommendException */
-    BIGDATA_SERVER_ERROR("SERVER01", HttpStatus.INTERNAL_SERVER_ERROR, "빅데이터 서버에 에러가 발생했습니다.");
+    BIGDATA_SERVER_ERROR("SERVER01", HttpStatus.INTERNAL_SERVER_ERROR, "빅데이터 서버에 에러가 발생했습니다."),
+
+    /* Recipe Exception */
+    RECIPE_NOT_FOUND("RES01", HttpStatus.NOT_FOUND, "존재하지 않는 레시피입니다.");
 
     private final String code;
     private final HttpStatus httpStatus;

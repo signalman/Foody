@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  fastapi-app:
+    container_name: bigdata-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bigdata-image:latest
+    ports:
+      - "8000:80"
+#    environment:
+#      - DATABASE_URL=your_database_url

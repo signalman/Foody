@@ -61,8 +61,11 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 				selectedIngredientList.map((item) => item.key),
 				customIngredientList,
 			).then((res) => {
-				toast.success('재료 등록 성공');
-				console.log(res);
+				if (res.status === 204) {
+					toast.success('재료 등록에 성공하였습니다.');
+				} else {
+					toast.error('재료 등록에 실패하였습니다.');
+				}
 			});
 		}
 	};

@@ -1,7 +1,6 @@
-package com.foody.recommendednutrient.entity;
+package com.foody.nutrient.entity;
 
 import com.foody.global.entity.BaseEntity;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecommendedNutrient extends BaseEntity {
+public class Nutrient extends BaseEntity {
 
     private double energy; // 칼로리, Kcal
     private double carbohydrates; // 탄수화물, g

@@ -3,9 +3,11 @@ package com.foody.recipe.repository;
 import com.foody.recipe.entity.Recipe;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 @RequiredArgsConstructor
 public class RecipeJDBCRepository implements RecipeCustomRepository{
 
@@ -25,8 +27,8 @@ public class RecipeJDBCRepository implements RecipeCustomRepository{
     }
 
     private void batchInsert(int batchSize, List<Recipe> recipes) {
-        String sql = "INSERT INTO recipe (recipe_id, name, ingredients, recipe, image_url, difficulty, servers, " +
-                "food_preparation_methods, food_situations, food_ingredients, food_types) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO recipe (id, name, ingredient, description, url, difficulty, servers, " +
+                "food_method, food_situation, food_ingredients, food_types) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, recipes, batchSize, (ps, recipe) -> {
             ps.setLong(1, recipe.getId());

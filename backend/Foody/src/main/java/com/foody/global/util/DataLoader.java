@@ -5,18 +5,23 @@ import com.foody.recipe.repository.RecipeCustomRepository;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
+@RequiredArgsConstructor
+@Component
 public class DataLoader {
+
+    private final RecipeCustomRepository recipeCustomRepository;
 
     public List<Recipe> readRecipesFromCSV(Path filePath) throws IOException {
         try (Reader reader = Files.newBufferedReader(filePath)) {
@@ -39,7 +44,7 @@ public class DataLoader {
     }
 
     @Bean
-    public CommandLineRunner dataLoad(RecipeCustomRepository recipeCustomRepository) {
+    public CommandLineRunner dataLoad() {
         return (args) -> {
             boolean exists = recipeCustomRepository.isExistsData();
             ClassPathResource resource = new ClassPathResource("recipe/foody_recipe.csv");

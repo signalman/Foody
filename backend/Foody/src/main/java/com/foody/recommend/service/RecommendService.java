@@ -52,6 +52,7 @@ public class RecommendService {
                            .collect(Collectors.joining(" "));
     }
 
+    // TODO : 테스트를 위해 PUBLIC으로 열어둠, 나중에 Private으로 닫아야 함
     public List<RecommendItem> ingredientSendToServer(String ingredients) {
 
         IngredientInput ingredientInput = new IngredientInput(ingredients, 5);

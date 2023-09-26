@@ -1,15 +1,16 @@
 version: '3.8'
 
 services:
-  front-container:
+  react-app:
+    container_name: front-container
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
-      REACT_APP_SERVER_BASE_URL: ${REACT_APP_SERVER_BASE_URL}
-      REACT_APP_OAUTH_SERVER_URL: ${REACT_APP_OAUTH_SERVER_URL}
-      REACT_APP_OAUTH_DEVELOPE_URL: ${REACT_APP_OAUTH_DEVELOPE_URL}
-      REACT_APP_DEVELOP_BASE_URL: ${REACT_APP_DEVELOP_BASE_URL}
-      TZ: Asia/Seoul
+      - REACT_APP_SERVER_BASE_URL: ${REACT_APP_SERVER_BASE_URL}
+      - REACT_APP_OAUTH_SERVER_URL: ${REACT_APP_OAUTH_SERVER_URL}
+      - REACT_APP_OAUTH_DEVELOPE_URL: ${REACT_APP_OAUTH_DEVELOPE_URL}
+      - REACT_APP_DEVELOP_BASE_URL: ${REACT_APP_DEVELOP_BASE_URL}
+      - TZ: Asia/Seoul

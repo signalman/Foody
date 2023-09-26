@@ -14,6 +14,16 @@ public class RecipeJDBCRepository implements RecipeCustomRepository{
     public void bulkInsert(List<Recipe> recipes) {
         batchInsert(1000, recipes);
     }
+
+    @Override
+    public boolean isExistsData() {
+        // 128671는 1번째 데이터로, 없으면 insert 진행
+        String sql = "SELECT count(*) FROM recipe WHERE id = ?";
+
+        int count = jdbcTemplate.queryForObject(sql, new Object[]{128671}, Integer.class);
+        return count > 0;
+    }
+
     private void batchInsert(int batchSize, List<Recipe> recipes) {
         String sql = "INSERT INTO recipe (recipe_id, name, ingredients, recipe, image_url, difficulty, servers, " +
                 "food_preparation_methods, food_situations, food_ingredients, food_types) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

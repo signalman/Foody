@@ -1,13 +1,13 @@
-package com.foody.recommendednutrient.service;
+package com.foody.nutrient.service;
 
 import com.foody.global.exception.ErrorCode;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
-import com.foody.recommendednutrient.dto.response.RecommendedNutrientResponse;
-import com.foody.recommendednutrient.entity.RecommendedNutrient;
-import com.foody.recommendednutrient.exception.RecommendedNutrientException;
-import com.foody.recommendednutrient.repository.RecommendedNutrientRepository;
+import com.foody.nutrient.dto.response.NutrientResponse;
+import com.foody.nutrient.entity.Nutrient;
+import com.foody.nutrient.exception.NutrientException;
+import com.foody.nutrient.repository.NutrientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class RecommendedNutrientService {
+public class NutrientService {
 
     private final MemberRepository memberRepository;
-    private final RecommendedNutrientRepository recommendedNutrientRepository;
+    private final NutrientRepository nutrientRepository;
 
     // 영양 정보 생성
     @Transactional
-    public void createRecommendedNutrient(String email) {
+    public void createNutrient(String email) {
         Member member = memberRepository.findByEmail(email)
                                       .orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         // 나이, 성별 바탕으로 생성 ->
@@ -230,20 +230,20 @@ public class RecommendedNutrientService {
             }
         }
 
-        RecommendedNutrient recommendedNutrient = new RecommendedNutrient(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron,fats, vitaminA, vitaminC);
-        member.createNutrient(recommendedNutrient);
+        Nutrient nutrient = new Nutrient(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron,fats, vitaminA, vitaminC);
+        member.createNutrient(nutrient);
 
-        recommendedNutrientRepository.save(recommendedNutrient);
+        nutrientRepository.save(nutrient);
 
     }
 
     // 영양 정보 조회
-    public RecommendedNutrientResponse getRecommendedNutrient(String email) {
+    public NutrientResponse getNutrient(String email) {
         Member member =memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
 
         Long id = member.getId();
-        RecommendedNutrient recommendedNutrient = recommendedNutrientRepository.findById(id).orElseThrow(() -> new RecommendedNutrientException(ErrorCode.RECOMMENED_NOT_FOUND));
+        Nutrient nutrient = nutrientRepository.findById(id).orElseThrow(() -> new NutrientException(ErrorCode.NUTRIENT_NOT_FOUND));
 
-        return new RecommendedNutrientResponse(recommendedNutrient);
+        return new NutrientResponse(nutrient);
     }
 }

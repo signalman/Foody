@@ -1,6 +1,6 @@
-package com.foody.recommendednutrient.dto.request;
+package com.foody.nutrient.dto.request;
 
-public record CreateRecommendedNutrientRequest(
+public record CreateNutrientRequest(
     double carbohydrates, // 탄수화물
     double protein, // 단백질
     double dietaryFiber, // 식이섬유

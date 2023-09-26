@@ -5,7 +5,7 @@ import com.foody.mbti.entity.Mbti;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.MemberSignupRequest;
-import com.foody.recommendednutrient.entity.RecommendedNutrient;
+import com.foody.nutrient.entity.Nutrient;
 import java.util.Collection;
 import java.util.Map;
 import javax.persistence.Entity;
@@ -40,15 +40,15 @@ public class Member extends UserInfo {
     private String profileImg;
 
     @OneToOne
-    @JoinColumn(name = "recommended_nutrient_id")
-    private RecommendedNutrient recommendedNutrient;
+    @JoinColumn(name = "nutrient_id")
+    private Nutrient nutrient;
 
     @OneToOne
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
 
-    public void createNutrient(RecommendedNutrient recommendedNutrient) {
-        this.recommendedNutrient = recommendedNutrient;
+    public void createNutrient(Nutrient nutrient) {
+        this.nutrient = nutrient;
     }
 
     public void createMbti(Mbti mbti) {

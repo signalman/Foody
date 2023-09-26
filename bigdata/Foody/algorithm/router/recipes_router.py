@@ -43,7 +43,7 @@ class UserDeficiencyInput(BaseModel):
 
 
 @router.post("/ingredients")
-async def get_top_recipes(item: IngredientInput, top_k: int = 30):
+async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 30):
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
     ingredients_vector = vectorizer.transform([item.ingredients])
@@ -57,7 +57,7 @@ async def get_top_recipes(item: IngredientInput, top_k: int = 30):
 
 
 @router.post("/nutrient")
-async def get_nutrient_recommendations(user_deficiency: UserDeficiencyInput, top_k: int = 5):
+async def get_nutrient_recommendations_by_filtering(user_deficiency: UserDeficiencyInput, top_k: int = 5):
     # Calculate recommendation score based on user's nutrient deficiency
     def calculate_score(row):
         score = 0
@@ -76,7 +76,7 @@ def euclidean_distance(vector1, vector2):
     return np.sqrt(np.sum((vector1 - vector2) ** 2))
 
 
-@router.post("/nutrients")
+@router.post("/nutrients/euclidean")
 def get_nutrient_recommendations_euclidean(user_deficiency: UserDeficiencyInput, top_k: int = 5):
     user_vector = np.array(list(user_deficiency.dict().values()))
     nutrient_columns = list(user_deficiency.dict().keys())
@@ -86,3 +86,52 @@ def get_nutrient_recommendations_euclidean(user_deficiency: UserDeficiencyInput,
     top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']), "distance": distances[index]} for index in
                    top_indices]
     return {"Top Nutrient-Based Recipes (Euclidean Distance)": top_recipes}
+
+
+@router.post("/nutrients/cosine")
+def get_nutrient_recommendations_cosine(user_deficiency: UserDeficiencyInput, top_k: int = 5):
+    # Convert user deficiency into an array (reshape to make it 2D for cosine_similarity function)
+    user_vector = np.array(list(user_deficiency.dict().values())).reshape(1, -1)
+
+    # Extract nutrient columns from the data
+    nutrient_columns = list(user_deficiency.dict().keys())
+    recipe_vectors = recipe_data[nutrient_columns].values
+
+    # Calculate cosine similarities for each recipe
+    similarities = cosine_similarity(user_vector, recipe_vectors).flatten()
+
+    # Get the indices of the top_k most similar recipes
+    top_indices = similarities.argsort()[-top_k:][::-1]
+
+    # Extract top recipes and their similarities
+    top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']), "similarity": similarities[index]} for index
+                   in top_indices]
+
+    return {"Top Nutrient-Based Recipes (Cosine Similarity)": top_recipes}
+
+
+def manhattan_distance(vector1, vector2):
+    """Compute the Manhattan Distance between two vectors."""
+    return np.sum(np.abs(vector1 - vector2))
+
+
+@router.post("/nutrients/manhattan")
+def get_nutrient_recommendations_manhattan(user_deficiency: UserDeficiencyInput, top_k: int = 5):
+    # Convert user deficiency into an array
+    user_vector = np.array(list(user_deficiency.dict().values()))
+
+    # Extract nutrient columns from the data
+    nutrient_columns = list(user_deficiency.dict().keys())
+    recipe_vectors = recipe_data[nutrient_columns].values
+
+    # Calculate Manhattan distances for each recipe
+    distances = np.array([manhattan_distance(user_vector, recipe_vector) for recipe_vector in recipe_vectors])
+
+    # Get the indices of the top_k closest recipes
+    top_indices = distances.argsort()[:top_k]
+
+    # Extract top recipes and their distances
+    top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']), "distance": distances[index]} for index in
+                   top_indices]
+
+    return {"Top Nutrient-Based Recipes (Manhattan Distance)": top_recipes}

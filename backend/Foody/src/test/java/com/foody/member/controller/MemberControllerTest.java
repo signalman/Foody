@@ -23,6 +23,7 @@ import com.foody.member.dto.request.CheckNicknameRequest;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.RefreshTokenRequest;
+import com.foody.member.dto.response.NicknameResponse;
 import com.foody.member.dto.response.RefreshTokenResponse;
 import com.foody.member.dto.response.TokenResponse;
 import com.foody.security.service.CustomUserDetailService;
@@ -178,5 +179,30 @@ public class MemberControllerTest extends ControllerTest {
                 ));
     }
 
+    @Test
+    @DisplayName("회원_닉네임_반환한다.")
+    void getNicknameTest() throws Exception {
+        LoginInfo loginInfo = new LoginInfo("lkm454545@gmail.com");
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        when(memberService.getNickname("lkm454545@gmail.com")).thenReturn(new NicknameResponse("닉네임"));
+
+        mockMvc.perform(
+            get(baseUrl+ "/nickname")
+                .with(authentication(new TestingAuthenticationToken(loginInfo,null)))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk())
+            .andDo(
+                document("/member/nickname",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    responseFields(
+                        fieldWithPath("nickname").description("닉네임")
+                    )
+                    )
+            );
+    }
 
 }

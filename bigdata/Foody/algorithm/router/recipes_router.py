@@ -27,6 +27,7 @@ recipe_data_jaccard = pd.read_csv('data/recipe_jaccard.csv')
 
 class IngredientInput(BaseModel):
     ingredients: str
+    top_k: int
 
 
 # 부족 영양소
@@ -87,8 +88,11 @@ def ingredient_similarity(A, B):
 #
 #     return {"Top Recipes": top_recipes}
 
+# top_k를 IngredientInput에 넣었음. 아래 메소드들도 전부 바꿔줘야 함
 @router.post("/ingredients")
-async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 30):
+async def get_top_recipes_from_refrigerator(item: IngredientInput):
+
+    top_k = item.top_k
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
     ingredients_vector = vectorizer.transform([item.ingredients])
@@ -111,7 +115,7 @@ async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 
         for index in top_indices
     ]
 
-    return {"Top Recipes": top_recipes}
+    return top_recipes
 
 
 @router.post("/ingredients/jaccard")

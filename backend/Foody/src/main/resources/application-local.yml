@@ -30,3 +30,7 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
+
+recommend:
+  server:
+    url: ${DATA_URL}

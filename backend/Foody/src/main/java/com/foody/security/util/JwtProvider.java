@@ -17,7 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtProvider {
 
-    private final Long accessTokenExpireTimeMs = 3600000L; // 1시간
+//    private final Long accessTokenExpireTimeMs = 3600000L; // 1시간
+    private final Long accessTokenExpireTimeMs = 360000000L;
     private final Long refreshTokenExpireTimeMs = 1209600000L; // 2주일
     private final RedisTemplate<String, String> redisTemplate;
 

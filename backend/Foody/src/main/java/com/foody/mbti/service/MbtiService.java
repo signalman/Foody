@@ -416,7 +416,7 @@ public class MbtiService {
             "jfif", "jfif", "jfif", "jfif", "jfif", "jfif",
             "jfif", "jfif", "jfif", "jfif", "jfif", "jfif",
             "jpg", "jpg", "jpg", "jpg", "jpg", "jpg",
-            "jpg", "jpg", "jpg", "jfif"
+            "jpg", "jpg", "jpg", "jpg"
         };
 
         for (int i = 0; i < foods.length; i++) {

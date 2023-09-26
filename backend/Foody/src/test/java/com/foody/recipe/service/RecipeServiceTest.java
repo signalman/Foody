@@ -1,8 +1,10 @@
 package com.foody.recipe.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.foody.recipe.dto.RecipeResponse;
+import com.foody.recipe.exception.RecipeException;
 import com.foody.util.ServiceTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +36,16 @@ class RecipeServiceTest extends ServiceTest {
         List<RecipeResponse> recipeResponseList = recipeService.findRecipeListByRecommend(ids);
 
         assertEquals(recipeResponseList.size(), 3);
+    }
+
+    @Test
+    @DisplayName("없는 레시피 조회시 custom error 반환한다")
+    void t3() throws Exception {
+
+        long inValidId = 9999999999L;
+
+        assertThrows(RecipeException.class, () -> recipeService.findById(inValidId));
+
     }
 
 }

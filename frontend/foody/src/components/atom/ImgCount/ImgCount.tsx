@@ -9,8 +9,9 @@ interface ImgCountProps {
 function ImgCount({ value, total }: ImgCountProps) {
 	return (
 		<div className="imgcount-box">
-			<p>{value}</p>
-			<p>{total}</p>
+			<p>
+				{value}/{total}
+			</p>
 		</div>
 	);
 }

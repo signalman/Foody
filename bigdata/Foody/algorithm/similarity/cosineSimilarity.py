@@ -22,7 +22,7 @@ def get_top_recipes_with_time(ingredients: str, data: pd.DataFrame, top_k: int =
 
 
 if __name__ == "__main__":
-    recipe_data = pd.read_csv('assets/recipe_information.csv')
+    recipe_data = pd.read_csv('data/recipe_information.csv')
     recipe_data_cleaned = recipe_data.dropna(subset=['ingredients_concat'])
     test_ingredients = "어묵 김 당면 양파 당근"  # Modify as needed
     top_recipes, elapsed_time = get_top_recipes_with_time(test_ingredients, recipe_data_cleaned)

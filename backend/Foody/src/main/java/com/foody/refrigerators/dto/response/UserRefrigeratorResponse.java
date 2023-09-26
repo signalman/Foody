@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 public record UserRefrigeratorResponse(
         Long ingredientId,
         String ingredientName,
-        Long categoryId,
+        Long ingredientCategoryId,
         String createDate
 ) {
     public UserRefrigeratorResponse(RefrigeratorIngredient refrigeratorIngredient) {

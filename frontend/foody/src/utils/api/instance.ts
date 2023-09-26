@@ -3,7 +3,8 @@ import LocalStorage from 'constants/LocalStorage';
 // import SessionStorage from 'constants/storage/SessionStorage';
 
 export const instance: AxiosInstance = axios.create({
-	baseURL: process.env.REACT_APP_SERVER_BASE_URL,
+	// baseURL: process.env.REACT_APP_SERVER_BASE_URL,
+	baseURL: process.env.REACT_APP_DEVELOP_BASE_URL,
 	headers: {
 		'Content-Type': 'application/json',
 	},
@@ -33,9 +34,4 @@ instance.interceptors.response.use(
 	},
 );
 
-export const openviduInstance: AxiosInstance = axios.create({
-	baseURL: process.env.REACT_APP_SERVER_BASE_URL,
-	headers: {
-		'Content-Type': 'application/json',
-	},
-});
+export default instance;

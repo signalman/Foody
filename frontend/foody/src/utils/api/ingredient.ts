@@ -1,3 +1,4 @@
+import { CustomIngredientItemType } from 'types/refrigerator';
 import { instance } from './instance';
 
 export const getSearchIndegredients = async (keyword: string) => {
@@ -25,6 +26,16 @@ export const getOCRReceiptIndegredients = async (uuid: string, data: string) => 
 
 export const getReceiptIndegredients = async () => {
 	const response = await instance.post('/refrigerator');
+	return response;
+};
+
+export const createIngredientList = async (ingredients: number[], customIngredients: CustomIngredientItemType[]) => {
+	const body = {
+		ingredients,
+		customIngredients,
+	};
+	console.log('body', body);
+	const response = await instance.post('/refrigerators', body);
 	return response;
 };
 

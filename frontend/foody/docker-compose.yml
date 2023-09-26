@@ -8,9 +8,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    environment:
+    args:
       - REACT_APP_SERVER_BASE_URL=${REACT_APP_SERVER_BASE_URL}
       - REACT_APP_OAUTH_SERVER_URL=${REACT_APP_OAUTH_SERVER_URL}
       - REACT_APP_OAUTH_DEVELOPE_URL=${REACT_APP_OAUTH_DEVELOPE_URL}
       - REACT_APP_DEVELOP_BASE_URL=${REACT_APP_DEVELOP_BASE_URL}
+    environment:
       - TZ=Asia/Seoul

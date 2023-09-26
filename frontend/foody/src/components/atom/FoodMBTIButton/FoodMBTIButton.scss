@@ -1,0 +1,17 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.mbti-box {
+	@include f.flex(column, center, center, 3px);
+
+	img {
+		width: 70px;
+		height: 80px;
+	}
+
+	p {
+		font-size: var.$p1;
+		font-weight: var.$fw-600;
+		color: var.$black-500;
+	}
+}

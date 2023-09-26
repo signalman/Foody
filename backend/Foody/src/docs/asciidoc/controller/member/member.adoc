@@ -8,6 +8,16 @@ include::{snippets}/member/join/request-fields.adoc[]
 include::{snippets}/member/join/http-response.adoc[]
 include::{snippets}/member/join/response-body.adoc[]
 
+
+=== 닉네임 반환
+
+==== HTTP Request
+include::{snippets}/member/nickname/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/member/nickname/http-response.adoc[]
+include::{snippets}/member/nickname/response-body.adoc[]
+
 === 닉네임 중복 검사
 
 ==== HTTP Request

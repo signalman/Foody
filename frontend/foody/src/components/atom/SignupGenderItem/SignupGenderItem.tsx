@@ -4,13 +4,17 @@ import './SignupGenderItem.scss';
 interface SignupGenderProps {
 	imgsrc: string;
 	gender: string;
-	setTest: Dispatch<React.SetStateAction<string>>;
+	setTest: Dispatch<React.SetStateAction<number>>;
 	isSelected: boolean;
 }
 
 function SignupGenderItem({ imgsrc, gender, setTest, isSelected }: SignupGenderProps) {
 	const handleCheck = (select: string) => {
-		setTest(select);
+		if (select === '여성') {
+			setTest(2);
+		} else {
+			setTest(1);
+		}
 	};
 
 	return (

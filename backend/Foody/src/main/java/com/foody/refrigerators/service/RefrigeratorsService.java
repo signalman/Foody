@@ -1,24 +1,23 @@
 package com.foody.refrigerators.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.foody.global.exception.ErrorCode;
 import com.foody.member.entity.Member;
 import com.foody.member.service.MemberService;
 import com.foody.refrigerators.dto.request.CustomIngredientRequest;
 import com.foody.refrigerators.dto.response.*;
 import com.foody.refrigerators.entity.*;
-import com.foody.refrigerators.exception.IngredientException;
+import com.foody.refrigerators.exception.RefrigeratorsException;
 import com.foody.refrigerators.repository.IngredientCategoryRepository;
 import com.foody.refrigerators.repository.IngredientRepository;
 import com.foody.refrigerators.repository.RefrigeratorIngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
 
@@ -39,20 +38,20 @@ public class RefrigeratorsService {
     public IngredientCategory findIngredientCategory(Long ingredientCategoryId) {
         return ingredientCategoryRepository.findById(ingredientCategoryId)
                 .orElseThrow(
-                        () -> new IngredientException(ErrorCode.INGREDIENT_CATEGORY_NOT_FOUND));
+                        () -> new RefrigeratorsException(ErrorCode.INGREDIENT_CATEGORY_NOT_FOUND));
 
     }
 
     public Ingredient findIngredient(Long ingredientId) {
         return ingredientRepository.findById(ingredientId)
                 .orElseThrow(
-                        () -> new IngredientException(ErrorCode.INGREDIENT_NOT_FOUND));
+                        () -> new RefrigeratorsException(ErrorCode.INGREDIENT_NOT_FOUND));
     }
 
     public RefrigeratorIngredient findRefrigeratorIngredient(Member member, Ingredient ingredient) {
         return refrigeratorIngredientRepository.findByMemberAndIngredient(member, ingredient)
                 .orElseThrow(
-                        () -> new IngredientException(ErrorCode.USER_INGREDIENT_NOT_FOUND));
+                        () -> new RefrigeratorsException(ErrorCode.USER_INGREDIENT_NOT_FOUND));
     }
 
     public boolean existsRefrigeratorIngredient(Member member, Ingredient ingredient) {
@@ -76,7 +75,7 @@ public class RefrigeratorsService {
     public Ingredient searchIngredient(String keyword) {
         return ingredientRepository.findIngredientByIngredientNameAndIngredientType(keyword, IngredientType.INITIAL)
                 .orElseThrow(
-                        () -> new IngredientException(ErrorCode.INGREDIENT_NOT_FOUND)
+                        () -> new RefrigeratorsException(ErrorCode.INGREDIENT_NOT_FOUND)
                 );
     }
 
@@ -95,7 +94,7 @@ public class RefrigeratorsService {
             RefrigeratorIngredient refrigeratorIngredient =
                     RefrigeratorIngredient.from(member, ingredient);
 
-            if(existsRefrigeratorIngredient(member, ingredient)) {
+            if(!existsRefrigeratorIngredient(member, ingredient)) {
                 insertIngredients.add(refrigeratorIngredient);
             }
         }
@@ -116,7 +115,7 @@ public class RefrigeratorsService {
             RefrigeratorIngredient refrigeratorIngredient =
                     RefrigeratorIngredient.from(member, ingredient);
 
-            if(existsRefrigeratorIngredient(member, ingredient)) {
+            if(!existsRefrigeratorIngredient(member, ingredient)) {
                 insertIngredients.add(refrigeratorIngredient);
             }
         }
@@ -158,8 +157,17 @@ public class RefrigeratorsService {
                 .post()
                 .body(BodyInserters.fromValue(imgData))
                 .retrieve()
+                .onStatus(
+                        HttpStatus::is4xxClientError,
+                        clientResponse ->
+                            Mono.error(new RefrigeratorsException(ErrorCode.INVALID_RECEIPT_OCR))
+                )
                 .bodyToMono(Map.class)
                 .block();
+
+        if(receiptData.isEmpty()) {
+            throw new RefrigeratorsException(ErrorCode.INGREDIENT_NOT_FOUND);
+        }
 
         log.debug("영수증 데이터 : {}", receiptData);
 

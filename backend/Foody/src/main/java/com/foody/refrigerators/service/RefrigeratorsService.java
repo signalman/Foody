@@ -1,5 +1,8 @@
 package com.foody.refrigerators.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.foody.global.exception.ErrorCode;
 import com.foody.member.entity.Member;
 import com.foody.member.service.MemberService;
@@ -12,12 +15,12 @@ import com.foody.refrigerators.repository.IngredientRepository;
 import com.foody.refrigerators.repository.RefrigeratorIngredientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -29,6 +32,9 @@ public class RefrigeratorsService {
     private final IngredientCategoryRepository ingredientCategoryRepository;
     private final MemberService memberService;
     private final WebClient webClient;
+
+    @Value("${X_OCR_SECRET}")
+    private String OCRSecret;
 
     public IngredientCategory findIngredientCategory(Long ingredientCategoryId) {
         return ingredientCategoryRepository.findById(ingredientCategoryId)
@@ -75,7 +81,7 @@ public class RefrigeratorsService {
     }
 
     public boolean existsIngredient(String keyword) {
-        return ingredientRepository.existsByIngredientName(keyword);
+        return ingredientRepository.existsByIngredientNameAndIngredientType(keyword, IngredientType.INITIAL);
     }
 
     public void insertIngredient(String email,List<Long> ingredients) {
@@ -142,30 +148,54 @@ public class RefrigeratorsService {
         refrigeratorIngredientRepository.delete(refrigeratorIngredient);
     }
 
-    public List<SearchIngredientResponse> getReceiptIngredient(List<String> itemNames) {
+    public List<SearchIngredientResponse> getReceiptIngredient(String imgData) {
+
+        Map<String, Object> receiptData = WebClient.builder()
+                .baseUrl("https://h06yrkfqdl.apigw.ntruss.com/custom/v1/24865/a3c7f37381726a3c8db098b0146f830eeabd9de71d2b8322576ce264d9730c8f/document/receipt")
+                .defaultHeader("X-OCR-SECRET", OCRSecret)
+                .defaultHeader("Content-Type", "application/json")
+                .build()
+                .post()
+                .body(BodyInserters.fromValue(imgData))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        log.debug("영수증 데이터 : {}", receiptData);
+
+        Map<String, Object> receipt = (Map<String, Object>) ((List<Map>) receiptData.get("images")).get(0).get("receipt");
+        List<Map> items = (List<Map>) ((List<Map>) ((Map<String, Object>) receipt.get("result")).get("subResults")).get(0).get("items");
 
         List<SearchIngredientResponse> list = new ArrayList<>();
 
-        for(String itemName : itemNames) {
-            Items items = webClient.get()
+        for (Map item : items) {
+            Map<String, Object> name = (Map<String, Object>) ((Map<String, Object>) item).get("name");
+            String itemName = (String) ((Map<String, Object>) name.get("formatted")).get("value");
+
+            log.debug("상품명 : {}", itemName);
+
+            Map itemCategorys = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("query", itemName)
-                            .queryParam("display","1")
+                            .queryParam("display", "4")
                             .build())
                     .retrieve()
-                    .bodyToMono(Items.class)
+                    .bodyToMono(Map.class)
                     .block();
 
-            log.debug(items.items().toString());
+            Map itemCategory = ((List<Map>) itemCategorys.get("items")).get(3);
 
-            String itemCategory = items.items().get(0).category4();
-            if(existsIngredient(itemCategory)) {
-                list.add(new SearchIngredientResponse(searchIngredient(itemCategory)));
-            } else {
-                list.add(new SearchIngredientResponse(itemName));
+            String itemMappingResult = ((String) itemCategory.get("category4")).isBlank()
+                    ? ((String) itemCategory.get("category3")) : ((String) itemCategory.get("category4"));
+
+            log.debug("네이버 쇼핑 API 호출 결과 : {}", itemMappingResult);
+
+            log.debug("재료 DB에 존재 여부 : {}", existsIngredient(itemMappingResult));
+            if (existsIngredient(itemMappingResult)) {
+                list.add(new SearchIngredientResponse(searchIngredient(itemMappingResult)));
             }
-
         }
+
         return list;
 
     }

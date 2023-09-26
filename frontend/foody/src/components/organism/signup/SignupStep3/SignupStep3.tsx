@@ -2,7 +2,7 @@ import LargeButton from 'components/atom/LargeButton/LargeButton';
 import SignupTitle from 'components/atom/SignupTitle/SignupTitle';
 import UnderlineInput from 'components/atom/UnderlineInput/UnderlineInput';
 import LargeButtonColor from 'constants/color';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 interface SignupStep3Props {
 	age: string;
@@ -11,25 +11,26 @@ interface SignupStep3Props {
 }
 
 function SignupStep3({ age, setAge, nextButton }: SignupStep3Props) {
-	const [check, setCheck] = useState(false);
+	const ageCheck = (value: string) => {
+		const numbericRegex = /^[0-9]+$/;
+		const isTrue = numbericRegex.test(value);
 
-	useEffect(() => {
-		if (age.length > 0) {
-			setCheck(true);
-		} else {
-			setCheck(false);
+		if (isTrue === true || value === '') {
+			return true;
 		}
-	}, [age]);
+
+		return false;
+	};
 
 	return (
 		<div className="step3-container">
 			<SignupTitle value="나이를 알려주세요" />
-			<UnderlineInput onChangeValue={setAge} placeholder="나이" unit="" value={age} />
+			<UnderlineInput maxlength={3} isValid={ageCheck} onChangeValue={setAge} placeholder="나이" unit="" value={age} />
 			<LargeButton
 				buttonClick={nextButton}
 				imgsrc=""
 				value="다음"
-				buttonColor={check ? LargeButtonColor.Green : LargeButtonColor.Gray}
+				buttonColor={ageCheck(age) ? LargeButtonColor.Green : LargeButtonColor.Gray}
 			/>
 		</div>
 	);

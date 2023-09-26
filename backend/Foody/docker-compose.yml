@@ -4,9 +4,10 @@ services:
     image: mysql:8.0.34
     container_name: mysql-container
     environment:
-      MYSQL_USER: foody
+      MYSQL_USER: ${MYSQL_USER}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: foody
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:

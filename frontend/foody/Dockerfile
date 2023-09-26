@@ -9,7 +9,7 @@ RUN npm install
 
 # 소스 코드 복사 및 빌드
 COPY . ./
-RUN echo "REACT_APP_OAUTH_SERVER_URL: $REACT_APP_OAUTH_SERVER_URL"
+RUN echo "REACT_APP_OAUTH_SERVER_URL: ${REACT_APP_OAUTH_SERVER_URL}"
 RUN npm run build
 
 # 런타임 단계

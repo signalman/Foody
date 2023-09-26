@@ -1,0 +1,20 @@
+=== MBTI 시작시 이미지 요청
+
+==== HTTP Request
+include::{snippets}/mbti/image/http-request.adoc[]
+include::{snippets}/mbti/image/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/mbti/image/http-response.adoc[]
+include::{snippets}/mbti/image/response-body.adoc[]
+
+
+=== MBTI 검사 실행
+
+==== HTTP Request
+include::{snippets}/mbti/create/http-request.adoc[]
+include::{snippets}/mbti/create/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/mbti/create/http-response.adoc[]
+include::{snippets}/mbti/create/response-body.adoc[]

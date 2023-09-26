@@ -50,7 +50,7 @@ public class MemberControllerTest extends ControllerTest {
         securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
         SecurityContextHolder.setContext(securityContext);
 
-        MemberJoinRequest memberJoinRequest = new MemberJoinRequest("lkm454545@gmail.com","코카콜라",187.46,70,1,26,1);
+        MemberJoinRequest memberJoinRequest = new MemberJoinRequest("코카콜라",187.46,70,1,26,1);
 
         mockMvc.perform(
             post(baseUrl + "/join")
@@ -63,11 +63,10 @@ public class MemberControllerTest extends ControllerTest {
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestFields(
-                    fieldWithPath("email").description("이메일"),
                     fieldWithPath("nickname").description("닉네임"),
                     fieldWithPath("height").description("키"),
                     fieldWithPath("weight").description("몸무게"),
-                    fieldWithPath("gender").description("성별(남자-0, 여자-1)"),
+                    fieldWithPath("gender").description("성별(남자-1, 여자-2)"),
                     fieldWithPath("age").description("나이"),
                     fieldWithPath("activityLevel").description("활동량(1(적다),2(보통),3(많다))")
                 )

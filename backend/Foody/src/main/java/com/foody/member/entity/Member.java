@@ -1,6 +1,7 @@
 package com.foody.member.entity;
 
 import com.foody.global.entity.UserInfo;
+import com.foody.mbti.entity.Mbti;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.MemberSignupRequest;
@@ -42,6 +43,17 @@ public class Member extends UserInfo {
     @JoinColumn(name = "recommended_nutrient_id")
     private RecommendedNutrient recommendedNutrient;
 
+    @OneToOne
+    @JoinColumn(name = "mbti_id")
+    private Mbti mbti;
+
+    public void createNutrient(RecommendedNutrient recommendedNutrient) {
+        this.recommendedNutrient = recommendedNutrient;
+    }
+
+    public void createMbti(Mbti mbti) {
+        this.mbti = mbti;
+    }
 
     public static Member signupMember(MemberSignupRequest memberSignupRequest) {
         return Member.builder()

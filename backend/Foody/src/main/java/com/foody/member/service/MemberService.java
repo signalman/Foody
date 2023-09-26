@@ -112,7 +112,7 @@ public class MemberService {
         // 나머지 정보 저장
         Member member = findByEmail(email);
         member.joinMember(memberJoinRequest);
-        recommendedNutrientService.createRecommendedNutrient(memberJoinRequest.email());
+        recommendedNutrientService.createRecommendedNutrient(email);
     }
 
     public void logout(LoginInfo loginInfo) {

@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 router = APIRouter()
 
@@ -42,7 +43,7 @@ class UserDeficiencyInput(BaseModel):
 
 
 @router.post("/ingredients")
-async def get_top_recipes(item: IngredientInput, top_k: int = 5):
+async def get_top_recipes(item: IngredientInput, top_k: int = 30):
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
     ingredients_vector = vectorizer.transform([item.ingredients])
@@ -55,7 +56,7 @@ async def get_top_recipes(item: IngredientInput, top_k: int = 5):
     return {"Top Recipes": top_recipes}
 
 
-@router.post("/nutrients")
+@router.post("/nutrient")
 async def get_nutrient_recommendations(user_deficiency: UserDeficiencyInput, top_k: int = 5):
     # Calculate recommendation score based on user's nutrient deficiency
     def calculate_score(row):
@@ -68,3 +69,20 @@ async def get_nutrient_recommendations(user_deficiency: UserDeficiencyInput, top
     sorted_recipes = recipe_data.sort_values(by="recommendation_score", ascending=False)
     top_recipes = sorted_recipes.head(top_k)[['recipe_id', 'recommendation_score']].to_dict(orient='records')
     return {"Top Nutrient-Based Recipes": top_recipes}
+
+
+def euclidean_distance(vector1, vector2):
+    """Compute the Euclidean Distance between two vectors."""
+    return np.sqrt(np.sum((vector1 - vector2) ** 2))
+
+
+@router.post("/nutrients")
+def get_nutrient_recommendations_euclidean(user_deficiency: UserDeficiencyInput, top_k: int = 5):
+    user_vector = np.array(list(user_deficiency.dict().values()))
+    nutrient_columns = list(user_deficiency.dict().keys())
+    recipe_vectors = recipe_data[nutrient_columns].values
+    distances = np.array([euclidean_distance(user_vector, recipe_vector) for recipe_vector in recipe_vectors])
+    top_indices = distances.argsort()[:top_k]
+    top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']), "distance": distances[index]} for index in
+                   top_indices]
+    return {"Top Nutrient-Based Recipes (Euclidean Distance)": top_recipes}

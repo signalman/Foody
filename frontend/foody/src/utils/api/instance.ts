@@ -12,7 +12,7 @@ export const instance: AxiosInstance = axios.create({
 
 // Axios 요청시 인터셉트
 instance.interceptors.request.use((req) => {
-	const accessToken = LocalStorage.getItem('accessToken');
+	const accessToken = LocalStorage.getItem('accesstoken');
 	if (accessToken) {
 		req.headers.authorization = `Bearer ${accessToken}`;
 	}
@@ -27,7 +27,7 @@ instance.interceptors.response.use(
 		if (error.response?.status === 401) {
 			// 401 에러 처리 로직
 			window.location.href = '/auth';
-			LocalStorage.removeItem('accessToken');
+			LocalStorage.removeItem('accesstoken');
 			// SessionStorage.initUser();
 		}
 		return Promise.reject(error);

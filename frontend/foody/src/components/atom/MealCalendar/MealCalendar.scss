@@ -8,7 +8,7 @@
 }
 
 .calendar-box {
-	@include f.flex(row, between, center);
+	@include f.flex(row, center, center);
 
 	button {
 		svg {

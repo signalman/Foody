@@ -2,6 +2,7 @@ package com.foody.security.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foody.member.dto.response.TokenResponse;
+import com.foody.member.entity.Member;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
 import java.io.IOException;
@@ -22,7 +23,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private String redirectUrl = "https://j9c106.p.ssafy.io";
+    private String redirectUrl = "https://j9c106.p.ssafy.io/login";
+//    private String redirectUrl = "http://localhost:3000/login";
 
     private final MemberRepository memberRepository;
     private final MemberService memberService;
@@ -40,6 +42,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String name = (String) attributes.get("name");
         String email = (String) attributes.get("email");
 
+
 //         회원 가입 여부 판별
         if (memberRepository.existsByEmail(email)) {
             // 로그인 진행
@@ -49,7 +52,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             String accessToken = tokenResponse.accessToken();
             String refreshToken = tokenResponse.refreshToken();
-            String user = "1";
+            String user;
+
+            if(memberRepository.checkInfoIsNUll(email) == null){
+                user = "1";
+            }
+            else {
+                user = "0";
+            }
 
             String formattedRedirectUrl = String.format("%s?accessToken=%s&refreshToken=%s&user=%s",
                 redirectUrl,
@@ -59,10 +69,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
 //            response.sendRedirect(redirectUrl);
+            log.info("{} redirectUrl",formattedRedirectUrl);
             response.sendRedirect(formattedRedirectUrl);
 
         } else {
-            // 회원 가입 -> 로그인 진행
+            // 회원 가입 추가 정보 입력
             log.info("=========={} join start ==========", email);
 
             TokenResponse tokenResponse = memberService.signUpMember(response, authentication,
@@ -79,8 +90,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 URLEncoder.encode(user, "UTF-8"));
 
 //            response.sendRedirect(redirectUrl);
+            log.info("{} redirectUrl",formattedRedirectUrl);
             response.sendRedirect(formattedRedirectUrl);
         }
 
     }
+
 }

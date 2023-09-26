@@ -19,3 +19,8 @@ include::controller/member/member.adoc[]
 
 include::controller/refrigerators/refrigerators.adoc[]
 
+
+[[먹BTI-API]]
+== Mbti API
+
+include::controller/mbti/mbti.adoc[]

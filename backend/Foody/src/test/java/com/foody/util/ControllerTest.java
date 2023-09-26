@@ -2,6 +2,9 @@ package com.foody.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foody.global.service.AmazonS3Service;
+import com.foody.mbti.controller.MbtiController;
+import com.foody.mbti.repository.MbtiRepository;
+import com.foody.mbti.service.MbtiService;
 import com.foody.member.controller.MemberController;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
@@ -33,7 +36,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest({
     MemberController.class,
-    RefrigeratorsController.class
+    RefrigeratorsController.class,
+    MbtiController.class
 })
 public class ControllerTest {
     // Util
@@ -51,10 +55,12 @@ public class ControllerTest {
     // Service
     @MockBean protected MemberService memberService;
     @MockBean protected RefrigeratorsService refrigeratorsService;
+    @MockBean protected MbtiService mbtiService;
 
     // Repository
     @MockBean protected MemberRepository memberRepository;
     @MockBean protected IngredientRepository ingredientRepository;
+    @MockBean protected MbtiRepository mbtiRepository;
 
     protected String createToken(String email, String secretKey) {
 

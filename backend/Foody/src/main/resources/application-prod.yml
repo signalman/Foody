@@ -6,7 +6,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
@@ -28,7 +28,7 @@ spring:
     redis:
       time-to-live: 3600 # 데이터 유지 시간
       cache-null-values: false # NUll 캐싱 여부
-      host: localhost
+      host: redis
       port: 6379
       password: ${REDIS_PASSWORD}
 

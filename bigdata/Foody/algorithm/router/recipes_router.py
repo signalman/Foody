@@ -73,6 +73,20 @@ def ingredient_similarity(A, B):
     return similarity
 
 
+# 유사한 레시피와 유사도 검색
+# @router.post("/ingredients")
+# async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 30):
+#     vectorizer = TfidfVectorizer()
+#     tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
+#     ingredients_vector = vectorizer.transform([item.ingredients])
+#     cosine_similarities = cosine_similarity(ingredients_vector, tfidf_matrix).flatten()
+#     top_indices = cosine_similarities.argsort()[-top_k:][::-1]
+#     # top_recipes = [(recipe_data_cleaned.iloc[index]['recipe_id'], cosine_similarities[index]) for index in top_indices]
+#     top_recipes = [(int(recipe_data_cleaned.iloc[index]['recipe_id']), cosine_similarities[index]) for index in
+#                    top_indices]
+#
+#     return {"Top Recipes": top_recipes}
+
 @router.post("/ingredients")
 async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 30):
     vectorizer = TfidfVectorizer()
@@ -80,9 +94,22 @@ async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 
     ingredients_vector = vectorizer.transform([item.ingredients])
     cosine_similarities = cosine_similarity(ingredients_vector, tfidf_matrix).flatten()
     top_indices = cosine_similarities.argsort()[-top_k:][::-1]
-    # top_recipes = [(recipe_data_cleaned.iloc[index]['recipe_id'], cosine_similarities[index]) for index in top_indices]
-    top_recipes = [(int(recipe_data_cleaned.iloc[index]['recipe_id']), cosine_similarities[index]) for index in
-                   top_indices]
+
+    top_recipes = [
+        {
+            "id": int(recipe_data_cleaned.iloc[index]['recipe_id']),
+            "energy": recipe_data_cleaned.iloc[index]['energy'],
+            "protein": recipe_data_cleaned.iloc[index]['protein'],
+            "dietaryFiber": recipe_data_cleaned.iloc[index]['dietaryFiber'],
+            "calcium": recipe_data_cleaned.iloc[index]['calcium'],
+            "sodium": recipe_data_cleaned.iloc[index]['sodium'],
+            "iron": recipe_data_cleaned.iloc[index]['iron'],
+            "fats": recipe_data_cleaned.iloc[index]['fats'],
+            "vitaminA": recipe_data_cleaned.iloc[index]['vitaminA'],
+            "vitaminC": recipe_data_cleaned.iloc[index]['vitaminC']
+        }
+        for index in top_indices
+    ]
 
     return {"Top Recipes": top_recipes}
 
@@ -140,6 +167,28 @@ def get_nutrient_recommendations_euclidean(user_deficiency: UserDeficiencyInput,
     return {"Top Nutrient-Based Recipes (Euclidean Distance)": top_recipes}
 
 
+# @router.post("/nutrients/cosine")
+# def get_nutrient_recommendations_cosine(user_deficiency: UserDeficiencyInput, top_k: int = 5):
+#     # Convert user deficiency into an array (reshape to make it 2D for cosine_similarity function)
+#     user_vector = np.array(list(user_deficiency.dict().values())).reshape(1, -1)
+#
+#     # Extract nutrient columns from the data
+#     nutrient_columns = list(user_deficiency.dict().keys())
+#     recipe_vectors = recipe_data[nutrient_columns].values
+#
+#     # Calculate cosine similarities for each recipe
+#     similarities = cosine_similarity(user_vector, recipe_vectors).flatten()
+#
+#     # Get the indices of the top_k most similar recipes
+#     top_indices = similarities.argsort()[-top_k:][::-1]
+#
+#     # Extract top recipes and their similarities
+#     top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']), "similarity": similarities[index]} for index
+#                    in top_indices]
+#
+#     return {"Top Nutrient-Based Recipes (Cosine Similarity)": top_recipes}
+
+
 @router.post("/nutrients/cosine")
 def get_nutrient_recommendations_cosine(user_deficiency: UserDeficiencyInput, top_k: int = 5):
     # Convert user deficiency into an array (reshape to make it 2D for cosine_similarity function)
@@ -155,11 +204,24 @@ def get_nutrient_recommendations_cosine(user_deficiency: UserDeficiencyInput, to
     # Get the indices of the top_k most similar recipes
     top_indices = similarities.argsort()[-top_k:][::-1]
 
-    # Extract top recipes and their similarities
-    top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']), "similarity": similarities[index]} for index
-                   in top_indices]
+    # Extract top recipes and their details
+    top_recipes = [
+        {
+            "id": int(recipe_data.iloc[index]['id']),
+            "energy": recipe_data.iloc[index]['energy'],
+            "protein": recipe_data.iloc[index]['protein'],
+            "dietaryFiber": recipe_data.iloc[index]['dietaryFiber'],
+            "calcium": recipe_data.iloc[index]['calcium'],
+            "sodium": recipe_data.iloc[index]['sodium'],
+            "iron": recipe_data.iloc[index]['iron'],
+            "fats": recipe_data.iloc[index]['fats'],
+            "vitaminA": recipe_data.iloc[index]['vitaminA'],
+            "vitaminC": recipe_data.iloc[index]['vitaminC']
+        }
+        for index in top_indices
+    ]
 
-    return {"Top Nutrient-Based Recipes (Cosine Similarity)": top_recipes}
+    return top_recipes
 
 
 def manhattan_distance(vector1, vector2):

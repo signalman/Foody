@@ -1,6 +1,9 @@
 package com.foody.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foody.mbti.controller.MbtiController;
+import com.foody.mbti.repository.MbtiRepository;
+import com.foody.mbti.service.MbtiService;
 import com.foody.member.controller.MemberController;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
@@ -27,7 +30,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest({
-    MemberController.class
+    MemberController.class,
+    MbtiController.class
 })
 public class ControllerTest {
     // Util
@@ -42,9 +46,11 @@ public class ControllerTest {
 
     // Service
     @MockBean protected MemberService memberService;
+    @MockBean protected MbtiService mbtiService;
 
     // Repository
     @MockBean protected MemberRepository memberRepository;
+    @MockBean protected MbtiRepository mbtiRepository;
 
     protected String createToken(String email, String secretKey) {
 

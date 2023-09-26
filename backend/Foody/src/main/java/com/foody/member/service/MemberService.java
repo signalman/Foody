@@ -6,7 +6,7 @@ import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.RefreshTokenRequest;
 import com.foody.member.dto.response.NicknameResponse;
 import com.foody.member.dto.response.RefreshTokenResponse;
-import com.foody.recommendednutrient.service.RecommendedNutrientService;
+import com.foody.nutrient.service.NutrientService;
 import com.foody.security.util.JwtProvider;
 import com.foody.member.dto.request.MemberSignupRequest;
 import com.foody.member.dto.response.TokenResponse;
@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final RecommendedNutrientService recommendedNutrientService;
+    private final NutrientService nutrientService;
     private final JwtProvider jwtProvider;
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -113,7 +113,7 @@ public class MemberService {
         // 나머지 정보 저장
         Member member = findByEmail(email);
         member.joinMember(memberJoinRequest);
-        recommendedNutrientService.createRecommendedNutrient(email);
+        nutrientService.createNutrient(email);
     }
 
     public void logout(LoginInfo loginInfo) {

@@ -1,7 +1,11 @@
 package com.foody.recipe.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RecipeUtils {
@@ -29,6 +33,34 @@ public class RecipeUtils {
         description = description.replace(".'", "."); // .' 와 같은 문자 제거
         description = description.replace("'", ""); // ' 문자 제거
         return description.trim();
+    }
+
+    public static String formatIngredients(String jsonInput) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        // 싱글 쿼트를 더블 쿼트로 변환
+        jsonInput = jsonInput.replace("'", "\"");
+        try {
+            List<Map<String, String>> ingredients = objectMapper.readValue(jsonInput, List.class);
+
+            List<String> formattedIngredients = new ArrayList<>();
+            for (Map<String, String> ingredient : ingredients) {
+                StringBuilder sb = new StringBuilder();
+
+                sb.append(ingredient.get("ingre_name"));
+                if (!ingredient.get("ingre_count").isEmpty()) {
+                    sb.append(" ").append(ingredient.get("ingre_count"));
+                }
+                if (!ingredient.get("ingre_unit").isEmpty()) {
+                    sb.append(ingredient.get("ingre_unit"));
+                }
+                formattedIngredients.add(sb.toString());
+            }
+            return String.join(", ", formattedIngredients);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error parsing JSON";
+        }
     }
 
 }

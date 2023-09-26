@@ -20,4 +20,15 @@ class RecipeUtilsTest {
         }
     }
 
+    @Test
+    @DisplayName("재료 목록 분리 테스트")
+    void t2() throws Exception {
+        String ingredientString = "[{'ingre_name': '식빵', 'ingre_count': '6', 'ingre_unit': '장'}, {'ingre_name': '양상추', 'ingre_count': '4', 'ingre_unit': '쪽'}, {'ingre_name': '슬라이스햄', 'ingre_count': '', 'ingre_unit': ''}, {'ingre_name': '토마토', 'ingre_count': '', 'ingre_unit': ''}, {'ingre_name': '양겨자', 'ingre_count': '', 'ingre_unit': ''}, {'ingre_name': '마요네즈', 'ingre_count': '', 'ingre_unit': ''}, {'ingre_name': '후추', 'ingre_count': '', 'ingre_unit': '약간'}, {'ingre_name': '레몬즙', 'ingre_count': '', 'ingre_unit': ''}, {'ingre_name': '크림치즈', 'ingre_count': '', 'ingre_unit': ''}, {'ingre_name': '계란', 'ingre_count': '6', 'ingre_unit': '개'}, {'ingre_name': '양파', 'ingre_count': '1', 'ingre_unit': '개분'}]";
+
+        String parsers = RecipeUtils.formatIngredients(ingredientString);
+
+        System.out.println(parsers);
+
+    }
+
 }

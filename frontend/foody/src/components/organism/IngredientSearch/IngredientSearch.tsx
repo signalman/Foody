@@ -72,9 +72,15 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 
 	useEffect(() => {
 		if (searchKeyword !== '') {
-			getSearchIndegredients(searchKeyword).then((res) => {
-				setSearchResultList(formatSearchResultList(res.data));
-			});
+			getSearchIndegredients(searchKeyword)
+				.then((res) => {
+					if (res.data && res.data.length > 0) {
+						setSearchResultList(formatSearchResultList(res.data));
+					} else {
+						console.error('검색 실패');
+					}
+				})
+				.catch((err) => console.error(err));
 		}
 	}, [searchKeyword]);
 

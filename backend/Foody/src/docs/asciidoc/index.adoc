@@ -14,3 +14,8 @@ endif::[]
 
 include::controller/member/member.adoc[]
 
+
+[[먹BTI-API]]
+== Mbti API
+
+include::controller/mbti/mbti.adoc[]

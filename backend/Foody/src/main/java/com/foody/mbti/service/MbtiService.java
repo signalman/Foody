@@ -411,17 +411,9 @@ public class MbtiService {
             "된장국", "카레", "탕수육", "파전"
         };
 
-        String[] extensions = {
-            "jfif", "jfif", "jpg", "jfif", "jfif", "jfif",
-            "jfif", "jfif", "jfif", "jfif", "jfif", "jfif",
-            "jfif", "jfif", "jfif", "jfif", "jfif", "jfif",
-            "jpg", "jpg", "jpg", "jpg", "jpg", "jpg",
-            "jpg", "jpg", "jpg", "jpg"
-        };
-
         for (int i = 0; i < foods.length; i++) {
             arr[i][0] = foods[i];
-            arr[i][1] = baseImgURL + String.format("%02d", i) + "." + extensions[i];
+            arr[i][1] = baseImgURL + String.format("%02d", i) + "." + "jpg";
         }
 
         return arr;

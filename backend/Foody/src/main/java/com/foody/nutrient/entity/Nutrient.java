@@ -22,4 +22,5 @@ public class Nutrient extends BaseEntity {
     private double fats; // 지방 g
     private double vitaminA; // 비타민A, μg
     private double vitaminC; // 비타민C, mg
+
 }

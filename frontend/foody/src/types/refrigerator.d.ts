@@ -7,3 +7,8 @@ export interface IngridientSearchResultItem {
 	ingredientId: long; // 재료 ID
 	ingredientName: string; // 재료명
 }
+
+export interface CustomIngredientItemType {
+	ingredientCategoryId: number;
+	ingredientName: string;
+}

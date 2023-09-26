@@ -1,0 +1,8 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.fbti-box {
+	width: 100%;
+	padding: 0 15px;
+	@include f.flex(row, center, center, 50px);
+}

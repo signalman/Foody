@@ -4,11 +4,13 @@ import com.foody.refrigerators.dto.request.CustomIngredientRequest;
 import com.foody.refrigerators.dto.request.InsertIngredientRequest;
 import com.foody.refrigerators.dto.response.SearchIngredientResponse;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
+import com.foody.refrigerators.entity.CategoryType;
 import com.foody.security.util.LoginInfo;
 import com.foody.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -28,6 +30,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -98,6 +101,7 @@ public class RefrigeratorsControllerTest extends ControllerTest {
                         document("refrigerators/registerIngredient",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
+                                requestHeaders(),
                                 requestFields(
                                         fieldWithPath("ingredients").description("ingredient PK"),
                                         fieldWithPath("customIngredients").description("사용자 입력 재료"),
@@ -113,8 +117,8 @@ public class RefrigeratorsControllerTest extends ControllerTest {
 
         List<UserRefrigeratorResponse> list = new ArrayList<>();
 
-        list.add(new UserRefrigeratorResponse(1L,"마늘",1L, "2023.09.20"));
-        list.add(new UserRefrigeratorResponse(6L,"버터",1L, "2023.09.20"));
+        list.add(new UserRefrigeratorResponse(1L,"마늘",1L, CategoryType.REFRIGERATOR.getCategoryLevel(), "2023.09.20"));
+        list.add(new UserRefrigeratorResponse(6L,"버터",1L, CategoryType.REFRIGERATOR.getCategoryLevel(), "2023.09.20"));
 
         LoginInfo loginInfo = new LoginInfo("lkm454545@gmail.com");
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
@@ -134,6 +138,7 @@ public class RefrigeratorsControllerTest extends ControllerTest {
                                         fieldWithPath("[]").description("냉장고 재료 목록"),
                                         fieldWithPath("[].ingredientId").type(JsonFieldType.NUMBER).description("ingredient PK"),
                                         fieldWithPath("[].ingredientName").type(JsonFieldType.STRING).description("재료 이름"),
+                                        fieldWithPath("[].categoryType").type(JsonFieldType.NUMBER).description("category type"),
                                         fieldWithPath("[].ingredientCategoryId").type(JsonFieldType.NUMBER).description("ingredientCategory Id"),
                                         fieldWithPath("[].createDate").type(JsonFieldType.STRING).description("생성 날짜")
                                 ))

@@ -20,8 +20,8 @@ public enum ErrorCode {
     USER_INGREDIENT_NOT_FOUND("REFRI08", HttpStatus.NOT_FOUND, "사용자의 냉장고에 존재하지 않는 재료입니다."),
     INVALID_RECEIPT_OCR("REFRI02", HttpStatus.BAD_REQUEST, "유효한 영수증이 아닙니다."),
 
-    // RecommendedNutrient
-    RECOMMENED_NOT_FOUND("RECOM01", HttpStatus.NOT_FOUND, "정보가 존재하지 않습니다."),
+    // Nutrient
+    NUTRIENT_NOT_FOUND("NUT01", HttpStatus.NOT_FOUND, "정보가 존재하지 않습니다."),
 
     /* File Upload Exception */
     FILE_UPLOAD_FAIL("AWS01", HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패하였습니다.");

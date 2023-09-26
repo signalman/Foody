@@ -17,8 +17,8 @@ public class Recipe {
 
     @Id private long id;
     @Column private String name;
-    @Column private String ingredient;
-    @Column private String description;
+    @Column(columnDefinition = "TEXT") private String ingredient;
+    @Column(columnDefinition = "TEXT") private String description;
     @Column private String url;
     @Column private String difficulty;
     @Column private String servers;

@@ -42,6 +42,12 @@ class UserDeficiencyInput(BaseModel):
     vitaminC: float
 
 
+# Update the data models to handle combined data
+class CombinedInput(BaseModel):
+    ingredients: str
+    user_deficiency: UserDeficiencyInput
+
+
 @router.post("/ingredients")
 async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 30):
     vectorizer = TfidfVectorizer()
@@ -135,3 +141,71 @@ def get_nutrient_recommendations_manhattan(user_deficiency: UserDeficiencyInput,
                    top_indices]
 
     return {"Top Nutrient-Based Recipes (Manhattan Distance)": top_recipes}
+
+
+# 사용하면 안댐 !!
+@router.post("/nutrients/recommend99")
+def get_combined_recommendations(data: CombinedInput, top_k: int = 5):
+    # 1. Calculate ingredient similarity scores
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
+    ingredients_vector = vectorizer.transform([data.ingredients])
+    cosine_similarities = cosine_similarity(ingredients_vector, tfidf_matrix).flatten()
+
+    # 2. Calculate nutrient recommendation scores
+    def calculate_score(row):
+        score = 0
+        for nutrient, deficiency in data.user_deficiency.dict().items():
+            score += row[nutrient] * deficiency
+        return score
+
+    recipe_data['recommendation_score'] = recipe_data.apply(calculate_score, axis=1)
+
+    # 3. Combine the two scores
+    combined_scores = cosine_similarities + recipe_data['recommendation_score'].values
+
+    # 4. Get the indices of the top_k recipes with highest combined scores
+    top_indices = combined_scores.argsort()[-top_k:][::-1]
+
+    # 5. Extract top recipes and their scores
+    top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']), "combined_score": combined_scores[index]}
+                   for index in top_indices]
+
+    return {"Top Combined Recipes": top_recipes}
+
+
+@router.post("/nutrients/recommend")
+def get_combined_recommendations_v3(data: CombinedInput, top_k: int = 5):
+    # Calculate ingredient similarity scores
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
+    ingredients_vector = vectorizer.transform([data.ingredients])
+    cosine_similarities = cosine_similarity(ingredients_vector, tfidf_matrix).flatten()
+    ingredient_top_indices = cosine_similarities.argsort()[-1000:][::-1]
+
+    # Calculate nutrient recommendation scores with penalties for exceeding values
+    def calculate_score(row):
+        score = 0
+        for nutrient, deficiency in data.user_deficiency.dict().items():
+            nutrient_value = row[nutrient]
+            if nutrient_value > deficiency:
+                score -= (nutrient_value - deficiency)  # Apply penalty for exceeding amount
+            else:
+                score += nutrient_value
+        return score
+
+    recipe_data['recommendation_score'] = recipe_data.apply(calculate_score, axis=1)
+    nutrient_top_indices = recipe_data['recommendation_score'].argsort()[-1000:][::-1]
+
+    # Get the intersection of the two indices
+    combined_indices = list(set(ingredient_top_indices) & set(nutrient_top_indices))
+
+    # Sort combined recipes by their nutrient recommendation scores
+    combined_indices.sort(key=lambda x: recipe_data.iloc[x]['recommendation_score'], reverse=True)
+
+    # Extract top recipes and their scores
+    top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']),
+                    "combined_score": recipe_data.iloc[index]['recommendation_score']} for index in
+                   combined_indices[:top_k]]
+
+    return {"Top Combined Recipes": top_recipes}

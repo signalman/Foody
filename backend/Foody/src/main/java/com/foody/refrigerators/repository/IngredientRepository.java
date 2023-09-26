@@ -11,5 +11,5 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     List<Ingredient> findIngredientsByIngredientNameContainingAndIngredientType(String ingredientName, IngredientType ingredientType);
     Optional<Ingredient> findIngredientByIngredientNameAndIngredientCategory_Id(String ingredientName, Long ingredientCategoryId);
     Optional<Ingredient> findIngredientByIngredientNameAndIngredientType(String ingredientName, IngredientType ingredientType);
-    boolean existsByIngredientName(String ingredientName);
+    boolean existsByIngredientNameAndIngredientType(String ingredientName, IngredientType ingredientType);
 }

@@ -39,10 +39,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class MemberControllerTest extends ControllerTest {
 
-    @MockBean
-    AmazonS3Service amazonS3Service;
-    @MockBean
-    CustomUserDetailService customUserDetailService;
 
     private final String baseUrl = "/api/v1/member";
 
@@ -144,7 +140,7 @@ public class MemberControllerTest extends ControllerTest {
                 .with(authentication(new TestingAuthenticationToken(loginInfo, null)))
                ).andExpect(status().isNoContent())
                .andDo(
-                   document("member/logout",
+                   document("/member/logout",
                        preprocessRequest(prettyPrint()),
                        preprocessResponse(prettyPrint())
                    ));

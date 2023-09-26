@@ -2,6 +2,7 @@ package com.foody.util;
 
 import com.foody.member.entity.Member;
 import com.foody.member.service.MemberService;
+import com.foody.refrigerators.service.RefrigeratorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -13,6 +14,9 @@ public class ServiceTest {
 
     @Autowired
     protected MemberService memberService;
+
+    @Autowired
+    protected RefrigeratorsService refrigeratorsService;
 
     @Transactional
     protected void memberInfoGenerator() {

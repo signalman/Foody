@@ -46,7 +46,7 @@ public class MemberController {
     // 추가 정보 입력
     @PostMapping("/join")
     public ResponseEntity<Void> joinMember(@AuthenticationPrincipal LoginInfo loginInfo, @RequestBody MemberJoinRequest memberJoinRequest) {
-        log.debug("{} member request join", memberJoinRequest.email());
+        log.debug("{} member request join", loginInfo.email());
 
         memberService.joinMember(loginInfo.email(), memberJoinRequest);
 

@@ -403,62 +403,26 @@ public class MbtiService {
         String[][] arr = new String[28][2];
         String baseImgURL = "https://please-success-foody.s3.ap-northeast-2.amazonaws.com/mbti/mbti";
 
-        arr[0][0] = "갈비찜";
-        arr[0][1] = baseImgURL + "00.jfif";
-        arr[1][0] = "쌀국수";
-        arr[1][1] = baseImgURL + "01.jfif";
-        arr[2][0] = "동그랑땡";
-        arr[2][1] = baseImgURL + "02.jpg";
-        arr[3][0] = "팥빙수";
-        arr[3][1] = baseImgURL + "03.jfif";
-        arr[4][0] = "김치";
-        arr[4][1] = baseImgURL + "04.jfif";
-        arr[5][0] = "짜장면";
-        arr[5][1] = baseImgURL + "05.jfif";
-        arr[6][0] = "시금치 나물";
-        arr[6][1] = baseImgURL + "06.jfif";
-        arr[7][0] = "마카롱";
-        arr[7][1] = baseImgURL + "07.jfif";
-        arr[8][0] = "육회";
-        arr[8][1] = baseImgURL + "08.jfif";
-        arr[9][0] = "샐러드";
-        arr[9][1] = baseImgURL + "09.jfif";
-        arr[10][0] = "숙주 나물";
-        arr[10][1] = baseImgURL + "10.jfif";
-        arr[11][0] = "두부김치";
-        arr[11][1] = baseImgURL + "11.jfif";
-        arr[12][0] = "순대";
-        arr[12][1] = baseImgURL + "12.jfif";
-        arr[13][0] = "오징어 젓갈";
-        arr[13][1] = baseImgURL + "13.jfif";
-        arr[14][0] = "마라탕";
-        arr[14][1] = baseImgURL + "14.jfif";
-        arr[15][0] = "탕후루";
-        arr[15][1] = baseImgURL + "15.jfif";
-        arr[16][0] = "과일화채";
-        arr[16][1] = baseImgURL + "16.jfif";
-        arr[17][0] = "메밀소바";
-        arr[17][1] = baseImgURL + "17.jfif";
-        arr[18][0] = "고등어조림";
-        arr[18][1] = baseImgURL + "18.jpg";
-        arr[19][0] = "장조림";
-        arr[19][1] = baseImgURL + "19.jpg";
-        arr[20][0] = "크로플";
-        arr[20][1] = baseImgURL + "20.jpg";
-        arr[21][0] = "새우튀김";
-        arr[21][1] = baseImgURL + "21.jpg";
-        arr[22][0] = "리면";
-        arr[22][1] = baseImgURL + "22.jpg";
-        arr[23][0] = "타토야끼";
-        arr[23][1] = baseImgURL + "23.jpg";
-        arr[24][0] = "된장국";
-        arr[24][1] = baseImgURL + "24.jpg";
-        arr[25][0] = "카레";
-        arr[25][1] = baseImgURL + "25.jpg";
-        arr[26][0] = "탕수육";
-        arr[26][1] = baseImgURL + "26.jpg";
-        arr[27][0] = "파전";
-        arr[27][1] = baseImgURL + "27.jfif";
+        String[] foods = {
+            "갈비찜", "쌀국수", "동그랑땡", "팥빙수", "김치", "짜장면",
+            "시금치 나물", "마카롱", "육회", "샐러드", "숙주 나물", "두부김치",
+            "순대", "오징어 젓갈", "마라탕", "탕후루", "과일화채", "메밀소바",
+            "고등어조림", "장조림", "크로플", "새우튀김", "라면", "타코야끼",
+            "된장국", "카레", "탕수육", "파전"
+        };
+
+        String[] extensions = {
+            "jfif", "jfif", "jpg", "jfif", "jfif", "jfif",
+            "jfif", "jfif", "jfif", "jfif", "jfif", "jfif",
+            "jfif", "jfif", "jfif", "jfif", "jfif", "jfif",
+            "jpg", "jpg", "jpg", "jpg", "jpg", "jpg",
+            "jpg", "jpg", "jpg", "jfif"
+        };
+
+        for (int i = 0; i < foods.length; i++) {
+            arr[i][0] = foods[i];
+            arr[i][1] = baseImgURL + String.format("%02d", i) + "." + extensions[i];
+        }
 
         return arr;
     }

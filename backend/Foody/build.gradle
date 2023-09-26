@@ -60,7 +60,7 @@ dependencies {
 
     //csv util
     // https://mvnrepository.com/artifact/com.opencsv/opencsv
-    implementation 'com.opencsv:opencsv:3.7'
+    implementation 'com.opencsv:opencsv:5.7.1'
 
 }
 

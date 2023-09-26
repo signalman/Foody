@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface RecipeCustomRepository {
     void bulkInsert(List<Recipe> recipes);
+
+    boolean isExistsData();
 }

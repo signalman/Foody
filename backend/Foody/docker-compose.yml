@@ -20,7 +20,7 @@ services:
     container_name: back-container
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_PROFILES_ACTIVE: prod
 

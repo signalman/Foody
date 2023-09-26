@@ -42,10 +42,34 @@ class UserDeficiencyInput(BaseModel):
     vitaminC: float
 
 
-# Update the data models to handle combined data
+# 재료, 영양소 기반 추천 클래스
 class CombinedInput(BaseModel):
     ingredients: str
     user_deficiency: UserDeficiencyInput
+
+
+# 자카드 유사도
+def jaccard_similarity(list1, list2):
+    s1 = set(list1)
+    s2 = set(list2)
+    return len(s1.intersection(s2)) / len(s1.union(s2))
+
+
+# 기존의 코사인, 맨하탄 등등 유사도는 사용자의 재료가 레시피의 재료를 모두 포함하고, 너무 많으면 유사도가 오히려 낮게 나옴
+# 이를 보완하기 위해, 이런 방식의 유사도를 계산해봄
+def ingredient_similarity(A, B):
+    """Calculate the similarity between two ingredient lists."""
+    # Convert each ingredient list to a set
+    set_A = set(A.split())
+    set_B = set(B.split())
+
+    # Compute the size of the intersection
+    intersection_size = len(set_A & set_B)
+
+    # Calculate similarity
+    similarity = intersection_size / len(set_B)
+
+    return similarity
 
 
 @router.post("/ingredients")
@@ -60,6 +84,26 @@ async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 
                    top_indices]
 
     return {"Top Recipes": top_recipes}
+
+
+@router.post("/ingredients/jaccard")
+def get_top_recipes_based_on_jaccard(item: IngredientInput, top_k: int = 5):
+    # Split the ingredients string into a list
+    user_ingredients = item.ingredients.split()
+
+    # Calculate Jaccard Similarity for each recipe
+    jaccard_scores = []
+    for index, row in recipe_data_cleaned.iterrows():
+        recipe_ingredients = row['ingredients_concat'].split()
+        if len(recipe_ingredients) >= 5:  # Only consider recipes with at least 5 ingredients
+            score = jaccard_similarity(user_ingredients, recipe_ingredients)
+            jaccard_scores.append((row['recipe_id'], score))
+
+    # Sort the scores in descending order and get top_k recipes
+    sorted_scores = sorted(jaccard_scores, key=lambda x: x[1], reverse=True)
+    top_recipes = sorted_scores[:top_k]
+
+    return {"Top Recipes Based on Jaccard Similarity": top_recipes}
 
 
 @router.post("/nutrient")
@@ -209,3 +253,29 @@ def get_combined_recommendations_v3(data: CombinedInput, top_k: int = 5):
                    combined_indices[:top_k]]
 
     return {"Top Combined Recipes": top_recipes}
+
+
+# 새로운 유사도 계산 방식
+@router.post("/nutrients/new")
+def get_top_similar_recipes(data: IngredientInput, top_k: int = 5):
+    # Filter recipes that have at least 5 ingredients and reset the index
+    filtered_recipes = recipe_data_cleaned[
+        recipe_data_cleaned['ingredients_concat'].apply(lambda x: len(x.split()) >= 5)
+    ].reset_index(drop=True)
+
+    # Calculate similarity scores for all recipes
+    similarity_scores = filtered_recipes['ingredients_concat'].apply(
+        lambda recipe_ingredients: ingredient_similarity(data.ingredients, recipe_ingredients)
+    )
+
+    # Get the indices of the top_k most similar recipes
+    top_indices = similarity_scores.argsort()[-top_k:][::-1]
+
+    # Extract top recipes and their scores using the reset indices
+    top_recipes = [
+        {"recipe_id": int(filtered_recipes.iloc[index]['recipe_id']),
+         "similarity_score": similarity_scores.iloc[index]}
+        for index in top_indices
+    ]
+
+    return {"Top Similar Recipes": top_recipes}

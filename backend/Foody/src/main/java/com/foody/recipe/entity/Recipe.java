@@ -1,6 +1,5 @@
 package com.foody.recipe.entity;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor // openCsv때문에 열어놔야함
 @AllArgsConstructor
 @Getter
 @Entity(name = "recipe")

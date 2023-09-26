@@ -7,7 +7,7 @@ import SearchTemplate from 'components/template/SearchTemplate/SearchTemplate';
 import { HiPencil } from 'react-icons/hi';
 import LargeButton from 'components/atom/LargeButton/LargeButton';
 import LargeButtonColor from 'constants/color';
-import getSearchIndegredients from 'utils/api/ingredient';
+import getSearchIndegredients, { createIngredientList } from 'utils/api/ingredient';
 import formatSearchResultList from 'utils/common/ingredient';
 import { CustomIngredientItemType, IngridientSearchItem } from 'types/refrigerator';
 import { DUMMY_CUSTOM_INGREDIENT_LIST } from 'constants/dummy';
@@ -57,13 +57,13 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 			console.log(customIngredientList);
 			setOpen(false);
 			setTabbarOn(!tabbarOn);
-			toast.success('재료 등록 성공');
-			// createIngredientList(
-			// 	selectedIngredientList.map((item) => item.key),
-			// 	customIngredientList,
-			// ).then((res) => {
-			// 	console.log(res);
-			// });
+			createIngredientList(
+				selectedIngredientList.map((item) => item.key),
+				customIngredientList,
+			).then((res) => {
+				toast.success('재료 등록 성공');
+				console.log(res);
+			});
 		}
 	};
 

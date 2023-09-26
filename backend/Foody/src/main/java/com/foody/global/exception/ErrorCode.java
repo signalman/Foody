@@ -18,6 +18,7 @@ public enum ErrorCode {
     INGREDIENT_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료입니다."),
     INGREDIENT_CATEGORY_NOT_FOUND("REFRI07", HttpStatus.NOT_FOUND, "존재하지 않는 재료 카테고리입니다."),
     USER_INGREDIENT_NOT_FOUND("REFRI08", HttpStatus.NOT_FOUND, "사용자의 냉장고에 존재하지 않는 재료입니다."),
+    INVALID_RECEIPT_OCR("REFRI02", HttpStatus.BAD_REQUEST, "유효한 영수증이 아닙니다."),
 
     // RecommendedNutrient
     RECOMMENED_NOT_FOUND("RECOM01", HttpStatus.NOT_FOUND, "정보가 존재하지 않습니다."),

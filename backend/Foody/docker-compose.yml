@@ -4,7 +4,7 @@ services:
     image: mysql:8.0.34
     container_name: mysql-container
     environment:
-      MYSQL_USER: root
+      MYSQL_USER: foody
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: foody
     ports:

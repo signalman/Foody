@@ -5,6 +5,7 @@ import com.foody.member.dto.request.CheckNicknameRequest;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.RefreshTokenRequest;
+import com.foody.member.dto.response.NicknameResponse;
 import com.foody.member.dto.response.RefreshTokenResponse;
 import com.foody.member.dto.response.TokenResponse;
 import com.foody.member.service.MemberService;
@@ -41,6 +42,15 @@ public class MemberController {
         memberService.isNicknameDuplicated(checkNicknameRequest.nickname());
 
         return ResponseEntity.noContent().build();
+    }
+    // 닉네임 요청
+    @GetMapping("/nickname")
+    public ResponseEntity<NicknameResponse> getNickname(@AuthenticationPrincipal LoginInfo loginInfo) {
+        log.info("{} request nickname", loginInfo.email());
+
+        NicknameResponse nicknameResponse = memberService.getNickname(loginInfo.email());
+
+        return ResponseEntity.ok().body(nicknameResponse);
     }
 
     // 추가 정보 입력

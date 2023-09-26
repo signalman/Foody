@@ -4,6 +4,7 @@ import com.foody.global.exception.ErrorCode;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.RefreshTokenRequest;
+import com.foody.member.dto.response.NicknameResponse;
 import com.foody.member.dto.response.RefreshTokenResponse;
 import com.foody.recommendednutrient.service.RecommendedNutrientService;
 import com.foody.security.util.JwtProvider;
@@ -137,5 +138,11 @@ public class MemberService {
     @Transactional
     public Long save(Member member) {
         return memberRepository.save(member).getId();
+    }
+
+    public NicknameResponse getNickname(String email) {
+        Member member = findByEmail(email);
+
+        return new NicknameResponse(member.getNickname());
     }
 }

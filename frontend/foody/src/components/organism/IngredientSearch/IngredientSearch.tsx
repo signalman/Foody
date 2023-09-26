@@ -10,7 +10,6 @@ import LargeButtonColor from 'constants/color';
 import getSearchIndegredients, { createIngredientList } from 'utils/api/ingredient';
 import formatSearchResultList from 'utils/common/ingredient';
 import { CustomIngredientItemType, IngridientSearchItem } from 'types/refrigerator';
-import { DUMMY_CUSTOM_INGREDIENT_LIST } from 'constants/dummy';
 import toast from 'react-hot-toast';
 import SubHeader from '../SubHeader/SubHeader';
 import SelectIngredientList from '../../molecule/SelectIngredientList/SelectIngredientList';
@@ -21,7 +20,7 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [searchResultList, setSearchResultList] = useState<IngridientSearchItem[] | null>(null);
 	const [selectedIngredientList, setSelectedIngredientList] = useState<IngridientSearchItem[] | null>(null);
-	const [customIngredientList] = useState<CustomIngredientItemType[]>(DUMMY_CUSTOM_INGREDIENT_LIST);
+	const [customIngredientList, setCustomIngredientList] = useState<CustomIngredientItemType[] | []>([]);
 
 	const handleMove = () => {
 		setOpen((prev) => !prev);
@@ -31,6 +30,13 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 	const handleWrite = () => {
 		console.log('handleWrite');
 		toast.success('재료 직접 등록');
+		setCustomIngredientList([
+			...customIngredientList,
+			{
+				ingredientCategoryId: 2,
+				ingredientName: '닭고기',
+			},
+		]);
 	};
 
 	const handleIngredientSelect = (idx: number) => {
@@ -76,9 +82,9 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 				.then((res) => {
 					if (res.data && res.data.length > 0) {
 						setSearchResultList(formatSearchResultList(res.data));
-					} else {
-						console.error('검색 실패');
+						return;
 					}
+					setSearchResultList(null);
 				})
 				.catch((err) => console.error(err));
 		}

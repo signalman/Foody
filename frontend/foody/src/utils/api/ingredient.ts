@@ -1,8 +1,14 @@
 import { CustomIngredientItemType } from 'types/refrigerator';
 import { instance } from './instance';
 
+export const getAllIngredientList = async () => {
+	const response = await instance.get('/refrigerators');
+	return response;
+};
+
 export const getSearchIndegredients = async (keyword: string) => {
 	const response = await instance.get(`/refrigerators/ingredient?keyword=${keyword}`);
+	console.log('response', response);
 	return response;
 };
 

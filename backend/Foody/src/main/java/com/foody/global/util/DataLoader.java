@@ -29,7 +29,8 @@ public class DataLoader {
             strategy.setType(Recipe.class);
             String[] memberFieldsToBindTo = {
                     "id", "name", "ingredient", "description", "url", "difficulty", "servers",
-                    "foodMethod", "foodSituation", "foodIngredients", "foodTypes"
+                    "foodMethod", "foodSituation", "foodIngredients", "foodTypes", "energy", "carbohydrates",
+                "protein", "dietaryFiber", "calcium", "sodium", "iron", "fats", "vitaminA", "vitaminC"
             };
             strategy.setColumnMapping(memberFieldsToBindTo);
 

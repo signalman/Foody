@@ -39,7 +39,8 @@ public class RecipeJDBCRepository implements RecipeCustomRepository{
 
     private void batchInsert(List<Recipe> recipes) {
         String sql = "INSERT INTO recipe (id, name, ingredient, description, url, difficulty, servers, " +
-                "food_method, food_situation, food_ingredients, food_types) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "food_method, food_situation, food_ingredients, food_types, energy, carbohydrates, protein, fats, dietary_fiber, calcium, sodium, iron, vitamina, vitaminc) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, recipes, 1000, (ps, recipe) -> {
             ps.setLong(1, recipe.getId());
@@ -48,11 +49,22 @@ public class RecipeJDBCRepository implements RecipeCustomRepository{
             ps.setString(4, recipe.getDescription());
             ps.setString(5, recipe.getUrl());
             ps.setString(6, recipe.getDifficulty());
-            ps.setString(7, recipe.getServers());
+            // double -> int로 바꿔줘야 함, 일시적으로
+            ps.setDouble(7, recipe.getServers());
             ps.setString(8, recipe.getFoodMethod());
             ps.setString(9, recipe.getFoodSituation());
             ps.setString(10, recipe.getFoodIngredients());
             ps.setString(11, recipe.getFoodTypes());
+            ps.setDouble(12, recipe.getEnergy());
+            ps.setDouble(13, recipe.getCarbohydrates());
+            ps.setDouble(14, recipe.getProtein());
+            ps.setDouble(15, recipe.getFats());
+            ps.setDouble(16, recipe.getDietaryFiber());
+            ps.setDouble(17, recipe.getCalcium());
+            ps.setDouble(18, recipe.getSodium());
+            ps.setDouble(19, recipe.getIron());
+            ps.setDouble(20, recipe.getVitaminA());
+            ps.setDouble(21, recipe.getVitaminC());
         });
     }
 }

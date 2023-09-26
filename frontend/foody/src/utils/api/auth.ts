@@ -24,12 +24,16 @@ export const getSignupInformation = async (data: SignupInformationParams) => {
 };
 
 export const getMBTIImage = async () => {
-	const response = await instance.post('/member/mbti');
+	const response = await instance.get('/mbti/');
+	console.log(response);
 	return response;
 };
 
 export const resultMBTI = async (data: number[]) => {
-	const response = await instance.post('mbti/create', data);
+	const body = {
+		results: data,
+	};
+	const response = await instance.post('/mbti/create', body);
 	return response;
 };
 export default login;

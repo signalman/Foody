@@ -36,6 +36,7 @@ services:
       S3_SECRET_KEY: ${S3_SECRET_KEY}
       NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
       NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
+      X_OCR_SECRET : ${X_OCR_SECRET}
 
     ports:
       - "8082:8082"

@@ -2,6 +2,7 @@ package com.foody.recommend.service;
 
 import com.foody.global.exception.ErrorCode;
 import com.foody.recommend.dto.response.RecommendItem;
+import com.foody.recommend.dto.resquest.IngredientInput;
 import com.foody.recommend.exception.RecommendException;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
@@ -26,7 +27,7 @@ import reactor.core.publisher.Mono;
 public class RecommendService {
 
     private final RefrigeratorsService refrigeratorsService;
-    @Value("{recommend.server.url}")
+    @Value("${recommend.server.url}")
     private String serverUrl;
 
     @Transactional(readOnly = true)
@@ -51,17 +52,19 @@ public class RecommendService {
                            .collect(Collectors.joining(" "));
     }
 
-    private List<RecommendItem> ingredientSendToServer(String ingredients) {
+    public List<RecommendItem> ingredientSendToServer(String ingredients) {
+
+        IngredientInput ingredientInput = new IngredientInput(ingredients, 5);
 
         WebClient webClient = WebClient.builder()
                                        .build();
 
-        URI uri = URI.create(serverUrl + "/recipe/nutrients/cosine");
+        URI uri = URI.create(serverUrl + "/recipes/ingredients");
         log.debug("starting inter-server communication for ingredient");
         List<RecommendItem> recommendItemList = webClient.post()
                                                          .uri(uri)
                                                          .contentType(MediaType.APPLICATION_JSON)
-                                                         .body(BodyInserters.fromValue(ingredients))
+                                                         .body(BodyInserters.fromValue(ingredientInput))
                                                          .retrieve()
                                                          .onStatus(HttpStatus::is5xxServerError,
                                                              response -> Mono.error(

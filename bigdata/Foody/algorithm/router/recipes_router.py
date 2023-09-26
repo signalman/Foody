@@ -22,6 +22,7 @@ router = APIRouter()
 # 데이터 로딩
 recipe_data = pd.read_csv('data/recipe_information_reprocessed.csv')
 recipe_data_cleaned = recipe_data.dropna(subset=['ingredients_concat'])
+recipe_data_jaccard = pd.read_csv('data/recipe_jaccard.csv')
 
 
 class IngredientInput(BaseModel):
@@ -49,10 +50,10 @@ class CombinedInput(BaseModel):
 
 
 # 자카드 유사도
-def jaccard_similarity(list1, list2):
-    s1 = set(list1)
-    s2 = set(list2)
-    return len(s1.intersection(s2)) / len(s1.union(s2))
+def jaccard_similarity(set1, set2):
+    intersection = set1.intersection(set2)
+    union = set1.union(set2)
+    return len(intersection) / len(union)
 
 
 # 기존의 코사인, 맨하탄 등등 유사도는 사용자의 재료가 레시피의 재료를 모두 포함하고, 너무 많으면 유사도가 오히려 낮게 나옴
@@ -88,13 +89,14 @@ async def get_top_recipes_from_refrigerator(item: IngredientInput, top_k: int = 
 
 @router.post("/ingredients/jaccard")
 def get_top_recipes_based_on_jaccard(item: IngredientInput, top_k: int = 5):
-    # Split the ingredients string into a list
-    user_ingredients = item.ingredients.split()
+    # Convert the ingredients string into a set
+    user_ingredients = set(item.ingredients.split())
 
     # Calculate Jaccard Similarity for each recipe
     jaccard_scores = []
-    for index, row in recipe_data_cleaned.iterrows():
-        recipe_ingredients = row['ingredients_concat'].split()
+    for index, row in recipe_data_jaccard.iterrows():
+        # Convert the string representation of the set back to an actual set
+        recipe_ingredients = eval(row['ingredient_set'])
         if len(recipe_ingredients) >= 5:  # Only consider recipes with at least 5 ingredients
             score = jaccard_similarity(user_ingredients, recipe_ingredients)
             jaccard_scores.append((row['recipe_id'], score))

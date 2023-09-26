@@ -44,3 +44,7 @@ server:
   port: 8082
   tomcat:
     default-locale: ko_KR
+
+recommend:
+  server:
+    url: ${DATA_URL}

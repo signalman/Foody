@@ -40,7 +40,7 @@ function IngredientsList({ ingredientsList, type }: { ingredientsList: Ingridien
 			<div className={wrapDivClasses}>
 				<ul className="ingredients-list">
 					{ingredientsList.map((item, i) => (
-						<IngredientsListItem key={item.key} idx={i} handleClick={handleClickIngredientItem} item={item} />
+						<IngredientsListItem key={item.text} idx={i} handleClick={handleClickIngredientItem} item={item} />
 					))}
 				</ul>
 			</div>

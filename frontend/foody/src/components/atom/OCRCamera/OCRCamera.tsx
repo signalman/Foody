@@ -3,9 +3,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import './OCRCamera.scss';
 import { BiCamera, BiCheck } from 'react-icons/bi';
 import decodingImage from 'utils/common/base64Decoding';
-import { DUMMY_RECEIPT_LIST } from 'constants/dummy';
 import classNames from 'classnames';
-import ReceiptListType from 'types/receipt';
+// import ReceiptListType from 'types/receipt';
+import { getOCRReceiptIndegredients } from 'utils/api/ingredient';
+import uuid from 'react-uuid';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 function OCRCamera() {
@@ -14,8 +15,8 @@ function OCRCamera() {
 	const [stream, setStream] = useState<MediaStream | null>(null);
 	const [base64Image, setBase64Image] = useState('');
 	const [hasPhoto, setHasPhoto] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
-	const [receptList, setReceptList] = useState<ReceiptListType | null>(null);
+	const [isLoading, setIsLoading] = useState(false);
+	// const [receptList, setReceptList] = useState<ReceiptListType | null>(null);
 	// const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
 	const takePhoto = () => {
@@ -36,9 +37,8 @@ function OCRCamera() {
 		const imageDataUrl = photo.toDataURL('image/jpeg');
 		setBase64Image(imageDataUrl);
 		setHasPhoto(true);
+		setIsLoading(true);
 		// setContainerSize({ width, height });
-		console.log(receptList);
-		setReceptList(DUMMY_RECEIPT_LIST);
 	};
 
 	const confirmPhoto = () => {
@@ -92,21 +92,24 @@ function OCRCamera() {
 	}, [stream, videoRef]);
 
 	useEffect(() => {
-		setIsLoading(true);
-		console.log(decodingImage(base64Image));
+		// console.log(decodingImage(base64Image));
+		// console.log(base64Image);
 		// TODOS: API 요청해서 값 가져오기
-		// getOCRReceiptIndegredients(uuid(), decodingImage(base64Image)).then((res) => {
-		// 	console.log(res);
-		setIsLoading(false);
-		console.log(DUMMY_RECEIPT_LIST);
-		// setReceptList(DUMMY_RECEIPT_LIST);
-		// });
+		if (base64Image !== undefined && base64Image !== '') {
+			// console.log(base64Image);
+			getOCRReceiptIndegredients(uuid(), decodingImage(base64Image)).then((res) => {
+				console.log(res);
+				setIsLoading(false);
+				setBase64Image('');
+				// setReceptList(DUMMY_RECEIPT_LIST);
+			});
+		}
 	}, [base64Image, hasPhoto]);
 
 	return (
 		<>
 			{isLoading && <LoadingSpinner />}
-
+			base64Image : {base64Image}
 			<div className="video-container">
 				<video ref={videoRef} className="video" />
 			</div>
@@ -114,7 +117,6 @@ function OCRCamera() {
 				{/* {receptList && <ReceiptList containerSize={containerSize} receiptList={DUMMY_RECEIPT_LIST} />} */}
 				<canvas ref={photoRef} className="canvas" />
 			</div>
-
 			<div className="btn-container">
 				{hasPhoto ? (
 					<button className="btn-check" type="button" onClick={confirmPhoto}>

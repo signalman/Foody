@@ -15,4 +15,7 @@ public class IngredientCategory extends BaseEntity {
     @Column(nullable = false)
     CategoryType categoryType;
 
+//    @Column(nullable = false)
+    String ingredientCategoryIconImg;
+
 }

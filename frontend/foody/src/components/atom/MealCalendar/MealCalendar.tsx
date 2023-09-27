@@ -56,7 +56,7 @@ function MealCalendar() {
 	return (
 		<div className="calendar-box">
 			<button type="button" onClick={goToPreviousWeek}>
-				<HiOutlineChevronLeft size={30} />
+				<HiOutlineChevronLeft size={20} />
 			</button>
 			<DayPicker
 				showOutsideDays
@@ -74,7 +74,7 @@ function MealCalendar() {
 				components={{ Row: (props) => PresentWeek(props, selectedDate) }}
 			/>
 			<button type="button" onClick={goToNextWeek}>
-				<HiOutlineChevronRight size={30} />
+				<HiOutlineChevronRight size={20} />
 			</button>
 			{/* <p>선택한 주: {format(selectedDate, 'yyyy-MM-dd')}</p>
 			<p>선택한 달: {format(displayMonth, 'yyyy-MM-dd')}</p> */}

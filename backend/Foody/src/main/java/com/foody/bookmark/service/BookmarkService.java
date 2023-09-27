@@ -14,6 +14,7 @@ public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
 
+    @Transactional(readOnly = true)
     public boolean existsByMemberAndRecipe(Long memberId, Long recipeId) {
 
         return bookmarkRepository.existsBookmarkByMemberIdAndRecipeId(memberId, recipeId);

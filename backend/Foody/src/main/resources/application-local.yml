@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:foody
-    username: sa
-    password:
+    url: jdbc:mysql://127.0.0.1:3306/foody?useUnicode=true&rewriteBatchedStatements=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
 
   jpa:
     hibernate:
@@ -30,3 +30,7 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
+
+recommend:
+  server:
+    url: ${DATA_URL}

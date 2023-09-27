@@ -24,3 +24,7 @@ spring:
 jwt:
   token:
     secret: "testTesttestTesttestTesttestTesttestTesttestTesttestTesttestTesttestTesttestTesttestTesttestTest"
+
+recommend:
+  server:
+    url: ${DATA_URL}

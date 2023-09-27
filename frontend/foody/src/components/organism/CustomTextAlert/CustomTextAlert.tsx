@@ -16,18 +16,18 @@ interface ICustomTextAlertProps {
 	onAction: (params: object) => void;
 }
 
-function Item({ text }: { text: string }) {
-	return (
-		<p>
-			{text.split('\n').map((txt) => (
-				<>
-					{txt}
-					<br />
-				</>
-			))}
-		</p>
-	);
-}
+// function Item({ text }: { text: string }) {
+//     return (
+//         <p>
+//             {text.split('\n').map((txt) => (
+//                 <React.Fragment key={txt}>
+//                     {txt}
+//                     <br />
+//                 </React.Fragment>
+//             ))}
+//         </p>
+//     );
+// }
 
 function CustomTextAlert(props: ICustomTextAlertProps) {
 	const { title, desc, contents, isDelete, confirmBtnTitle, closeBtnTitle, params, onAction } = props;
@@ -52,7 +52,12 @@ function CustomTextAlert(props: ICustomTextAlertProps) {
 					</div>
 					{desc && (
 						<p>
-							<Item text={`${desc}`} />
+							{desc.split('\n').map((line) => (
+								<React.Fragment key={line}>
+									{line}
+									<br />
+								</React.Fragment>
+							))}
 						</p>
 					)}
 					{contents && contents}

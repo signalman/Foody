@@ -1,0 +1,15 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.meal-button {
+	width: 75px;
+	height: 75px;
+	border-radius: 30px;
+	background-color: var.$border-200;
+	@include f.flex(row, center, center, 0px);
+
+	.meal-button-icon {
+		background-color: var.$border-200;
+        color : var.$white;
+	}
+}

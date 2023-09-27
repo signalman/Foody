@@ -2,11 +2,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './OCRCamera.scss';
 import { BiCamera, BiCheck } from 'react-icons/bi';
-import decodingImage from 'utils/common/base64Decoding';
+// import decodingImage from 'utils/common/base64Decoding';
 import classNames from 'classnames';
 // import ReceiptListType from 'types/receipt';
-import { getOCRReceiptIndegredients } from 'utils/api/ingredient';
-import uuid from 'react-uuid';
+// import { getOCRReceiptIngredients } from 'utils/api/ingredient';
+// import uuid from 'react-uuid';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 function OCRCamera() {
@@ -97,12 +97,13 @@ function OCRCamera() {
 		// TODOS: API 요청해서 값 가져오기
 		if (base64Image !== undefined && base64Image !== '') {
 			// console.log(base64Image);
-			getOCRReceiptIndegredients(uuid(), decodingImage(base64Image)).then((res) => {
-				console.log(res);
-				setIsLoading(false);
-				setBase64Image('');
-				// setReceptList(DUMMY_RECEIPT_LIST);
-			});
+			console.log(base64Image);
+			// getOCRReceiptIngredients(uuid(), decodingImage(base64Image)).then((res) => {
+			// 	console.log(res);
+			// 	setIsLoading(false);
+			// 	setBase64Image('');
+			// 	// setReceptList(DUMMY_RECEIPT_LIST);
+			// });
 		}
 	}, [base64Image, hasPhoto]);
 

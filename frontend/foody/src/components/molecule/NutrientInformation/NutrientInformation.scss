@@ -1,0 +1,18 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.nutrient-little-box {
+	@include f.flex(column, start, start, 8px);
+	width: 100%;
+
+	.nutrient-name {
+		font-size: var.$p4;
+		font-weight: var.$fw-400;
+		color: var.$black-400;
+	}
+
+	.nutrient {
+		@include f.flex(row, between, center, 4px);
+		width: 100%;
+	}
+}

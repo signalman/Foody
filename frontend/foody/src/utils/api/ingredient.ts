@@ -6,18 +6,18 @@ export const getAllIngredientList = async () => {
 	return response;
 };
 
-export const getSearchIndegredients = async (keyword: string) => {
+export const getSearchIngredients = async (keyword: string) => {
 	const response = await instance.get(`/refrigerators/ingredient?keyword=${keyword}`);
 	console.log('response', response);
 	return response;
 };
 
-export const getOCRReceiptIndegredients = async (uuid: string, data: string) => {
+export const getOCRReceiptIngredients = async (uuid: string, data: string) => {
 	const body = {
 		images: [
 			{
 				format: 'jpeg',
-				name: 'indegredients',
+				name: 'ingredient receipt',
 				data,
 			},
 		],
@@ -30,7 +30,7 @@ export const getOCRReceiptIndegredients = async (uuid: string, data: string) => 
 	return response;
 };
 
-export const getReceiptIndegredients = async () => {
+export const getReceiptIngredients = async () => {
 	const response = await instance.post('/refrigerators');
 	return response;
 };
@@ -45,4 +45,9 @@ export const createIngredientList = async (ingredients: number[], customIngredie
 	return response;
 };
 
-export default getSearchIndegredients;
+export const deleteIngredient = async (ingredient: number) => {
+	const response = await instance.delete(`/refrigerators/${ingredient}`);
+	return response;
+};
+
+export default getSearchIngredients;

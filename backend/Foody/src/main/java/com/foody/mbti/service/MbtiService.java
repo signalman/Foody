@@ -1,11 +1,12 @@
 package com.foody.mbti.service;
 
+import com.foody.global.exception.ErrorCode;
 import com.foody.mbti.dto.request.MbtiRequest;
 import com.foody.mbti.entity.Mbti;
 import com.foody.mbti.repository.MbtiRepository;
 import com.foody.member.entity.Member;
+import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
-import com.foody.member.service.MemberService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MbtiService {
 
     private final MemberRepository memberRepository;
-    private final MemberService memberService;
     private final MbtiRepository mbtiRepository;
 
     @Transactional
@@ -54,7 +54,8 @@ public class MbtiService {
         int rawCook = 0; // 날것
         int etcCook = 0; // 기타
 
-        Member member = memberService.findByEmail(email);
+        Member member = memberRepository.findByEmail(email)
+                                        .orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
 
         // 갈비찜
         if(arr.get(0)==1){

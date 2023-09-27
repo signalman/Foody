@@ -1,8 +1,14 @@
 import { CustomIngredientItemType } from 'types/refrigerator';
 import { instance } from './instance';
 
+export const getAllIngredientList = async () => {
+	const response = await instance.get('/refrigerators');
+	return response;
+};
+
 export const getSearchIndegredients = async (keyword: string) => {
 	const response = await instance.get(`/refrigerators/ingredient?keyword=${keyword}`);
+	console.log('response', response);
 	return response;
 };
 
@@ -20,12 +26,12 @@ export const getOCRReceiptIndegredients = async (uuid: string, data: string) => 
 		timestamp: Date.now(),
 	};
 	console.log('body', body);
-	const response = await instance.post('/receipt/ingredients', body);
+	const response = await instance.post('/refrigerators/receipt', body);
 	return response;
 };
 
 export const getReceiptIndegredients = async () => {
-	const response = await instance.post('/refrigerator');
+	const response = await instance.post('/refrigerators');
 	return response;
 };
 

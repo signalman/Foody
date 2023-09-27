@@ -48,6 +48,12 @@ function CustomAlert(props: ICustomAlertProps) {
 									<br />
 								</React.Fragment>
 							))}
+							{desc.split('\n').map((line) => (
+								<React.Fragment key={line}>
+									{line}
+									<br />
+								</React.Fragment>
+							))}
 						</p>
 					)}
 					{contents && contents}

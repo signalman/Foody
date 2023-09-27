@@ -13,6 +13,10 @@
 		padding: 14px;
 		@include f.flex(column, center, center, 10px);
 
+		svg {
+			color: var.$border-200;
+		}
+
 		img {
 			max-width: 50px;
 			width: 10vw;

@@ -252,8 +252,7 @@ public class NutrientService {
     @Transactional
     public Nutrient getMealNutrient(String email, String mealType) {
 
-        Member member = memberRepository.findByEmail(email)
-                                        .orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         Nutrient nutrient = member.getNutrient();
 
         if(mealType == "breakfast"){

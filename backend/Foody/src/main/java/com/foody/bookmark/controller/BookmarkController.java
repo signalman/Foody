@@ -1,7 +1,6 @@
 package com.foody.bookmark.controller;
 
 import com.foody.bookmark.service.BookmarkFacade;
-import com.foody.bookmark.service.BookmarkService;
 import com.foody.security.util.LoginInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BookmarkController {
 
-    private final BookmarkService bookmarkService;
     private final BookmarkFacade bookmarkFacade;
 
     // 북마크가 있다면 제거, 없다면 추가

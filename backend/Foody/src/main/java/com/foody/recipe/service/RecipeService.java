@@ -42,5 +42,11 @@ public class RecipeService {
                       .collect(Collectors.toList());
     }
 
+    public Recipe getEntityById(long id) {
+
+        return recipeRepository.findById(id)
+                               .orElseThrow(() -> new RecipeException(ErrorCode.RECIPE_NOT_FOUND));
+    }
+
 
 }

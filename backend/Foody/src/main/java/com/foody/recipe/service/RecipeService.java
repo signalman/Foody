@@ -4,6 +4,7 @@ import com.foody.global.exception.ErrorCode;
 import com.foody.recipe.dto.RecipeResponse;
 import com.foody.recipe.entity.Recipe;
 import com.foody.recipe.exception.RecipeException;
+import com.foody.bookmark.repository.BookmarkRepository;
 import com.foody.recipe.repository.RecipeRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     public RecipeResponse findById(long id) {
 

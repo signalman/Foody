@@ -41,7 +41,16 @@ class BookmarkFacadeTest extends ServiceTest {
     @Transactional
     @DisplayName("북마크 하지않은 레시피 저장 된다")
     void t2() throws Exception {
+        memberInfoGenerator();
 
+        Member member = memberService.findByEmail("lkm454545@gmail.com");
+        long recipeId = 128671L;
+
+        bookmarkFacade.changeStatus(recipeId, "lkm454545@gmail.com");
+
+        boolean isBookmarked = bookmarkService.existsByMemberAndRecipe(member.getId(), recipeId);
+
+        assertTrue(isBookmarked);
     }
 
 }

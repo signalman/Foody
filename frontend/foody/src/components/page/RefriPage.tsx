@@ -11,8 +11,11 @@ import IngredientRegistAlbum from 'components/organism/IngredientRegistAlbum/Ing
 import IngredientSearch from 'components/organism/IngredientSearch/IngredientSearch';
 import { getAllIngredientList } from 'utils/api/ingredient';
 import { formatIngredientsList } from 'utils/common/ingredient';
+import { useRecoilState } from 'recoil';
+import tabbarState from 'recoil/atoms/tabbarState';
 
 function RefriPage() {
+	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
 	const [type, setType] = useToggle(true); // true: 냉장고, false: 서랍
 	const [title, setTitle] = useState<string>('나의 냉장고');
 	const [selectedCategory, setSelectedCategory] = useState<string>('모든 재료');
@@ -25,6 +28,7 @@ function RefriPage() {
 	const handleMenuSelect = (menu: string) => {
 		setMenuOpen(!menuOpen);
 		setSelectedMenu(menu);
+		setTabbarOn(!tabbarOn);
 	};
 
 	useEffect(() => {
@@ -85,10 +89,10 @@ function RefriPage() {
 			<IngredientsCategory categoryList={categoryList} selected={selectedCategory} setSelected={setSelectedCategory} />
 
 			{/* 재료 목록 */}
-			<IngredientsList ingredientsList={ingredientsList} type={type} />
+			<IngredientsList handleMenuSelect={handleMenuSelect} ingredientsList={ingredientsList} type={type} />
 
 			{/* 카메라/앨범/검색 메뉴 */}
-			<FloatingMenu menuList={['camera', 'album', 'search']} onMenuSelect={handleMenuSelect} />
+			<FloatingMenu menuList={['camera', 'album']} onMenuSelect={handleMenuSelect} />
 		</RefriTemplate>
 	);
 }

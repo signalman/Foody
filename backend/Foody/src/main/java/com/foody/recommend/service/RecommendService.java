@@ -33,8 +33,7 @@ public class RecommendService {
     @Transactional(readOnly = true)
     public List<RecommendItem> findRecommendItemByIngredients(String email) {
 
-        List<UserRefrigeratorResponse> refrigerator = refrigeratorsService.getUserRefrigerator(
-            email);
+        List<UserRefrigeratorResponse> refrigerator = refrigeratorsService.getUserRefrigerator(email);
 
         if (refrigerator.isEmpty()) {
             throw new RecommendException(ErrorCode.REFRIGERATOR_IS_EMPTY);

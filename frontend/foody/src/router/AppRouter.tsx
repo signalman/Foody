@@ -11,6 +11,7 @@ import NotFoundPage from 'components/page/NotFoundPage';
 import SignupPage from 'components/page/SignupPage';
 import RegistTodayMeal from 'components/molecule/RegistTodayMeal/RegistTodayMeal';
 import { Toaster } from 'react-hot-toast';
+import FoodMBTI from 'components/page/FoodMBTI';
 
 function AppRouter() {
 	return (
@@ -23,7 +24,7 @@ function AppRouter() {
 				<Route path="/recommend" element={<RecommendPage />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/signup" element={<SignupPage />} />
-
+				<Route path="/fbti" element={<FoodMBTI />} />
 				<Route path="/dev" element={<DevPage />} />
 
 				{/* <Route path="/*" element={<Navigate replace to="/notfound" />} /> */}

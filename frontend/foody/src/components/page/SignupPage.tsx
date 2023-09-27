@@ -5,10 +5,12 @@ import SignupStep3 from 'components/organism/signup/SignupStep3/SignupStep3';
 import SignupStep4 from 'components/organism/signup/SignupStep4/SignupStep4';
 import SignupStep5 from 'components/organism/signup/SignupStep5/SignupStep5';
 import SignupTemplate from 'components/template/SignupTemplate/SignupTemplate';
+import useMovePage from 'hooks/useMovePage';
 import React, { useState } from 'react';
 import { getSignupInformation } from 'utils/api/auth';
 
 function SignupPage() {
+	const { movePage } = useMovePage();
 	// 첫 번째 스텝
 	const [nickname, setNickname] = useState<string>('');
 	// 두 번째 스텝
@@ -47,6 +49,7 @@ function SignupPage() {
 		console.log(information);
 		getSignupInformation(information).then((res) => {
 			console.log(res);
+			movePage('/fbti', null);
 		});
 	};
 

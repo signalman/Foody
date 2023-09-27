@@ -1,3 +1,3 @@
-const NOT_ARROWED_PATH = ['/error', '/login', /\/payment\/success\/\d+/];
+const NOT_ARROWED_PATH = ['/error', '/login', '/signup', '/fbti', /\/payment\/success\/\d+/];
 
 export default NOT_ARROWED_PATH;

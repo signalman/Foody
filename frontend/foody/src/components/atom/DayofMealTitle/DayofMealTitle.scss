@@ -1,0 +1,12 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.dayofmeal-title-box {
+	@include f.flex(row, center, center, 10px);
+
+	p {
+		font-size: var.$p2;
+		font-weight: var.$fw-400;
+		color: var.$black-500;
+	}
+}

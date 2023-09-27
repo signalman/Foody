@@ -1,0 +1,20 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.dayofmeal-part {
+	width: 100%;
+	padding: 15px 15px;
+	height: 120px;
+	border: 1px solid var.$black-100;
+	border-radius: 10px;
+	@include f.flex(row, center, center, 15px);
+	.dayofmeal-content {
+		width: calc(100% - 95px);
+		@include f.flex(column, start, start, 15px);
+
+		.dayofmeal-content-goal {
+			width: 100%;
+			@include f.flex(row, between, center, 0px);
+		}
+	}
+}

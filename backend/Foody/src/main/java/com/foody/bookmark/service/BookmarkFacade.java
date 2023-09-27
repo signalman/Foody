@@ -24,7 +24,7 @@ public class BookmarkFacade {
         Member member = memberService.findByEmail(email);
         Recipe recipe = em.getReference(Recipe.class, recipeId);
 
-        boolean isBookmarked = bookmarkService.existsByMemberAndRecipe(member.getId(), recipeId);
+        boolean isBookmarked = existsByMemberAndRecipe(member.getId(), recipeId);
 
         if(isBookmarked) {
             deleteBookmark(member, recipe);
@@ -40,5 +40,9 @@ public class BookmarkFacade {
 
     private void addBookmark(Member member, Recipe recipe) {
         bookmarkService.save(member, recipe);
+    }
+
+    public boolean existsByMemberAndRecipe(Long memberId, Long recipeId) {
+        return bookmarkService.existsByMemberAndRecipe(memberId, recipeId);
     }
 }

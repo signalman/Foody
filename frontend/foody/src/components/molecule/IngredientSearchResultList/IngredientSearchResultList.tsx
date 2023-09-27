@@ -1,6 +1,6 @@
 import React from 'react';
 import './IngredientSearchResultList.scss';
-import { IngridientSearchItem } from 'types/refrigerator';
+import { IngredientSearchItem } from 'types/refrigerator';
 
 function IngredientSearchResultList({
 	searchKeyword,
@@ -8,7 +8,7 @@ function IngredientSearchResultList({
 	handleIngredientSelect,
 }: {
 	searchKeyword: string;
-	searchResultList: IngridientSearchItem[] | null;
+	searchResultList: IngredientSearchItem[] | null;
 	handleIngredientSelect: (idx: number) => void;
 }) {
 	return (

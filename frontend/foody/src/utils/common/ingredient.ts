@@ -1,8 +1,8 @@
-import { IngridientSearchItem, IngridientSearchResultItem } from 'types/refrigerator';
-import testImg1 from 'assets/icons/Apple.svg';
-import { IngredientsList, IngridientItem } from 'constants/category';
+import { IngredientSearchItem, IngredientSearchResultItem } from 'types/refrigerator';
+import { IngredientsList, IngredientItem } from 'constants/category';
+import defaultIcon from 'assets/icons/ingredientDefaultIcon.png';
 
-const formatSearchResultList = (res: IngridientSearchResultItem[]): IngridientSearchItem[] => {
+const formatSearchResultList = (res: IngredientSearchResultItem[]): IngredientSearchItem[] => {
 	return res.map((r) => {
 		return {
 			key: r.ingredientId,
@@ -11,15 +11,16 @@ const formatSearchResultList = (res: IngridientSearchResultItem[]): IngridientSe
 	});
 };
 
-export const formatIngredientsList = (res: IngredientsList[]): IngridientItem[] => {
-	return res.map((r, idx) => {
+export const formatIngredientsList = (res: IngredientsList[]): IngredientItem[] => {
+	return res.map((r) => {
 		return {
-			key: idx,
+			key: r.ingredientId,
 			text: r.ingredientName,
-			img: testImg1,
+			img: r.iconImg ? r.iconImg : defaultIcon,
 			regiDate: r.createDate,
 			categoryType: r.categoryType,
 			ingredientCategoryId: r.ingredientCategoryId,
+			ingredientId: r.ingredientId,
 		};
 	});
 };

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import RefriTemplate from 'components/template/RefriTemplate/RefriTemplate';
 import PageTitle from 'components/molecule/PageTitle/PageTitle';
-import REFI_CATEGORY_LIST, { CATEGORY_KEY_VALUE, DRAWER_CATEGORY_LIST, IngridientItem } from 'constants/category';
+import REFI_CATEGORY_LIST, { CATEGORY_KEY_VALUE, DRAWER_CATEGORY_LIST, IngredientItem } from 'constants/category';
 import useToggle from 'hooks/useToggle';
 import IngredientsCategory from 'components/molecule/IngredientsCategory/IngredientsCategory';
 import IngredientsList from 'components/atom/IngredientsList/IngredientsList';
@@ -21,8 +21,8 @@ function RefriPage() {
 	const [selectedCategory, setSelectedCategory] = useState<string>('모든 재료');
 	const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
 	const [categoryList, setCategoryList] = useState(REFI_CATEGORY_LIST);
-	const [ingredientsListAll, setIngredientsListAll] = useState<IngridientItem[] | null>(null);
-	const [ingredientsList, setIngredientsList] = useState<IngridientItem[] | null>(null);
+	const [allIngredientsList, setAllIngredientsList] = useState<IngredientItem[] | null>(null);
+	const [ingredientsList, setIngredientsList] = useState<IngredientItem[] | null>(null);
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const handleMenuSelect = (menu: string) => {
@@ -30,6 +30,36 @@ function RefriPage() {
 		setSelectedMenu(menu);
 		setTabbarOn(!tabbarOn);
 	};
+
+	const changeAllIngredientList = useCallback(() => {
+		getAllIngredientList().then((res) => {
+			if (res.data) {
+				setAllIngredientsList(formatIngredientsList(res.data));
+			}
+		});
+	}, []);
+
+	const changeIngredientList = useCallback(() => {
+		if (!allIngredientsList) {
+			setIngredientsList(null);
+			return;
+		}
+
+		const categoryId = CATEGORY_KEY_VALUE[selectedCategory];
+		if (categoryId === 0) {
+			let newIngredientsList = null;
+			if (type) {
+				newIngredientsList = allIngredientsList.filter((item) => item.categoryType === 0);
+			} else {
+				newIngredientsList = allIngredientsList.filter((item) => item.categoryType === 1);
+			}
+			setIngredientsList(newIngredientsList);
+			return;
+		}
+
+		const newIngredientsList = allIngredientsList.filter((item) => item.ingredientCategoryId === categoryId);
+		setIngredientsList(newIngredientsList);
+	}, [allIngredientsList, selectedCategory, type]);
 
 	useEffect(() => {
 		setSelectedCategory('모든 재료');
@@ -43,36 +73,12 @@ function RefriPage() {
 	}, [type]);
 
 	useEffect(() => {
-		if (!ingredientsListAll) {
-			setIngredientsList(null);
-			return;
-		}
-
-		console.log('카테고리별 목록 수정!!');
-		const categoryId = CATEGORY_KEY_VALUE[selectedCategory];
-		if (categoryId === 0) {
-			let newIngredientsList = null;
-			if (type) {
-				newIngredientsList = ingredientsListAll.filter((item) => item.categoryType === 0);
-			} else {
-				newIngredientsList = ingredientsListAll.filter((item) => item.categoryType === 1);
-			}
-			setIngredientsList(newIngredientsList);
-			return;
-		}
-
-		const newIngredientsList = ingredientsListAll.filter((item) => item.ingredientCategoryId === categoryId);
-		setIngredientsList(newIngredientsList);
-	}, [ingredientsListAll, selectedCategory, type]);
+		changeIngredientList();
+	}, [changeIngredientList, allIngredientsList, selectedCategory, type]);
 
 	useEffect(() => {
-		getAllIngredientList().then((res) => {
-			console.log('all', res.data);
-			if (res.data && res.data.length > 0) {
-				setIngredientsListAll(formatIngredientsList(res.data));
-			}
-		});
-	}, [menuOpen]);
+		changeAllIngredientList();
+	}, [changeAllIngredientList, menuOpen]);
 
 	if (menuOpen) {
 		if (selectedMenu === 'camera') return <IngredientRegistOCR setOpen={setMenuOpen} />;
@@ -89,7 +95,12 @@ function RefriPage() {
 			<IngredientsCategory categoryList={categoryList} selected={selectedCategory} setSelected={setSelectedCategory} />
 
 			{/* 재료 목록 */}
-			<IngredientsList handleMenuSelect={handleMenuSelect} ingredientsList={ingredientsList} type={type} />
+			<IngredientsList
+				changeIngredientList={changeAllIngredientList}
+				handleMenuSelect={handleMenuSelect}
+				ingredientsList={ingredientsList}
+				type={type}
+			/>
 
 			{/* 카메라/앨범/검색 메뉴 */}
 			<FloatingMenu menuList={['camera', 'album']} onMenuSelect={handleMenuSelect} />

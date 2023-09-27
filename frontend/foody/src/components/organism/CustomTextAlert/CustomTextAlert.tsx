@@ -5,34 +5,22 @@ import { confirmAlert } from 'react-confirm-alert';
 import classNames from 'classnames';
 import { BsTrash } from 'react-icons/bs';
 
-interface ICustomTextAlertProps {
+interface ICustomAlertProps {
 	title: string;
 	desc?: string;
 	contents?: JSX.Element;
 	isDelete?: boolean;
-	confirmBtnTitle?: string;
-	closeBtnTitle: string;
+	confirmTitle?: string;
+	btnTitle: string;
 	params: object;
 	onAction: (params: object) => void;
+	onDelete?: (params: object) => void;
 }
 
-function Item({ text }: { text: string }) {
-	return (
-		<p>
-			{text.split('\n').map((txt) => (
-				<>
-					{txt}
-					<br />
-				</>
-			))}
-		</p>
-	);
-}
-
-function CustomTextAlert(props: ICustomTextAlertProps) {
-	const { title, desc, contents, isDelete, confirmBtnTitle, closeBtnTitle, params, onAction } = props;
+function CustomAlert(props: ICustomAlertProps) {
+	const { title, desc, contents, isDelete, confirmTitle, btnTitle, params, onAction, onDelete } = props;
 	// 제목, 내용, 버튼 내용, 인자, confirm 함수, close 함수
-	return confirmAlert({
+	confirmAlert({
 		customUI: ({ onClose }) => (
 			<div className="popup-overlay">
 				<div className="contents-group">
@@ -42,7 +30,9 @@ function CustomTextAlert(props: ICustomTextAlertProps) {
 							<button
 								type="button"
 								onClick={() => {
-									onAction(params);
+									if (onDelete) {
+										onDelete(params);
+									}
 									onClose();
 								}}
 							>
@@ -52,26 +42,31 @@ function CustomTextAlert(props: ICustomTextAlertProps) {
 					</div>
 					{desc && (
 						<p>
-							<Item text={`${desc}`} />
+							{desc.split('\n').map((line) => (
+								<React.Fragment key={line}>
+									{line}
+									<br />
+								</React.Fragment>
+							))}
 						</p>
 					)}
 					{contents && contents}
 				</div>
 				<div className="btn-group">
-					{confirmBtnTitle && (
+					{confirmTitle && (
 						<button
 							type="button"
 							onClick={() => {
 								onAction(params);
 								onClose();
 							}}
-							className={classNames('btn', 'btn-danger')}
+							className={classNames('btn', 'btn-confirm')}
 						>
-							{confirmBtnTitle}
+							{confirmTitle}
 						</button>
 					)}
-					<button type="button" onClick={onClose} className="btn btn-cancel">
-						{closeBtnTitle}
+					<button type="button" onClick={onClose} className="btn-cancel">
+						<span className="txt-wrap">{btnTitle}</span>
 					</button>
 				</div>
 			</div>
@@ -79,4 +74,4 @@ function CustomTextAlert(props: ICustomTextAlertProps) {
 	});
 }
 
-export default CustomTextAlert;
+export default CustomAlert;

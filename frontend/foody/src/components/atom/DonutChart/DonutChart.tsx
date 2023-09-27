@@ -50,7 +50,7 @@ function DonutChart({
 		datasets: [
 			{
 				data: [rangeBreakfast, rangeLunch, rangeDinner, rangeSnack, total],
-				backgroundColor: ['#ffde1a', '#ffa112', '#1aa274', '#0A70BA', '#eeeeee'],
+				backgroundColor: ['#ffde1a', '#ffa112', '#1aa274', '#0094FF', '#eeeeee'],
 				borderColor: ['#ffffff'],
 				borderWidth: 2,
 				circumference: 320,

@@ -1,0 +1,7 @@
+@use 'styles/base/variable.scss' as var;
+
+.dayofmeal-percent {
+	font-size: var.$p3;
+	font-weight: var.$fw-300;
+	color: var.$black-400;
+}

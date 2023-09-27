@@ -22,18 +22,20 @@ export interface RefricategoryItem {
 	img: string;
 }
 
-export interface IngridientItem {
+export interface IngredientItem {
 	key: number;
 	text: string;
 	img: string;
 	regiDate: string;
 	categoryType: number;
 	ingredientCategoryId: number;
+	ingredientId: number;
 }
 
 export interface IngredientsList {
 	categoryType: number;
 	createDate: string;
+	iconImg: string;
 	ingredientCategoryId: number;
 	ingredientId: number;
 	ingredientName: string;

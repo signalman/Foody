@@ -1,5 +1,6 @@
 package com.foody.bookmark.service;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.foody.member.entity.Member;
@@ -51,6 +52,23 @@ class BookmarkFacadeTest extends ServiceTest {
         boolean isBookmarked = bookmarkService.existsByMemberAndRecipe(member.getId(), recipeId);
 
         assertTrue(isBookmarked);
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("북마크한 레시피 삭제 된다")
+    void t3() throws Exception {
+        memberInfoGenerator();
+
+        Member member = memberService.findByEmail("lkm454545@gmail.com");
+        long recipeId = 128671L;
+
+        bookmarkFacade.changeStatus(recipeId, "lkm454545@gmail.com");
+        bookmarkFacade.changeStatus(recipeId, "lkm454545@gmail.com");
+
+        boolean isBookmarked = bookmarkService.existsByMemberAndRecipe(member.getId(), recipeId);
+
+        assertFalse(isBookmarked);
     }
 
 }

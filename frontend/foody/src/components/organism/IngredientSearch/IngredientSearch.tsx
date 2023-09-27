@@ -7,9 +7,9 @@ import SearchTemplate from 'components/template/SearchTemplate/SearchTemplate';
 import { HiPencil } from 'react-icons/hi';
 import LargeButton from 'components/atom/LargeButton/LargeButton';
 import LargeButtonColor from 'constants/color';
-import getSearchIndegredients, { createIngredientList } from 'utils/api/ingredient';
+import getSearchIngredients, { createIngredientList } from 'utils/api/ingredient';
 import formatSearchResultList from 'utils/common/ingredient';
-import { CustomIngredientItemType, IngridientSearchItem } from 'types/refrigerator';
+import { CustomIngredientItemType, IngredientSearchItem } from 'types/refrigerator';
 import toast from 'react-hot-toast';
 import SubHeader from '../SubHeader/SubHeader';
 import SelectIngredientList from '../../molecule/SelectIngredientList/SelectIngredientList';
@@ -18,8 +18,8 @@ import IngredientSearchResultList from '../../molecule/IngredientSearchResultLis
 function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<boolean>> }) {
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
-	const [searchResultList, setSearchResultList] = useState<IngridientSearchItem[] | null>(null);
-	const [selectedIngredientList, setSelectedIngredientList] = useState<IngridientSearchItem[] | null>(null);
+	const [searchResultList, setSearchResultList] = useState<IngredientSearchItem[] | null>(null);
+	const [selectedIngredientList, setSelectedIngredientList] = useState<IngredientSearchItem[] | null>(null);
 	const [customIngredientList, setCustomIngredientList] = useState<CustomIngredientItemType[] | []>([]);
 
 	const handleMove = () => {
@@ -78,7 +78,7 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 
 	useEffect(() => {
 		if (searchKeyword !== '') {
-			getSearchIndegredients(searchKeyword)
+			getSearchIngredients(searchKeyword)
 				.then((res) => {
 					if (res.data && res.data.length > 0) {
 						setSearchResultList(formatSearchResultList(res.data));

@@ -24,7 +24,7 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getRecipeById(@AuthenticationPrincipal LoginInfo loginInfo, @PathVariable Long id) {
 
         log.debug(" {} request recipe information", loginInfo.email());
-        RecipeResponse recipeResponse = recipeService.findById(id);
+        RecipeResponse recipeResponse = recipeService.findById(id, loginInfo.email());
 
         return ResponseEntity.ok().body(recipeResponse);
     }

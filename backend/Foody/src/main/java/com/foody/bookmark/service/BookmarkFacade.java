@@ -45,4 +45,11 @@ public class BookmarkFacade {
     public boolean existsByMemberAndRecipe(Long memberId, Long recipeId) {
         return bookmarkService.existsByMemberAndRecipe(memberId, recipeId);
     }
+
+    public boolean existsByMemberEmailAndRecipe(String email, Long recipeId) {
+
+        Member member = memberService.findByEmail(email);
+        return bookmarkService.existsByMemberAndRecipe(member.getId(), recipeId);
+    }
+
 }

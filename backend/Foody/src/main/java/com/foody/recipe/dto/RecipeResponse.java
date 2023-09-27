@@ -21,11 +21,12 @@ public record RecipeResponse(
     double iron,
     double fats,
     double vitaminA,
-    double vitaminC
+    double vitaminC,
+    boolean isBookmarked
 
     ) {
 
-    public RecipeResponse(Recipe recipe) {
+    public RecipeResponse(Recipe recipe, boolean isBookmarked) {
         this(
             recipe.getId(),
             recipe.getName(),
@@ -43,7 +44,8 @@ public record RecipeResponse(
             recipe.getIron(),
             recipe.getFats(),
             recipe.getVitaminA(),
-            recipe.getVitaminC()
+            recipe.getVitaminC(),
+            isBookmarked
         );
 
     }

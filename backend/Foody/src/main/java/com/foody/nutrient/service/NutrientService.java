@@ -21,7 +21,7 @@ public class NutrientService {
     private final MemberRepository memberRepository;
     private final NutrientRepository nutrientRepository;
 
-    // 영양 정보 생성
+    // 1일 권장 영양 정보 생성
     @Transactional
     public void createNutrient(String email) {
         Member member = memberRepository.findByEmail(email)
@@ -237,7 +237,8 @@ public class NutrientService {
 
     }
 
-    // 영양 정보 조회
+    // 1일 총 영양 정보 조회
+    @Transactional
     public NutrientResponse getNutrient(String email) {
         Member member =memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
 
@@ -245,5 +246,47 @@ public class NutrientService {
         Nutrient nutrient = nutrientRepository.findById(id).orElseThrow(() -> new NutrientException(ErrorCode.NUTRIENT_NOT_FOUND));
 
         return new NutrientResponse(nutrient);
+    }
+
+    // 1일 끼니별 영양 정보 조회
+    @Transactional
+    public Nutrient getMealNutrient(String email, String mealType) {
+
+        Member member = memberRepository.findByEmail(email)
+                                        .orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+        Nutrient nutrient = member.getNutrient();
+
+        if(mealType == "breakfast"){
+            // 전체 양의 20퍼
+            return calculate(2, nutrient);
+        }
+        else if(mealType == "lunch") {
+            // 전체 양의 30퍼
+            return calculate(3, nutrient);
+        }
+        else if(mealType == "dinner") {
+            // 전체 양의 30퍼
+            return calculate(3, nutrient);
+        }
+        else {
+            // 전체 양의 20퍼
+            return calculate(2, nutrient);
+        }
+    }
+
+    public Nutrient calculate(int ratio, Nutrient nutrient) {
+
+        double energy = nutrient.getEnergy() * (ratio/10);
+        double carbohydrates = nutrient.getCarbohydrates() * (ratio/10);
+        double protein = nutrient.getProtein() * (ratio/10);
+        double dietaryFiber = nutrient.getDietaryFiber() * (ratio/10);
+        double calcium = nutrient.getCalcium() * (ratio/10);
+        double sodium = nutrient.getSodium() * (ratio/10);
+        double iron = nutrient.getIron() * (ratio/10);
+        double fats = nutrient.getFats() * (ratio/10);
+        double vitaminA = nutrient.getVitaminA() * (ratio/10);
+        double vitaminC = nutrient.getVitaminC() * (ratio/10);
+
+        return new Nutrient(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron, fats, vitaminA, vitaminC);
     }
 }

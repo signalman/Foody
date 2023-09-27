@@ -4,7 +4,6 @@ import com.foody.global.exception.ErrorCode;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
-import com.foody.member.service.MemberService;
 import com.foody.nutrient.dto.response.NutrientResponse;
 import com.foody.nutrient.entity.Nutrient;
 import com.foody.nutrient.exception.NutrientException;
@@ -21,7 +20,6 @@ public class NutrientService {
 
     private final MemberRepository memberRepository;
     private final NutrientRepository nutrientRepository;
-    private final MemberService memberService;
 
     // 1일 권장 영양 정보 생성
     @Transactional
@@ -254,7 +252,8 @@ public class NutrientService {
     @Transactional
     public Nutrient getMealNutrient(String email, String mealType) {
 
-        Member member = memberService.findByEmail(email);
+        Member member = memberRepository.findByEmail(email)
+                                        .orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         Nutrient nutrient = member.getNutrient();
 
         if(mealType == "breakfast"){

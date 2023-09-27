@@ -10,6 +10,7 @@ public record UserRefrigeratorResponse(
         String ingredientName,
         Long ingredientCategoryId,
         int categoryType,
+        String iconImg,
         String createDate
 ) {
     public UserRefrigeratorResponse(RefrigeratorIngredient refrigeratorIngredient) {
@@ -18,7 +19,8 @@ public record UserRefrigeratorResponse(
                 refrigeratorIngredient.getIngredient().getIngredientName(),
                 refrigeratorIngredient.getIngredient().getIngredientCategory().getId(),
                 refrigeratorIngredient.getIngredient().getIngredientCategory().getCategoryType().getCategoryLevel(),
-                refrigeratorIngredient.getCreatedAt().format(DateTimeFormatter.ofPattern("YYYY.MM.dd"))
+                refrigeratorIngredient.getIngredient().getIconImg(),
+                refrigeratorIngredient.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
         );
     }
 }

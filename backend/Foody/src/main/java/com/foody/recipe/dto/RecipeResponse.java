@@ -8,7 +8,7 @@ public record RecipeResponse(
     long id,
     String name,
     List<String> steps,
-    String ingredient,
+    List<IngredientUnit> ingredient,
     String url,
     String difficulty,
     int servers,

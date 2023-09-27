@@ -1,6 +1,7 @@
 package com.foody.recipe.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foody.recipe.dto.IngredientUnit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,31 +36,34 @@ public class RecipeUtils {
         return description.trim();
     }
 
-    public static String formatIngredients(String jsonInput) {
+    public static List<IngredientUnit> formatIngredients(String jsonInput) {
+        List<IngredientUnit> ingredientUnitList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         // 싱글 쿼트를 더블 쿼트로 변환
         jsonInput = jsonInput.replace("'", "\"");
         try {
             List<Map<String, String>> ingredients = objectMapper.readValue(jsonInput, List.class);
 
-            List<String> formattedIngredients = new ArrayList<>();
             for (Map<String, String> ingredient : ingredients) {
-                StringBuilder sb = new StringBuilder();
+                String name = "";
+                StringBuilder unit = new StringBuilder();
 
-                sb.append(ingredient.get("ingre_name"));
+                name = ingredient.get("ingre_name");
                 if (!ingredient.get("ingre_count").isEmpty()) {
-                    sb.append(" ").append(ingredient.get("ingre_count"));
+                    unit.append(ingredient.get("ingre_count"));
                 }
                 if (!ingredient.get("ingre_unit").isEmpty()) {
-                    sb.append(ingredient.get("ingre_unit"));
+                    unit.append(ingredient.get("ingre_unit"));
                 }
-                formattedIngredients.add(sb.toString());
+
+                ingredientUnitList.add(new IngredientUnit(name, unit.toString()));
             }
-            return String.join(", ", formattedIngredients);
+            return ingredientUnitList;
 
         } catch (IOException e) {
+            // 처리 방법 생각해보기
             e.printStackTrace();
-            return "Error parsing JSON";
+            return null;
         }
     }
 

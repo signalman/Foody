@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './IngredientsList.scss';
 import { IngredientItem } from 'constants/category';
 import classNames from 'classnames';
@@ -28,9 +28,6 @@ function IngredientsList({
 		refrigerator: type,
 		drawer: !type,
 	});
-	const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-	const [selectedItem, setSelectedItem] = useState<IngridientItem | null>(null);
-
 	const handleClickIngredientItem = (item: IngredientItem) => {
 		if (!ingredientsList) {
 			return;

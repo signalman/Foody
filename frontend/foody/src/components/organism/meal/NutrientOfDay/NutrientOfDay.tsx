@@ -1,8 +1,7 @@
 import React from 'react';
 import './NutrientOfDay.scss';
-import BarChart from 'components/atom/BarChart/BarChart';
-import { BarColor } from 'constants/color';
-import NutrientInfo from 'components/atom/NutrientInfo/NutrientInfo';
+import NutrientInformation from 'components/molecule/NutrientInformation/NutrientInformation';
+import { HiOutlineChevronRight } from 'react-icons/hi';
 
 function NutrientOfDay() {
 	const data = {
@@ -15,29 +14,18 @@ function NutrientOfDay() {
 		totalJi: 70,
 	};
 	return (
-		<div className="nutrient-main-box">
-			<div className="nutrient-sub-box">
-				<div className="nutrient-little-box">
-					<p>탄수화물</p>
-					<div className="nutrient">
-						<BarChart barcolor={BarColor.Null} total={data.totalTan} value={data.tan} />
-						<NutrientInfo total={data.tan} value={data.totalTan} />
-					</div>
-				</div>
-				<div className="nutrient-little-box">
-					<p>단백질</p>
-					<div className="nutrient">
-						<BarChart barcolor={BarColor.Null} total={data.totalDan} value={data.dan} />
-						<NutrientInfo total={data.dan} value={data.totalDan} />
-					</div>
-				</div>
-				<div className="nutrient-little-box">
-					<p>지방</p>
-					<div className="nutrient">
-						<BarChart barcolor={BarColor.Null} total={data.totalJi} value={data.ji} />
-						<NutrientInfo total={data.ji} value={data.totalJi} />
-					</div>
-				</div>
+		<div>
+			<div className="nutirent-of-day-title-box">
+				<p className="nutrient-of-day-title">일일 영양소</p>
+				<button className="nutrient-of-day-button" type="button">
+					<p>더보기</p>
+					<HiOutlineChevronRight size={14} />
+				</button>
+			</div>
+			<div className="nutrient-main-box">
+				<NutrientInformation nutrient="탄수화물" totalNutrient={data.totalTan} valueNutrient={data.tan} />
+				<NutrientInformation nutrient="단백질" totalNutrient={data.totalDan} valueNutrient={data.dan} />
+				<NutrientInformation nutrient="지방" totalNutrient={data.totalJi} valueNutrient={data.ji} />
 			</div>
 		</div>
 	);

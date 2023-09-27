@@ -1,6 +1,10 @@
 @use 'styles/base/variable.scss' as var;
 @use 'styles/mixins/flex.scss' as f;
 
+.rdp {
+	margin: 0;
+}
+
 .rdp-day_selected,
 .rdp-day_selected:focus-visible,
 .rdp-day_selected:hover {
@@ -8,11 +12,12 @@
 }
 
 .calendar-box {
-	@include f.flex(row, center, center);
+	@include f.flex(row, center, end);
 
 	button {
 		svg {
-			color: var.$black-400;
+			color: var.$black-300;
+			margin-bottom: 10px;
 		}
 	}
 }

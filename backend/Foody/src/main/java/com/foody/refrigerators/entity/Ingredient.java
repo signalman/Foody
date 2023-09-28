@@ -25,6 +25,7 @@ public class Ingredient extends BaseEntity {
         return Ingredient.builder()
                 .ingredientName(ingredientName)
                 .ingredientCategory(ingredientCategory)
+                .iconImg(ingredientCategory.getIngredientCategoryIconImg())
                 .ingredientType(IngredientType.CUSTOM).build();
     }
 }

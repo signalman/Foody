@@ -275,16 +275,16 @@ public class NutrientService {
 
     public Nutrient calculate(int ratio, Nutrient nutrient) {
 
-        double energy = nutrient.getEnergy() * (ratio/10);
-        double carbohydrates = nutrient.getCarbohydrates() * (ratio/10);
-        double protein = nutrient.getProtein() * (ratio/10);
-        double dietaryFiber = nutrient.getDietaryFiber() * (ratio/10);
-        double calcium = nutrient.getCalcium() * (ratio/10);
-        double sodium = nutrient.getSodium() * (ratio/10);
-        double iron = nutrient.getIron() * (ratio/10);
-        double fats = nutrient.getFats() * (ratio/10);
-        double vitaminA = nutrient.getVitaminA() * (ratio/10);
-        double vitaminC = nutrient.getVitaminC() * (ratio/10);
+        double energy = nutrient.getEnergy() * ((double) ratio /10);
+        double carbohydrates = nutrient.getCarbohydrates() * ((double) ratio /10);
+        double protein = nutrient.getProtein() * ((double) ratio /10);
+        double dietaryFiber = nutrient.getDietaryFiber() * ((double) ratio /10);
+        double calcium = nutrient.getCalcium() * ((double) ratio /10);
+        double sodium = nutrient.getSodium() * ((double) ratio /10);
+        double iron = nutrient.getIron() * ((double) ratio /10);
+        double fats = nutrient.getFats() * ((double) ratio /10);
+        double vitaminA = nutrient.getVitaminA() * ((double) ratio /10);
+        double vitaminC = nutrient.getVitaminC() * ((double) ratio /10);
 
         return new Nutrient(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron, fats, vitaminA, vitaminC);
     }

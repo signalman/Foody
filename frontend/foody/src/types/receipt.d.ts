@@ -1,11 +1,15 @@
-interface ReceiptListType {
-	value: string[];
-	boundingPolys: {
-		vertices: {
-			x: number;
-			y: number;
-		}[];
-	}[];
-}
+// interface ReceiptListType {
+// 	value: string[];
+// 	boundingPolys: {
+// 		vertices: {
+// 			x: number;
+// 			y: number;
+// 		}[];
+// 	}[];
+// }
 
-export default ReceiptListType;
+export interface ReqReceiptItem {
+	ingredientCategoryId: number;
+	ingredientId: number;
+	ingredientName: string;
+}

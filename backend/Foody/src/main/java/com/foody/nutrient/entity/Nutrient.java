@@ -1,6 +1,7 @@
 package com.foody.nutrient.entity;
 
 import com.foody.global.entity.BaseEntity;
+import com.foody.nutrient.dto.request.NutrientRequest;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,4 +23,11 @@ public class Nutrient extends BaseEntity {
     private double fats; // 지방 g
     private double vitaminA; // 비타민A, μg
     private double vitaminC; // 비타민C, mg
+
+    public static Nutrient fromNutrientRequest(NutrientRequest nutrientRequest) {
+        return new Nutrient(nutrientRequest.energy(), nutrientRequest.carbohydrates(),
+            nutrientRequest.protein(), nutrientRequest.dietaryFiber(), nutrientRequest.calcium(),
+            nutrientRequest.sodium(), nutrientRequest.iron(), nutrientRequest.fats(),
+            nutrientRequest.vitaminA(), nutrientRequest.vitaminC());
+    }
 }

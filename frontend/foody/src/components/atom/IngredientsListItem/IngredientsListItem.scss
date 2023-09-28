@@ -9,7 +9,7 @@
 
 	button {
 		width: 100%;
-		min-height: 80px;
+		min-height: 95px;
 		height: 100%;
 		padding: 14px;
 		@include f.flex(column, center, center, 10px);
@@ -21,10 +21,10 @@
 		img {
 			max-width: 50px;
 			width: 10vw;
+			margin-bottom: 4px;
 		}
 		p {
 			font-size: var.$p3;
-			margin-bottom: 2px;
 		}
 	}
 }

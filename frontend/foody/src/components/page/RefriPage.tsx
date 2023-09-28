@@ -80,6 +80,12 @@ function RefriPage() {
 		changeAllIngredientList();
 	}, [changeAllIngredientList, menuOpen]);
 
+	useEffect(() => {
+		if (!menuOpen) {
+			setTabbarOn(true);
+		}
+	}, [menuOpen, setTabbarOn]);
+
 	if (menuOpen) {
 		if (selectedMenu === 'camera') return <IngredientRegistOCR setOpen={setMenuOpen} />;
 		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;

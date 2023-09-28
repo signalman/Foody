@@ -52,12 +52,17 @@ function IngredientsList({
 			params: {},
 			onAction: () => {},
 			onDelete: () => {
-				deleteIngredient(item.ingredientId).then((res) => {
-					if (res.status === 200) {
+				deleteIngredient(item.ingredientId)
+					.then(() => {
 						toast.success(`'${item.text}'를 삭제하였습니다.`);
 						changeIngredientList();
-					}
-				});
+					})
+					.catch((err) => {
+						if (err.response.status === 404) {
+							toast.error(`'${item.text}'가 존재하지 않습니다.`);
+							changeIngredientList();
+						}
+					});
 			},
 		});
 	};

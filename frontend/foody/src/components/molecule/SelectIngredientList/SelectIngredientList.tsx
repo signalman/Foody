@@ -1,13 +1,13 @@
 import React from 'react';
 import './SelectIngredientList.scss';
 import { CgClose } from 'react-icons/cg';
-import { IngridientSearchItem } from 'types/refrigerator';
+import { IngredientSearchItem } from 'types/refrigerator';
 
 function SelectIngredientList({
 	selectedIngredientList,
 	onDelete,
 }: {
-	selectedIngredientList: IngridientSearchItem[] | null;
+	selectedIngredientList: IngredientSearchItem[] | null;
 	onDelete: (key: number) => void;
 }) {
 	return (

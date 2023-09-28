@@ -34,11 +34,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class MbtiControllerTest extends ControllerTest {
 
-    @MockBean
-    AmazonS3Service amazonS3Service;
-    @MockBean
-    CustomUserDetailService customUserDetailService;
-
     private final String baseUrl = "/api/v1/mbti";
 
     @Test
@@ -62,7 +57,7 @@ public class MbtiControllerTest extends ControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk())
             .andDo(
-                document("/mbti/image",
+                document("mbti/image",
                     preprocessRequest(prettyPrint()),
                     preprocessResponse(prettyPrint()),
                     responseFields(
@@ -94,7 +89,7 @@ public class MbtiControllerTest extends ControllerTest {
                 .content(objectMapper.writeValueAsBytes(mbtiRequest))
         ).andExpect(status().isNoContent())
             .andDo(
-                document("/mbti/create",
+                document("mbti/create",
                     preprocessRequest(prettyPrint()),
                     preprocessResponse(prettyPrint()),
                     requestFields(

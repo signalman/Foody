@@ -33,8 +33,12 @@ public enum ErrorCode {
     /* Recipe Exception */
     RECIPE_NOT_FOUND("RES01", HttpStatus.NOT_FOUND, "존재하지 않는 레시피입니다."),
 
+    /* Food Exception*/
+    FOOD_NOT_FOUND("FOOD01", HttpStatus.NOT_FOUND, "존재하지 않는 음식입니다."),
+
     /* MealPlan Exception */
-    MEAL_PLAN_NOT_FOUND("MEAL01", HttpStatus.NOT_FOUND, "존재하지 않는 식단입니다.");
+    MEAL_PLAN_NOT_FOUND("MEAL01", HttpStatus.NOT_FOUND, "존재하지 않는 식단입니다."), 
+    MEAL_TYPE_NOT_FOUND("MEAL02", HttpStatus.NOT_FOUND, "존재하지 않는 식사 유형입니다.");
 
 
 

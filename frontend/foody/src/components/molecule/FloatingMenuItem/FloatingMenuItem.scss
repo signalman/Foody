@@ -3,6 +3,7 @@
 
 .floating-menu-item-container {
 	@include f.flex(column);
+	height: 100%;
 
 	&:first-child {
 		button {
@@ -15,10 +16,13 @@
 		}
 	}
 
-	button {
+	button,
+	label {
 		width: 100%;
 		height: 100%;
 		padding: 10px;
+		text-align: center;
+		cursor: pointer;
 	}
 
 	svg {

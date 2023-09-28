@@ -12,11 +12,11 @@ export const getSearchIngredients = async (keyword: string) => {
 	return response;
 };
 
-export const getOCRReceiptIngredients = async (uuid: string, data: string) => {
+export const getOCRReceiptIngredients = async (uuid: string, data: string, format = 'jpeg') => {
 	const body = {
 		images: [
 			{
-				format: 'jpeg',
+				format,
 				name: 'ingredient receipt',
 				data,
 			},

@@ -1,8 +1,13 @@
 package com.foody.food.entity;
 
+import com.foody.food.dto.request.FoodRequest;
 import com.foody.global.entity.BaseEntity;
+import com.foody.mealplan.entity.Meal;
 import com.foody.nutrient.entity.Nutrient;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,6 +21,17 @@ import lombok.NoArgsConstructor;
 public class Food extends BaseEntity {
 
     private String name;
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "nutrient_id")
     private Nutrient nutrient;
+
+    @ManyToOne
+    @JoinColumn(name = "meal_id")
+    private Meal meal;
+
+    public static Food fromRequest(FoodRequest foodRequest, Meal meal) {
+        Nutrient getNutrient = Nutrient.fromNutrientRequest(foodRequest.nutrientRequest());
+        return new Food(foodRequest.name(), getNutrient, meal);
+    }
 }

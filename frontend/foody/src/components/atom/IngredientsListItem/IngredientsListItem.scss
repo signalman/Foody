@@ -9,9 +9,14 @@
 
 	button {
 		width: 100%;
+		min-height: 80px;
 		height: 100%;
 		padding: 14px;
 		@include f.flex(column, center, center, 10px);
+
+		svg {
+			color: var.$border-200;
+		}
 
 		img {
 			max-width: 50px;
@@ -19,6 +24,7 @@
 		}
 		p {
 			font-size: var.$p3;
+			margin-bottom: 2px;
 		}
 	}
 }

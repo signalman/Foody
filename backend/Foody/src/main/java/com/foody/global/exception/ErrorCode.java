@@ -31,7 +31,12 @@ public enum ErrorCode {
     BIGDATA_SERVER_ERROR("SERVER01", HttpStatus.INTERNAL_SERVER_ERROR, "빅데이터 서버에 에러가 발생했습니다."),
 
     /* Recipe Exception */
-    RECIPE_NOT_FOUND("RES01", HttpStatus.NOT_FOUND, "존재하지 않는 레시피입니다.");
+    RECIPE_NOT_FOUND("RES01", HttpStatus.NOT_FOUND, "존재하지 않는 레시피입니다."),
+
+    /* MealPlan Exception */
+    MEAL_PLAN_NOT_FOUND("MEAL01", HttpStatus.NOT_FOUND, "존재하지 않는 식단입니다.");
+
+
 
     private final String code;
     private final HttpStatus httpStatus;

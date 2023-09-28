@@ -46,13 +46,13 @@ public class RefrigeratorsController {
     @DeleteMapping
     public ResponseEntity<String> resetRefrigerator(@AuthenticationPrincipal LoginInfo loginInfo) {
         refrigeratorsService.resetRefrigerator(loginInfo.email());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{ingredientId}")
     public ResponseEntity<String> deleteIngredient(@AuthenticationPrincipal LoginInfo loginInfo, @PathVariable Long ingredientId) {
         refrigeratorsService.deleteUserIngredient(loginInfo.email(), ingredientId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/receipt")

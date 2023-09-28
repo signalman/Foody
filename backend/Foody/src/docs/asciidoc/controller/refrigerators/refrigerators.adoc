@@ -11,12 +11,12 @@ include::{snippets}/refrigerators/searchIngredient/response-body.adoc[]
 === 사용자 냉장고에 재료 등록
 
 ==== HTTP Request
-include::{snippets}/refrigerators/registerIngredient/http-request.adoc[]
-include::{snippets}/refrigerators/registerIngredient/request-body.adoc[]
+include::{snippets}/refrigerators/register/http-request.adoc[]
+include::{snippets}/refrigerators/register/request-body.adoc[]
 
 ==== HTTP Response
-include::{snippets}/refrigerators/registerIngredient/http-response.adoc[]
-include::{snippets}/refrigerators/registerIngredient/response-body.adoc[]
+include::{snippets}/refrigerators/register/http-response.adoc[]
+include::{snippets}/refrigerators/register/response-body.adoc[]
 
 === 사용자 냉장고 조회
 
@@ -27,3 +27,33 @@ include::{snippets}/refrigerators/getUserRefrigerator/request-body.adoc[]
 ==== HTTP Response
 include::{snippets}/refrigerators/getUserRefrigerator/http-response.adoc[]
 include::{snippets}/refrigerators/getUserRefrigerator/response-body.adoc[]
+
+=== 사용자 냉장고 초기화
+
+==== HTTP Request
+include::{snippets}/refrigerators/reset/http-request.adoc[]
+include::{snippets}/refrigerators/reset/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/reset/http-response.adoc[]
+include::{snippets}/refrigerators/reset/response-body.adoc[]
+
+=== 냉장고 재료 삭제
+
+==== HTTP Request
+include::{snippets}/refrigerators/delete/http-request.adoc[]
+include::{snippets}/refrigerators/delete/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/delete/http-response.adoc[]
+include::{snippets}/refrigerators/delete/response-body.adoc[]
+
+=== 영수증 재료 인식
+
+==== HTTP Request
+include::{snippets}/refrigerators/receipt/http-request.adoc[]
+include::{snippets}/refrigerators/receipt/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/receipt/http-response.adoc[]
+include::{snippets}/refrigerators/receipt/response-body.adoc[]

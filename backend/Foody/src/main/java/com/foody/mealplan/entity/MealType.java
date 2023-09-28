@@ -1,5 +1,5 @@
 package com.foody.mealplan.entity;
 
-public enum Meal {
+public enum MealType {
     BREAKFAST, LUNCH, DINNER, SNACK
 }

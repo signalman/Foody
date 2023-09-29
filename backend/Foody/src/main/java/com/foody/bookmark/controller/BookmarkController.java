@@ -32,7 +32,7 @@ public class BookmarkController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/my")
+    @GetMapping("/mypage")
     public ResponseEntity<List<BookmarkListResponse>> getBookmarkList(@AuthenticationPrincipal LoginInfo loginInfo) {
 
         log.debug(" {} request bookmark list", loginInfo.email());

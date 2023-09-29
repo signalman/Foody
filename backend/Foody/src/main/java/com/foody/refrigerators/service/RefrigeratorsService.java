@@ -83,18 +83,18 @@ public class RefrigeratorsService {
         return ingredientRepository.existsByIngredientNameAndIngredientType(keyword, IngredientType.INITIAL);
     }
 
-    public void insertIngredient(String email,List<Long> ingredients) {
+    public void insertIngredient(String email, List<Long> ingredients) {
 
         List<RefrigeratorIngredient> insertIngredients = new ArrayList<>();
 
-        for(long ingredientId : ingredients) {
+        for (long ingredientId : ingredients) {
             Member member = memberService.findByEmail(email);
             Ingredient ingredient = findIngredient(ingredientId);
 
             RefrigeratorIngredient refrigeratorIngredient =
                     RefrigeratorIngredient.from(member, ingredient);
 
-            if(!existsRefrigeratorIngredient(member, ingredient)) {
+            if (!existsRefrigeratorIngredient(member, ingredient)) {
                 insertIngredients.add(refrigeratorIngredient);
             }
         }
@@ -102,20 +102,20 @@ public class RefrigeratorsService {
         refrigeratorIngredientRepository.saveAll(insertIngredients);
     }
 
-    public void insertCustomIngredient(String email, List<CustomIngredientRequest> customIngredients){
+    public void insertCustomIngredient(String email, List<CustomIngredientRequest> customIngredients) {
 
         List<RefrigeratorIngredient> insertIngredients = new ArrayList<>();
 
         List<Ingredient> ingredients = customIngredients.stream().map(customIngredient -> findCustomIngredient(customIngredient)
                 .orElseGet(() -> saveCustomIngredient(customIngredient))).toList();
 
-        for(Ingredient ingredient : ingredients) {
+        for (Ingredient ingredient : ingredients) {
             Member member = memberService.findByEmail(email);
 
             RefrigeratorIngredient refrigeratorIngredient =
                     RefrigeratorIngredient.from(member, ingredient);
 
-            if(!existsRefrigeratorIngredient(member, ingredient)) {
+            if (!existsRefrigeratorIngredient(member, ingredient)) {
                 insertIngredients.add(refrigeratorIngredient);
             }
         }
@@ -160,29 +160,41 @@ public class RefrigeratorsService {
                 .onStatus(
                         HttpStatus::is4xxClientError,
                         clientResponse ->
-                            Mono.error(new RefrigeratorsException(ErrorCode.INVALID_RECEIPT_OCR))
+                                Mono.error(new RefrigeratorsException(ErrorCode.INVALID_RECEIPT_OCR))
                 )
                 .bodyToMono(Map.class)
                 .block();
 
-        if(receiptData.isEmpty()) {
+
+        if (receiptData.isEmpty()) {
             throw new RefrigeratorsException(ErrorCode.INGREDIENT_NOT_FOUND);
         }
 
         log.debug("영수증 데이터 : {}", receiptData);
 
-        Map<String, Object> receipt = (Map<String, Object>) ((List<Map>) receiptData.get("images")).get(0).get("receipt");
-        List<Map> items = (List<Map>) ((List<Map>) ((Map<String, Object>) receipt.get("result")).get("subResults")).get(0).get("items");
+        List<Map<String, Object>> images = (List<Map<String, Object>>) receiptData.get("images");
+        Map<String, Object> image = images.get(0);
+
+        String message = (String) image.get("message");
+
+        if (!message.equals("SUCCESS")) {
+            throw new RefrigeratorsException(ErrorCode.INVALID_RECEIPT_OCR);
+        }
+
+        Map<String, Object> receipt = (Map<String, Object>) image.get("receipt");
+        Map<String, Object> result = (Map<String, Object>) receipt.get("result");
+        List<Map<String, Object>> subResults = (List<Map<String, java.lang.Object>>) result.get("subResults");
+        List<Map<String, Object>> items = (List<Map<String, Object>>) subResults.get(0).get("items");
 
         List<SearchIngredientResponse> list = new ArrayList<>();
 
-        for (Map item : items) {
-            Map<String, Object> name = (Map<String, Object>) ((Map<String, Object>) item).get("name");
-            String itemName = (String) ((Map<String, Object>) name.get("formatted")).get("value");
+        for (Map<String, Object> item : items) {
+            Map<String, Object> name = (Map<String, Object>) item.get("name");
+            String itemName = (String) name.get("text");
 
             log.debug("상품명 : {}", itemName);
 
-            Map itemCategorys = webClient.get()
+            Map<String, Object> categoryResult = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("query", itemName)
                             .queryParam("display", "4")
@@ -191,7 +203,13 @@ public class RefrigeratorsService {
                     .bodyToMono(Map.class)
                     .block();
 
-            Map itemCategory = ((List<Map>) itemCategorys.get("items")).get(3);
+            List<Map<String, Object>> itemCategorys = (List<Map<String, Object>>) categoryResult.get("items");
+
+            if (itemCategorys.isEmpty()) {
+                continue;
+            }
+
+            Map<String, Object> itemCategory = itemCategorys.get(0);
 
             String itemMappingResult = ((String) itemCategory.get("category4")).isBlank()
                     ? ((String) itemCategory.get("category3")) : ((String) itemCategory.get("category4"));

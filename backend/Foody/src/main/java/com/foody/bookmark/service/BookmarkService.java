@@ -4,6 +4,7 @@ import com.foody.bookmark.entity.Bookmark;
 import com.foody.bookmark.repository.BookmarkRepository;
 import com.foody.member.entity.Member;
 import com.foody.recipe.entity.Recipe;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,5 +39,11 @@ public class BookmarkService {
                                               .orElseThrow();
 
         bookmarkRepository.delete(bookmark);
+    }
+
+
+    public List<Bookmark> findBookmarkListByMember(Member member) {
+
+        return bookmarkRepository.findAllByMemberId(member.getId());
     }
 }

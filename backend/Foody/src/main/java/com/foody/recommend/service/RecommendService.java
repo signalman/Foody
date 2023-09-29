@@ -41,7 +41,8 @@ public class RecommendService {
 
         String ingredients = getIngredientsString(refrigerator);
 
-        return ingredientSendToServer(ingredients);
+        List<Long> recipeIds = ingredientSendToServer(ingredients);
+        return null;
     }
 
     private String getIngredientsString(List<UserRefrigeratorResponse> refrigerator) {
@@ -52,7 +53,7 @@ public class RecommendService {
     }
 
     // TODO : 테스트를 위해 PUBLIC으로 열어둠, 나중에 Private으로 닫아야 함
-    public List<RecommendItem> ingredientSendToServer(String ingredients) {
+    public List<Long> ingredientSendToServer(String ingredients) {
 
         IngredientInput ingredientInput = new IngredientInput(ingredients, 5);
 
@@ -61,7 +62,7 @@ public class RecommendService {
 
         URI uri = URI.create(serverUrl + "/recipes/ingredients");
         log.debug("starting inter-server communication for ingredient");
-        List<RecommendItem> recommendItemList = webClient.post()
+        List<Long> recommendItemList = webClient.post()
                                                          .uri(uri)
                                                          .contentType(MediaType.APPLICATION_JSON)
                                                          .body(BodyInserters.fromValue(ingredientInput))
@@ -72,7 +73,7 @@ public class RecommendService {
                                                                      ErrorCode.BIGDATA_SERVER_ERROR)
                                                              ))
                                                          .bodyToMono(
-                                                             new ParameterizedTypeReference<List<RecommendItem>>() {
+                                                             new ParameterizedTypeReference<List<Long>>() {
                                                              })
                                                          .block();
 

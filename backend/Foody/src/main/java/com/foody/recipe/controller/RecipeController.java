@@ -1,6 +1,6 @@
 package com.foody.recipe.controller;
 
-import com.foody.recipe.dto.RecipeResponse;
+import com.foody.recipe.dto.response.RecipeResponse;
 import com.foody.recipe.service.RecipeService;
 import com.foody.security.util.LoginInfo;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.foody.recipe.service;
 
 import com.foody.bookmark.service.BookmarkFacade;
 import com.foody.global.exception.ErrorCode;
-import com.foody.recipe.dto.RecipeResponse;
+import com.foody.recipe.dto.response.RecipeResponse;
 import com.foody.recipe.entity.Recipe;
 import com.foody.recipe.exception.RecipeException;
 import com.foody.recipe.repository.RecipeRepository;

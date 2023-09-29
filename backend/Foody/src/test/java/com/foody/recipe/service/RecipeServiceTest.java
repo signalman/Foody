@@ -3,7 +3,7 @@ package com.foody.recipe.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.foody.recipe.dto.RecipeResponse;
+import com.foody.recipe.dto.response.RecipeResponse;
 import com.foody.recipe.exception.RecipeException;
 import com.foody.util.ServiceTest;
 import java.util.List;

@@ -11,11 +11,18 @@ import getSearchIngredients, { createIngredientList } from 'utils/api/ingredient
 import formatSearchResultList from 'utils/common/ingredient';
 import { CustomIngredientItemType, IngredientSearchItem } from 'types/refrigerator';
 import toast from 'react-hot-toast';
+import { ReqReceiptItem } from 'types/receipt';
 import SubHeader from '../SubHeader/SubHeader';
 import SelectIngredientList from '../../molecule/SelectIngredientList/SelectIngredientList';
 import IngredientSearchResultList from '../../molecule/IngredientSearchResultList/IngredientSearchResultList';
 
-function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<boolean>> }) {
+interface IngredientSearchProps {
+	setOpen: Dispatch<React.SetStateAction<boolean>>;
+	receiptList?: ReqReceiptItem[] | null;
+}
+
+function IngredientSearch(props: IngredientSearchProps) {
+	const { setOpen, receiptList } = props;
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [searchResultList, setSearchResultList] = useState<IngredientSearchItem[] | null>(null);
@@ -90,6 +97,21 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 		}
 	}, [searchKeyword]);
 
+	useEffect(() => {
+		if (receiptList && receiptList.length !== 0) {
+			console.log('receipt');
+			setSelectedIngredientList([
+				...receiptList.map((item) => {
+					const selectItem = {
+						key: item.ingredientId,
+						text: item.ingredientName,
+					};
+					return selectItem;
+				}),
+			]);
+		}
+	}, [receiptList]);
+
 	return (
 		<div className="ingredient-regist-album-container">
 			<SubHeader isBack title="재료 찾기" handleMove={handleMove} />
@@ -134,3 +156,7 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 }
 
 export default IngredientSearch;
+
+IngredientSearch.defaultProps = {
+	receiptList: null,
+};

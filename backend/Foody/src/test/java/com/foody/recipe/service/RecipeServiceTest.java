@@ -3,6 +3,7 @@ package com.foody.recipe.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.foody.recipe.dto.response.RecipeListResponse;
 import com.foody.recipe.dto.response.RecipeResponse;
 import com.foody.recipe.exception.RecipeException;
 import com.foody.util.ServiceTest;
@@ -33,12 +34,12 @@ class RecipeServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("여러 레시피 조회된다")
+    @DisplayName("여러 레시피 추천된다")
     void t2() throws Exception {
 
         List<Long> ids = List.of(396244L, 395162L, 393505L);
 
-        List<RecipeResponse> recipeResponseList = recipeService.findRecipeListByRecommend(ids);
+        List<RecipeListResponse> recipeResponseList = recipeService.findRecipeListByRecommend(ids);
 
         assertEquals(recipeResponseList.size(), 3);
     }

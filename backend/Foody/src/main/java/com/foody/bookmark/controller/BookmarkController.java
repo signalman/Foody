@@ -2,7 +2,6 @@ package com.foody.bookmark.controller;
 
 import com.foody.bookmark.dto.response.BookmarkListResponse;
 import com.foody.bookmark.service.BookmarkFacade;
-import com.foody.recipe.dto.response.RecipeResponse;
 import com.foody.security.util.LoginInfo;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +33,11 @@ public class BookmarkController {
     }
 
     @GetMapping("/my")
-    public ResponseEntity<RecipeResponse> getBookmarkList(@AuthenticationPrincipal LoginInfo loginInfo) {
+    public ResponseEntity<List<BookmarkListResponse>> getBookmarkList(@AuthenticationPrincipal LoginInfo loginInfo) {
 
         log.debug(" {} request bookmark list", loginInfo.email());
         List<BookmarkListResponse> bookmarkList = bookmarkFacade.findBookmarkByMember(loginInfo.email());
 
-        return null;
+        return ResponseEntity.ok().body(bookmarkList);
     }
 }

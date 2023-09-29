@@ -44,7 +44,6 @@ public class RecipeService {
                       .map(RecipeListResponse::new)
                       .collect(Collectors.toList());
         //TODO : 로직 수정
-        return null;
     }
 
     public Recipe getEntityById(long id) {

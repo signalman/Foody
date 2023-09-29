@@ -1,8 +1,15 @@
 package com.foody.bookmark.service;
 
+import com.foody.bookmark.dto.response.BookmarkListResponse;
+import com.foody.bookmark.entity.Bookmark;
 import com.foody.member.entity.Member;
 import com.foody.member.service.MemberService;
+import com.foody.recipe.dto.IngredientUnit;
 import com.foody.recipe.entity.Recipe;
+import com.foody.recipe.util.RecipeUtils;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -52,4 +59,27 @@ public class BookmarkFacade {
         return existsByMemberAndRecipe(member.getId(), recipeId);
     }
 
+    @Transactional(readOnly = true)
+    public List<BookmarkListResponse> findBookmarkByMember(String email) {
+
+        Member member = memberService.findByEmail(email);
+        List<Bookmark> bookmarkList = bookmarkService.findBookmarkListByMember(member);
+
+        return bookmarkList.stream()
+                           .map(bookmark -> {
+                               List<String> ingredientNames = Objects.requireNonNull(
+                                                                         RecipeUtils.formatIngredients(bookmark.getRecipe()
+                                                                                                               .getIngredient()))
+                                                                     .stream()
+                                                                     .map(IngredientUnit::name)
+                                                                     .collect(Collectors.toList());
+
+                               return new BookmarkListResponse(
+                                   bookmark.getRecipe().getId(),
+                                   bookmark.getRecipe().getName(),
+                                   ingredientNames
+                               );
+                           })
+                           .collect(Collectors.toList());
+    }
 }

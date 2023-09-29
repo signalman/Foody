@@ -49,7 +49,7 @@ public class BookmarkFacade {
     public boolean existsByMemberEmailAndRecipe(String email, Long recipeId) {
 
         Member member = memberService.findByEmail(email);
-        return bookmarkService.existsByMemberAndRecipe(member.getId(), recipeId);
+        return existsByMemberAndRecipe(member.getId(), recipeId);
     }
 
 }

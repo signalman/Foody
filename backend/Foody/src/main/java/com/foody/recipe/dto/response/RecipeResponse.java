@@ -1,5 +1,6 @@
-package com.foody.recipe.dto;
+package com.foody.recipe.dto.response;
 
+import com.foody.recipe.dto.IngredientUnit;
 import com.foody.recipe.entity.Recipe;
 import com.foody.recipe.util.RecipeUtils;
 import java.util.List;

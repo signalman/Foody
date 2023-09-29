@@ -1,13 +1,17 @@
 package com.foody.bookmark.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,6 +62,29 @@ class BookmarkControllerTest extends ControllerTest {
                         fieldWithPath("[].ingredients").description("레시피 재료 목록")
                     )
                 )
+            );
+    }
+
+    @Test
+    @DisplayName("북마크 상태 변경된다")
+    void bookmarkStatusShouldChanged() throws Exception {
+
+        doNothing().when(bookmarkFacade).changeStatus(any(), any());
+
+        LoginInfo loginInfo = new LoginInfo("lkm454545@gmail.com");
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        mockMvc.perform(
+            post(BASEURL + "/{recipeId}", 123456L)
+                .with(authentication(new TestingAuthenticationToken(new LoginInfo("lkm454545@gmail.com"), null)))
+        ).andExpect(status().isNoContent())
+            .andDo(
+                document("/bookmark/status",
+                    pathParameters(
+                        parameterWithName("recipeId").description("상태 변경할 레시피 아이디, '북마크' 된 상황이면 해제하고, 아니라면 '북마크 등록' 한다.")
+                    ))
             );
     }
 

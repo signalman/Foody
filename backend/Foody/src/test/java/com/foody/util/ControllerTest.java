@@ -14,6 +14,7 @@ import com.foody.mbti.service.MbtiService;
 import com.foody.member.controller.MemberController;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
+import com.foody.recipe.controller.RecipeController;
 import com.foody.recipe.repository.RecipeRepository;
 import com.foody.recipe.service.RecipeService;
 import com.foody.refrigerators.controller.RefrigeratorsController;
@@ -21,6 +22,7 @@ import com.foody.refrigerators.repository.IngredientRepository;
 import com.foody.refrigerators.service.RefrigeratorsService;
 import com.foody.security.service.CustomUserDetailService;
 import com.foody.security.util.JwtProvider;
+import com.foody.security.util.LoginInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -38,6 +40,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -53,7 +58,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
     MemberController.class,
     RefrigeratorsController.class,
     MbtiController.class,
-    BookmarkController.class
+    BookmarkController.class,
+    RecipeController.class
 })
 public class ControllerTest {
 
@@ -119,5 +125,12 @@ public class ControllerTest {
                        SignatureAlgorithm.HS256)
                    .compact();
 
+    }
+
+    protected void setAuthentication() {
+        LoginInfo loginInfo = new LoginInfo("lkm454545@gmail.com");
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
+        SecurityContextHolder.setContext(securityContext);
     }
 }

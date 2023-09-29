@@ -21,6 +21,7 @@ import com.foody.util.ControllerTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 
 class RecipeControllerTest extends ControllerTest {
@@ -49,26 +50,26 @@ class RecipeControllerTest extends ControllerTest {
                         parameterWithName("id").description("recipe ID")
                     ),
                     responseFields(
-                        fieldWithPath("id").description("recipe ID"),
-                        fieldWithPath("name").description("레시피 제목"),
-                        fieldWithPath("steps").description("레시피 순서(list에 순서대로 저장되있음)"),
-                        fieldWithPath("ingredient").description("레시피 재료 목록"),
-                        fieldWithPath("ingredient[].name").description("레시피 재료 이름"),
-                        fieldWithPath("ingredient[].unit").description("재료의 양"),
-                        fieldWithPath("url").description("레시피 사진 주소"),
-                        fieldWithPath("difficulty").description("레시피 난이도"),
-                        fieldWithPath("servers").description("몇 인분 기준"),
-                        fieldWithPath("energy").description("칼로리"),
-                        fieldWithPath("carbohydrates").description("탄수화물"),
-                        fieldWithPath("protein").description("단백질"),
-                        fieldWithPath("dietaryFiber").description("식이섬유"),
-                        fieldWithPath("calcium").description("칼슘"),
-                        fieldWithPath("sodium").description("나트륨"),
-                        fieldWithPath("iron").description("철분"),
-                        fieldWithPath("fats").description("지방"),
-                        fieldWithPath("vitaminA").description("비타민A"),
-                        fieldWithPath("vitaminC").description("비타민C"),
-                        fieldWithPath("isBookmarked").description("북마크 여부")
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("recipe ID"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("레시피 제목"),
+                        fieldWithPath("steps").type(JsonFieldType.ARRAY).description("레시피 순서(list에 순서대로 저장되있음)"),
+                        fieldWithPath("ingredient").type(JsonFieldType.ARRAY).description("레시피 재료 목록"),
+                        fieldWithPath("ingredient[].name").type(JsonFieldType.STRING).description("레시피 재료 이름"),
+                        fieldWithPath("ingredient[].unit").type(JsonFieldType.STRING).description("재료의 양"),
+                        fieldWithPath("url").type(JsonFieldType.STRING).description("레시피 사진 주소"),
+                        fieldWithPath("difficulty").type(JsonFieldType.STRING).description("레시피 난이도"),
+                        fieldWithPath("servers").type(JsonFieldType.NUMBER).description("몇 인분 기준"),
+                        fieldWithPath("energy").type(JsonFieldType.NUMBER).description("칼로리"),
+                        fieldWithPath("carbohydrates").type(JsonFieldType.NUMBER).description("탄수화물"),
+                        fieldWithPath("protein").type(JsonFieldType.NUMBER).description("단백질"),
+                        fieldWithPath("dietaryFiber").type(JsonFieldType.NUMBER).description("식이섬유"),
+                        fieldWithPath("calcium").type(JsonFieldType.NUMBER).description("칼슘"),
+                        fieldWithPath("sodium").type(JsonFieldType.NUMBER).description("나트륨"),
+                        fieldWithPath("iron").type(JsonFieldType.NUMBER).description("철분"),
+                        fieldWithPath("fats").type(JsonFieldType.NUMBER).description("지방"),
+                        fieldWithPath("vitaminA").type(JsonFieldType.NUMBER).description("비타민A"),
+                        fieldWithPath("vitaminC").type(JsonFieldType.NUMBER).description("비타민C"),
+                        fieldWithPath("isBookmarked").type(JsonFieldType.BOOLEAN).description("회원의 이 레시피 북마크 여부")
                     )
                 )
             );

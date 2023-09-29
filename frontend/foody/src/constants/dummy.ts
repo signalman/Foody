@@ -1,5 +1,5 @@
 import formatDate from 'utils/common/formatDate';
-import ReceiptListType from 'types/receipt';
+// import ReceiptListType from 'types/receipt';
 import { CustomIngredientItemType } from 'types/refrigerator';
 
 export const DUMMY_INGREDIENTS_ITEM_INFO_LIST = [
@@ -13,71 +13,71 @@ export const DUMMY_INGREDIENTS_ITEM_INFO_LIST = [
 	},
 ];
 
-export const DUMMY_RECEIPT_LIST: ReceiptListType = {
-	value: ['맥주', '광어회', '낙지탕탕이'],
-	boundingPolys: [
-		{
-			vertices: [
-				{
-					x: 121.0,
-					y: 126.0,
-				},
-				{
-					x: 150.0,
-					y: 126.0,
-				},
-				{
-					x: 150.0,
-					y: 143.0,
-				},
-				{
-					x: 121.0,
-					y: 143.0,
-				},
-			],
-		},
-		{
-			vertices: [
-				{
-					x: 122.0,
-					y: 143.0,
-				},
-				{
-					x: 184.0,
-					y: 143.0,
-				},
-				{
-					x: 184.0,
-					y: 160.0,
-				},
-				{
-					x: 122.0,
-					y: 160.0,
-				},
-			],
-		},
-		{
-			vertices: [
-				{
-					x: 186.0,
-					y: 144.0,
-				},
-				{
-					x: 203.0,
-					y: 144.0,
-				},
-				{
-					x: 203.0,
-					y: 161.0,
-				},
-				{
-					x: 186.0,
-					y: 161.0,
-				},
-			],
-		},
-	],
-};
+// export const DUMMY_RECEIPT_LIST: ReceiptListType = {
+// 	value: ['맥주', '광어회', '낙지탕탕이'],
+// 	boundingPolys: [
+// 		{
+// 			vertices: [
+// 				{
+// 					x: 121.0,
+// 					y: 126.0,
+// 				},
+// 				{
+// 					x: 150.0,
+// 					y: 126.0,
+// 				},
+// 				{
+// 					x: 150.0,
+// 					y: 143.0,
+// 				},
+// 				{
+// 					x: 121.0,
+// 					y: 143.0,
+// 				},
+// 			],
+// 		},
+// 		{
+// 			vertices: [
+// 				{
+// 					x: 122.0,
+// 					y: 143.0,
+// 				},
+// 				{
+// 					x: 184.0,
+// 					y: 143.0,
+// 				},
+// 				{
+// 					x: 184.0,
+// 					y: 160.0,
+// 				},
+// 				{
+// 					x: 122.0,
+// 					y: 160.0,
+// 				},
+// 			],
+// 		},
+// 		{
+// 			vertices: [
+// 				{
+// 					x: 186.0,
+// 					y: 144.0,
+// 				},
+// 				{
+// 					x: 203.0,
+// 					y: 144.0,
+// 				},
+// 				{
+// 					x: 203.0,
+// 					y: 161.0,
+// 				},
+// 				{
+// 					x: 186.0,
+// 					y: 161.0,
+// 				},
+// 			],
+// 		},
+// 	],
+// };
 
 export const DUMMY_CUSTOM_INGREDIENT_LIST: CustomIngredientItemType[] = [
 	{

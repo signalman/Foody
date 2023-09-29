@@ -37,7 +37,7 @@ public class MealPlanService {
                                      ErrorCode.MEAL_PLAN_NOT_FOUND));
     }
 
-    MealPlan findByDateAndMemberId(LocalDate date, Long memberId){
+    public MealPlan findByDateAndMemberId(LocalDate date, Long memberId){
         return mealPlanRepository.findByDateAndMemberId(date, memberId)
                                  .orElseThrow(
                                      () -> new MealPlanException(ErrorCode.MEAL_PLAN_NOT_FOUND));

@@ -24,8 +24,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 class BookmarkControllerTest extends ControllerTest {
 
@@ -42,15 +40,11 @@ class BookmarkControllerTest extends ControllerTest {
 
         when(bookmarkFacade.findBookmarkByMember(any())).thenReturn(mockList);
 
-        LoginInfo loginInfo = new LoginInfo("lkm454545@gmail.com");
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
-        SecurityContextHolder.setContext(securityContext);
-
+        setAuthentication();
 
         mockMvc.perform(
             get(BASEURL + "/mypage")
-                .with(authentication(new TestingAuthenticationToken(loginInfo, null)))
+                .with(authentication(new TestingAuthenticationToken(new LoginInfo("lkm454545@gmail.com"), null)))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk())
             .andDo(
@@ -70,11 +64,7 @@ class BookmarkControllerTest extends ControllerTest {
     void bookmarkStatusShouldChanged() throws Exception {
 
         doNothing().when(bookmarkFacade).changeStatus(any(), any());
-
-        LoginInfo loginInfo = new LoginInfo("lkm454545@gmail.com");
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
-        SecurityContextHolder.setContext(securityContext);
+        setAuthentication();
 
         mockMvc.perform(
             post(BASEURL + "/{recipeId}", 123456L)

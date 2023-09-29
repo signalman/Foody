@@ -2,11 +2,13 @@ package com.foody.recipe.service;
 
 import com.foody.bookmark.service.BookmarkFacade;
 import com.foody.global.exception.ErrorCode;
+import com.foody.recipe.dto.response.RecipeListResponse;
 import com.foody.recipe.dto.response.RecipeResponse;
 import com.foody.recipe.entity.Recipe;
 import com.foody.recipe.exception.RecipeException;
 import com.foody.recipe.repository.RecipeRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +32,7 @@ public class RecipeService {
         return new RecipeResponse(recipe, isBookmarked);
     }
 
-    public List<RecipeResponse> findRecipeListByRecommend(List<Long> recipeIdList) {
+    public List<RecipeListResponse> findRecipeListByRecommend(List<Long> recipeIdList) {
 
         List<Recipe> recipes = recipeRepository.findAllById(recipeIdList);
 
@@ -38,9 +40,9 @@ public class RecipeService {
             throw new RecipeException(ErrorCode.RECIPE_NOT_FOUND);
         }
 
-//        return recipes.stream()
-//                      .map(RecipeResponse::new)
-//                      .collect(Collectors.toList());
+        return recipes.stream()
+                      .map(RecipeListResponse::new)
+                      .collect(Collectors.toList());
         //TODO : 로직 수정
         return null;
     }

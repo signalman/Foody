@@ -1,7 +1,8 @@
 package com.foody.recommend.service;
 
 import com.foody.global.exception.ErrorCode;
-import com.foody.recommend.dto.response.RecommendItem;
+import com.foody.recipe.dto.response.RecipeListResponse;
+import com.foody.recipe.service.RecipeService;
 import com.foody.recommend.dto.resquest.IngredientInput;
 import com.foody.recommend.exception.RecommendException;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
@@ -27,11 +28,12 @@ import reactor.core.publisher.Mono;
 public class RecommendService {
 
     private final RefrigeratorsService refrigeratorsService;
+    private final RecipeService recipeService;
     @Value("${recommend.server.url}")
     private String serverUrl;
 
     @Transactional(readOnly = true)
-    public List<RecommendItem> findRecommendItemByIngredients(String email) {
+    public List<RecipeListResponse> findRecommendItemByIngredients(String email) {
 
         List<UserRefrigeratorResponse> refrigerator = refrigeratorsService.getUserRefrigerator(email);
 
@@ -40,9 +42,9 @@ public class RecommendService {
         }
 
         String ingredients = getIngredientsString(refrigerator);
-
         List<Long> recipeIds = ingredientSendToServer(ingredients);
-        return null;
+
+        return recipeService.findRecipeListByRecommend(recipeIds);
     }
 
     private String getIngredientsString(List<UserRefrigeratorResponse> refrigerator) {

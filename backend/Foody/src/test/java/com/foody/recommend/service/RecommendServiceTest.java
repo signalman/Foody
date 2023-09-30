@@ -2,6 +2,7 @@ package com.foody.recommend.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.foody.mbti.dto.response.MbtiResponse;
 import com.foody.util.ServiceTest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +33,16 @@ class RecommendServiceTest extends ServiceTest {
         System.out.println(recommendItemList.get(0));
 
         assertEquals(5, recommendItemList.size());
+    }
+
+    @Test
+    @DisplayName("하이브리드 추천 시스템으로 레시피 추천한다")
+    void t3() throws Exception {
+        MbtiResponse mbtiResponse = new MbtiResponse(1, 2 ,3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+
+        List<Long> hybridRecommendList = recommendService.preferenceSendToServer(mbtiResponse);
+
+        assertEquals(4, hybridRecommendList.size());
     }
 
 }

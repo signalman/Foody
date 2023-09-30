@@ -36,7 +36,7 @@ public class RecommendController {
     public ResponseEntity<List<RecipeListResponse>> recommendByPreference(@AuthenticationPrincipal LoginInfo loginInfo) {
 
         log.debug("{} request recommend by preference" , loginInfo.email());
-
+        List<RecipeListResponse> preferenceRecommendList = recommendService.findRecommendItemByPreferenceWithNutrient(loginInfo.email());
         return ResponseEntity.noContent().build();
     }
 

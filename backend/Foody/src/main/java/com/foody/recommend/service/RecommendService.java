@@ -5,8 +5,11 @@ import com.foody.mbti.dto.response.MbtiResponse;
 import com.foody.mbti.entity.Mbti;
 import com.foody.member.entity.Member;
 import com.foody.member.service.MemberService;
+import com.foody.nutrient.dto.response.NutrientResponse;
+import com.foody.nutrient.service.NutrientService;
 import com.foody.recipe.dto.response.RecipeListResponse;
 import com.foody.recipe.service.RecipeService;
+import com.foody.recommend.dto.resquest.CombineMemberInformation;
 import com.foody.recommend.dto.resquest.IngredientInput;
 import com.foody.recommend.exception.RecommendException;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
@@ -34,6 +37,7 @@ public class RecommendService {
     private final RefrigeratorsService refrigeratorsService;
     private final RecipeService recipeService;
     private final MemberService memberService;
+    private final NutrientService nutrientService;
     @Value("${recommend.server.url}")
     private String serverUrl;
 
@@ -129,4 +133,46 @@ public class RecommendService {
     }
 
 
+    public List<RecipeListResponse> findRecommendItemByPreferenceWithNutrient(String email) {
+
+        Member member = memberService.findByEmail(email);
+        // 결핍 영양소
+        NutrientResponse nutrient = nutrientService.getNutrient(email);
+        Mbti mbti = member.getMbti();
+        // 회원의 취향
+        MbtiResponse mbtiResponse = new MbtiResponse(mbti);
+
+        CombineMemberInformation combineMemberInformation = new CombineMemberInformation(nutrient, mbtiResponse);
+
+        List<Long> ids = preferenceAndNutrientSendToServer(combineMemberInformation);
+
+        return recipeService.findRecipeListByRecommend(ids);
+    }
+
+    public List<Long> preferenceAndNutrientSendToServer(CombineMemberInformation combineMemberInformation) {
+
+        WebClient webClient = WebClient.builder()
+                                       .build();
+
+        URI uri = URI.create(serverUrl + "/preference/nutrient");
+        log.debug("starting inter-server communication for preference and nutrient");
+        List<Long> recommendItemList = webClient.post()
+                                                .uri(uri)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .body(BodyInserters.fromValue(combineMemberInformation))
+                                                .retrieve()
+                                                .onStatus(HttpStatus::is5xxServerError,
+                                                    response -> Mono.error(
+                                                        new RecommendException(
+                                                            ErrorCode.BIGDATA_SERVER_ERROR)
+                                                    ))
+                                                .bodyToMono(
+                                                    new ParameterizedTypeReference<List<Long>>() {
+                                                    })
+                                                .block();
+
+        log.debug("inter-server communication terminated");
+
+        return recommendItemList;
+    }
 }

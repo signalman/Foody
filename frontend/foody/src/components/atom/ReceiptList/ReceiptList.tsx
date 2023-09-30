@@ -1,26 +1,26 @@
 import React from 'react';
 import 'ReceiptList.scss';
-import ReceiptListType from 'types/receipt';
+import { ReqReceiptItem } from 'types/receipt';
 
-interface BoundingBoxProps {
-	vertices: {
-		x: number;
-		y: number;
-	}[];
-}
+// interface BoundingBoxProps {
+// 	vertices: {
+// 		x: number;
+// 		y: number;
+// 	}[];
+// }
 
-function BoundingBox({ vertices }: BoundingBoxProps) {
-	const points = vertices.map((vertex) => `${vertex.x},${vertex.y}`).join(' ');
+// function BoundingBox({ vertices }: BoundingBoxProps) {
+// 	const points = vertices.map((vertex) => `${vertex.x},${vertex.y}`).join(' ');
 
-	return <polygon className="bounding-box" points={points} />;
-}
+// 	return <polygon className="bounding-box" points={points} />;
+// }
 
 function ReceiptList({
 	containerSize,
 	receiptList,
 }: {
 	containerSize: { width: number; height: number };
-	receiptList: ReceiptListType;
+	receiptList: ReqReceiptItem[];
 }) {
 	return (
 		<div
@@ -31,11 +31,14 @@ function ReceiptList({
 			}}
 		>
 			<svg>
-				{receiptList.boundingPolys.map((item, idx) => (
+				{receiptList.map((item) => (
+					<div>{item.ingredientName}</div>
+				))}
+				{/* {receiptList.boundingPolys.map((item, idx) => (
 					<g key={item.vertices[idx].x}>
 						<BoundingBox key={item.vertices[idx].x} vertices={item.vertices} />
 					</g>
-				))}
+				))} */}
 			</svg>
 		</div>
 	);

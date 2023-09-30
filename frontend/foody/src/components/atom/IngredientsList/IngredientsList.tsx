@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './IngredientsList.scss';
-import { IngridientItem } from 'constants/category';
+import { IngredientItem } from 'constants/category';
 import classNames from 'classnames';
 import CustomTextAlert from 'components/organism/CustomTextAlert/CustomTextAlert';
-import { DUMMY_INGREDIENTS_ITEM_INFO_LIST } from 'constants/dummy';
+import { BiPlus } from 'react-icons/bi';
+import { deleteIngredient } from 'utils/api/ingredient';
 import toast from 'react-hot-toast';
 import IngredientsListItem from '../IngredientsListItem/IngredientsListItem';
 import IngredientsListItemInfo from '../IngredientsListItemInfo/IngredientsListItemInfo';
 
-function IngredientsList({ ingredientsList, type }: { ingredientsList: IngridientItem[] | null; type: boolean }) {
+function IngredientsList({
+	changeIngredientList,
+	handleMenuSelect,
+	ingredientsList,
+	type,
+}: {
+	changeIngredientList: () => void;
+	handleMenuSelect: (menu: string) => void;
+	ingredientsList: IngredientItem[] | null;
+	type: boolean;
+}) {
 	const containerDivClasses = classNames('ingredients-list-container', {
 		'refrigerator-door': type,
 		'drawer-leg': !type,
@@ -17,74 +28,66 @@ function IngredientsList({ ingredientsList, type }: { ingredientsList: Ingridien
 		refrigerator: type,
 		drawer: !type,
 	});
-	const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-	const [selectedItem, setSelectedItem] = useState<IngridientItem | null>(null);
-
-	const handleClickIngredientItem = (idx: number) => {
+	const handleClickIngredientItem = (item: IngredientItem) => {
 		if (!ingredientsList) {
 			return;
 		}
-		setSelectedItem(ingredientsList[idx]);
-	};
 
-	if (selectedItem) {
+		const infoList = [
+			{
+				title: '재료명',
+				value: item.text,
+			},
+			{
+				title: '등록일',
+				value: item.regiDate,
+			},
+		];
+
 		CustomTextAlert({
 			title: `재료 정보`,
-			contents: <IngredientsListItemInfo infoList={DUMMY_INGREDIENTS_ITEM_INFO_LIST} />,
+			contents: <IngredientsListItemInfo infoList={infoList} />,
+			btnTitle: '닫기',
 			isDelete: true,
-			closeBtnTitle: '닫기',
 			params: {},
-			onAction: () => {
-				// TODOS: 재료 삭제
-				setOpenDeleteAlert(true);
+			onAction: () => {},
+			onDelete: () => {
+				deleteIngredient(item.ingredientId)
+					.then(() => {
+						toast.success(`'${item.text}'를 삭제하였습니다.`);
+						changeIngredientList();
+					})
+					.catch((err) => {
+						if (err.response.status === 404) {
+							toast.error(`'${item.text}'가 존재하지 않습니다.`);
+							changeIngredientList();
+						}
+					});
 			},
 		});
-	}
+	};
 
 	return (
-		<>
-			<div className={containerDivClasses}>
-				<div className={wrapDivClasses}>
-					<ul className="ingredients-list">
-						{ingredientsList &&
-							ingredientsList.map((item, i) => (
-								<IngredientsListItem key={item.text} idx={i} handleClick={handleClickIngredientItem} item={item} />
-							))}
-					</ul>
-				</div>
+		<div className={containerDivClasses}>
+			<div className={wrapDivClasses}>
+				<ul className="ingredients-list">
+					<li className="ingredients-list-item-container">
+						<button type="button" onClick={() => handleMenuSelect('search')}>
+							<BiPlus className="plus-icon" size={30} />
+						</button>
+					</li>
+					{ingredientsList &&
+						ingredientsList.map((item) => (
+							<IngredientsListItem
+								key={item.ingredientId}
+								idx={item.ingredientId}
+								handleClick={() => handleClickIngredientItem(item)}
+								item={item}
+							/>
+						))}
+				</ul>
 			</div>
-
-			{/* {selectedItem &&
-                CustomTextAlert({
-                    title: `재료 정보`,
-                    contents: <IngredientsListItemInfo infoList={DUMMY_INGREDIENTS_ITEM_INFO_LIST} />,
-                    isDelete: true,
-                    closeBtnTitle: '닫기',
-                    params: {},
-                    onAction: () => {
-                        // TODOS: 재료 삭제
-                        setOpenDeleteAlert(true);
-                    },
-                })} */}
-
-			{openDeleteAlert &&
-				selectedItem &&
-				CustomTextAlert({
-					title: `재료 삭제`,
-					desc: `'${selectedItem.text}'를 삭제하시겠습니까?`,
-					confirmBtnTitle: '삭제하기',
-					closeBtnTitle: '닫기',
-					params: { key: selectedItem.key },
-					onAction: (params) => {
-						// TODOS: 재료 삭제
-						if (selectedItem) {
-							console.log(params);
-							toast.success('삭제');
-							setSelectedItem(null); // 모달을 닫습니다.
-						}
-					},
-				})}
-		</>
+		</div>
 	);
 }
 

@@ -69,6 +69,11 @@ public class BookmarkFacade {
             .forEach(preference -> preference.applyPreference(mbti, value));
     }
 
+    public void updatePreference(String email, Recipe recipe, int value) {
+        Member member = memberService.findByEmail(email);
+        updatePreference(member, recipe, value);
+    }
+
     public boolean existsByMemberAndRecipe(Long memberId, Long recipeId) {
         return bookmarkService.existsByMemberAndRecipe(memberId, recipeId);
     }

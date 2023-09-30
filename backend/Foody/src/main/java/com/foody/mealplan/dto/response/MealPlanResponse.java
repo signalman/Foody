@@ -13,6 +13,9 @@ public record MealPlanResponse(
     MealResponse snack,
     LocalDate date
 ) {
+    public MealPlanResponse(){
+        this(new MealResponse(), new MealResponse(), new MealResponse(), new MealResponse(), LocalDate.MIN);
+    }
     public MealPlanResponse(MealPlan mealPlan){
         this(
             new MealResponse(mealPlan.getBreakfast()),

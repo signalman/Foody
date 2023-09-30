@@ -49,8 +49,9 @@ public class MealPlanService {
         Member member = memberService.findByEmail(loginInfo.email());
         LocalDate localDate = FoodyDateFormatter.toLocalDate(date);
 
-        MealPlan mealplan = findByDateAndMemberId(localDate, member.getId());
-        return new MealPlanResponse(mealplan);
+        MealPlan mealPlan = mealPlanRepository.findByDateAndMemberId(localDate, member.getId()).orElse(null);
+        if(mealPlan == null) return new MealPlanResponse();
+        return new MealPlanResponse(mealPlan);
     }
 
     private Meal getMealByType(MealPlan mealPlan, MealType type) {

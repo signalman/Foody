@@ -5,8 +5,9 @@ import com.foody.food.entity.Food;
 import com.foody.food.exception.FoodException;
 import com.foody.food.repository.FoodRepository;
 import com.foody.global.exception.ErrorCode;
-import com.foody.mealplan.exception.MealPlanException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class FoodService {
 
     private final FoodRepository foodRepository;
+    private final StringRedisTemplate stringRedisTemplate;
+
 
     public Food findByName(String name){
         return foodRepository.findByName(name)
                              .orElseThrow(() -> new FoodException(ErrorCode.FOOD_NOT_FOUND));
     }
+    public List<FoodResponse> getFoodSuggestion(String query) {
 
-    public FoodResponse getFoodByName(String name) {
-        return new FoodResponse(findByName(name));
+        return null;
     }
+
+
 }

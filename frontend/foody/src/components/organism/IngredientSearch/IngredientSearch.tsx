@@ -7,19 +7,26 @@ import SearchTemplate from 'components/template/SearchTemplate/SearchTemplate';
 import { HiPencil } from 'react-icons/hi';
 import LargeButton from 'components/atom/LargeButton/LargeButton';
 import LargeButtonColor from 'constants/color';
-import getSearchIndegredients, { createIngredientList } from 'utils/api/ingredient';
+import getSearchIngredients, { createIngredientList } from 'utils/api/ingredient';
 import formatSearchResultList from 'utils/common/ingredient';
-import { CustomIngredientItemType, IngridientSearchItem } from 'types/refrigerator';
+import { CustomIngredientItemType, IngredientSearchItem } from 'types/refrigerator';
 import toast from 'react-hot-toast';
+import { ReqReceiptItem } from 'types/receipt';
 import SubHeader from '../SubHeader/SubHeader';
 import SelectIngredientList from '../../molecule/SelectIngredientList/SelectIngredientList';
 import IngredientSearchResultList from '../../molecule/IngredientSearchResultList/IngredientSearchResultList';
 
-function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<boolean>> }) {
+interface IngredientSearchProps {
+	setOpen: Dispatch<React.SetStateAction<boolean>>;
+	receiptList?: ReqReceiptItem[] | null;
+}
+
+function IngredientSearch(props: IngredientSearchProps) {
+	const { setOpen, receiptList } = props;
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
-	const [searchResultList, setSearchResultList] = useState<IngridientSearchItem[] | null>(null);
-	const [selectedIngredientList, setSelectedIngredientList] = useState<IngridientSearchItem[] | null>(null);
+	const [searchResultList, setSearchResultList] = useState<IngredientSearchItem[] | null>(null);
+	const [selectedIngredientList, setSelectedIngredientList] = useState<IngredientSearchItem[] | null>(null);
 	const [customIngredientList, setCustomIngredientList] = useState<CustomIngredientItemType[] | []>([]);
 
 	const handleMove = () => {
@@ -78,7 +85,7 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 
 	useEffect(() => {
 		if (searchKeyword !== '') {
-			getSearchIndegredients(searchKeyword)
+			getSearchIngredients(searchKeyword)
 				.then((res) => {
 					if (res.data && res.data.length > 0) {
 						setSearchResultList(formatSearchResultList(res.data));
@@ -89,6 +96,21 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 				.catch((err) => console.error(err));
 		}
 	}, [searchKeyword]);
+
+	useEffect(() => {
+		if (receiptList && receiptList.length !== 0) {
+			console.log('receipt');
+			setSelectedIngredientList([
+				...receiptList.map((item) => {
+					const selectItem = {
+						key: item.ingredientId,
+						text: item.ingredientName,
+					};
+					return selectItem;
+				}),
+			]);
+		}
+	}, [receiptList]);
 
 	return (
 		<div className="ingredient-regist-album-container">
@@ -134,3 +156,7 @@ function IngredientSearch({ setOpen }: { setOpen: Dispatch<React.SetStateAction<
 }
 
 export default IngredientSearch;
+
+IngredientSearch.defaultProps = {
+	receiptList: null,
+};

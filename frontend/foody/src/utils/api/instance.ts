@@ -1,8 +1,10 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import LocalStorage from 'constants/LocalStorage';
+import toast from 'react-hot-toast';
 
 export const instance: AxiosInstance = axios.create({
-	baseURL: process.env.REACT_APP_DEVELOP_BASE_URL,
+	// baseURL: process.env.REACT_APP_DEVELOP_BASE_URL,
+	baseURL: process.env.REACT_APP_SERVER_BASE_URL,
 	headers: {
 		'Content-Type': 'application/json',
 	},
@@ -22,7 +24,9 @@ instance.interceptors.request.use((req) => {
 instance.interceptors.response.use(
 	(response) => response,
 	async (error: AxiosError) => {
-		if (error.response?.status === 401) {
+		// if (error.response?.status === 401) {
+		if (error.response?.status === 500) {
+			toast.error('세션이 만료되었습니다. 다시 로그인 해주세요.');
 			// JWT 만료 오류 처리
 			const refreshToken = LocalStorage.getItem('refreshtoken');
 			if (refreshToken) {
@@ -47,7 +51,7 @@ instance.interceptors.response.use(
 			}
 
 			// Refresh Token이 없거나 요청이 실패한 경우 로그인 페이지로 리다이렉트
-			window.location.href = '/auth';
+			window.location.href = '/login';
 			LocalStorage.removeItem('accesstoken');
 		}
 

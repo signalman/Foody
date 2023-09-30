@@ -27,10 +27,10 @@ function SignupStep3({ age, setAge, nextButton }: SignupStep3Props) {
 			<SignupTitle value="나이를 알려주세요" />
 			<UnderlineInput maxlength={3} isValid={ageCheck} onChangeValue={setAge} placeholder="나이" unit="" value={age} />
 			<LargeButton
-				buttonClick={nextButton}
+				buttonClick={age.length ? nextButton : () => {}}
 				imgsrc=""
 				value="다음"
-				buttonColor={ageCheck(age) ? LargeButtonColor.Green : LargeButtonColor.Gray}
+				buttonColor={age.length ? LargeButtonColor.Green : LargeButtonColor.Gray}
 			/>
 		</div>
 	);

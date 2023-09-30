@@ -11,7 +11,8 @@
 	background-color: var.$primary-green-500;
 }
 
-.calendar-box {
+
+.meal-calendar-box {
 	@include f.flex(row, center, end);
 
 	button {

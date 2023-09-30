@@ -15,6 +15,7 @@ import com.foody.recommend.exception.RecommendException;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -139,7 +140,7 @@ public class RecommendService {
 
         Member member = memberService.findByEmail(email);
         // 결핍 영양소
-        NutrientResponse nutrient = nutrientService.getNutrient(email);
+        NutrientResponse nutrient = new NutrientResponse(nutrientService.getNutrientForRecommendation(LocalDateTime.now(), email));
         Mbti mbti = member.getMbti();
         // 회원의 취향
         MbtiResponse mbtiResponse = new MbtiResponse(mbti);

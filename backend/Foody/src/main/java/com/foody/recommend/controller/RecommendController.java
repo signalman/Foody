@@ -40,4 +40,13 @@ public class RecommendController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/hybrid")
+    public ResponseEntity<List<RecipeListResponse>> recommendByHybrid(@AuthenticationPrincipal LoginInfo loginInfo) {
+
+        log.debug("{} request hybrid recommend", loginInfo.email());
+        List<RecipeListResponse> hybirdRecommendItemList = recommendService.findHybridItemByPreference(loginInfo.email());
+
+        return ResponseEntity.ok().body(hybirdRecommendItemList);
+    }
+
 }

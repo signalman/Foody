@@ -38,7 +38,7 @@ public class Meal extends BaseEntity {
         this.repImg = url;
     }
 
-    public Nutrient totalNutrient(){
+    public Nutrient totalMealNutrient(){
         double energy = 0.0;
         double carbohydrates = 0.0;
         double protein = 0.0;

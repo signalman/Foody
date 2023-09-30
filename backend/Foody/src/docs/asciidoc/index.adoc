@@ -30,3 +30,18 @@ include::controller/mbti/mbti.adoc[]
 == Nutrient API
 
 include::controller/nutrient/nutrient.adoc[]
+
+[[추천-API]]
+== Recommend API
+
+include::controller/recommend/recommend.adoc[]
+
+[[북마크-API]]
+== Bookmark API
+
+include::controller/bookmark/bookmark.adoc[]
+
+[[레시피-API]]
+== Recipe API
+
+include::controller/recipe/recipe.adoc[]

@@ -25,9 +25,9 @@ public class FoodController {
 
     @GetMapping("/search-suggest")
     public ResponseEntity<Set<String>> getFoodSuggestion(@RequestParam String query){
-        Set<String> foodResponseList = foodService.getFoodSuggestion(query, 10);
+        Set<String> suggestion = foodService.getFoodSuggestions(query, 10);
         return ResponseEntity.ok()
-                             .body(foodResponseList);
+                             .body(suggestion);
     }
 
 

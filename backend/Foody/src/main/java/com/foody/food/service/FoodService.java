@@ -1,5 +1,6 @@
 package com.foody.food.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foody.food.entity.Food;
 import com.foody.food.entity.FoodSearch;
 import com.foody.food.exception.FoodException;
@@ -15,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.connection.RedisZSetCommands.Range;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,19 +29,28 @@ public class FoodService {
     private final FoodRepository foodRepository;
     private final RedisTemplate redisTemplate;
     private static final String SEARCH_KEY = "search:keywords";
+    private final ObjectMapper objectMapper;
 
 
     public Food findByName(String name){
         return foodRepository.findByName(name)
                              .orElseThrow(() -> new FoodException(ErrorCode.FOOD_NOT_FOUND));
     }
-    public Set<String> getFoodSuggestion(String prefix, int limit) {
-        return (Set<String>) redisTemplate.opsForZSet().reverseRangeByScore(SEARCH_KEY, 0, Double.MAX_VALUE, 0, limit)
-                                          .stream()
-                                          .filter(keyword -> ((String) keyword).startsWith(prefix))
-                                          .map(Object::toString)
-                                          .collect(Collectors.toSet());
+    public Set<String> getFoodSuggestions(String prefix, int limit) {
+        // 접두사의 다음 문자열을 찾기 위해 유니코드 값을 1 증가시킵니다.
+        String nextPrefix = prefix.substring(0, prefix.length() - 1) + (char) (prefix.charAt(prefix.length() - 1) + 1);
+
+        // score(점수)에 따라 정렬된 항목 중에서 검색어에 해당하는 범위의 항목들을 조회합니다.
+        Set<String> results = redisTemplate.opsForZSet().reverseRangeByLex(SEARCH_KEY, Range.range().gte(prefix).lt(nextPrefix));
+
+        // 결과를 제한합니다.
+        if (results.size() > limit) {
+            return results.stream().limit(limit).collect(Collectors.toSet());
+        } else {
+            return results;
+        }
     }
+
 
 
     public void saveFoodsFromCSV(String csvFilePath) throws Exception {
@@ -50,19 +60,23 @@ public class FoodService {
 
         for (FoodSearch food : foods) {
             String key = "FOOD:" + food.getName();
-            HashOperations<String, String, Object> hashOps = redisTemplate.opsForHash();
-            hashOps.put(key, "id", food.getId());
-            hashOps.put(key, "name", food.getName());
-            hashOps.put(key, "energy", food.getEnergy());
-            hashOps.put(key, "carbohydrates", food.getCarbohydrates());
-            hashOps.put(key, "protein", food.getProtein());
-            hashOps.put(key, "dietaryFiber", food.getDietaryFiber());
-            hashOps.put(key, "calcium", food.getCalcium());
-            hashOps.put(key, "sodium", food.getSodium());
-            hashOps.put(key, "iron", food.getIron());
-            hashOps.put(key, "fats", food.getFats());
-            hashOps.put(key, "vitaminA", food.getVitaminA());
-            hashOps.put(key, "vitaminC", food.getVitaminC());
+            String jsonValue = objectMapper.writeValueAsString(food);
+            redisTemplate.opsForValue().set(key, jsonValue);
+            redisTemplate.opsForZSet().add(SEARCH_KEY, food.getName(), 0);
+
+//            HashOperations<String, String, Object> hashOps = redisTemplate.opsForHash();
+//            hashOps.put(key, "id", food.getId());
+//            hashOps.put(key, "name", food.getName());
+//            hashOps.put(key, "energy", food.getEnergy());
+//            hashOps.put(key, "carbohydrates", food.getCarbohydrates());
+//            hashOps.put(key, "protein", food.getProtein());
+//            hashOps.put(key, "dietaryFiber", food.getDietaryFiber());
+//            hashOps.put(key, "calcium", food.getCalcium());
+//            hashOps.put(key, "sodium", food.getSodium());
+//            hashOps.put(key, "iron", food.getIron());
+//            hashOps.put(key, "fats", food.getFats());
+//            hashOps.put(key, "vitaminA", food.getVitaminA());
+//            hashOps.put(key, "vitaminC", food.getVitaminC());
         }
     }
 

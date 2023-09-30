@@ -10,9 +10,10 @@ import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -77,25 +78,23 @@ public class DataLoader {
 
         return new Mbti(koreanMainDish, westernMainDish, sideDish, dessert, dailyFood, festivalFood, convenienceFood, snackFood, etcFood, meat, vegetableSeafood, processedFood, healthFood, grain, lowCook, highCook, waterCook, rawCook, etcCook);
     }
-    public List<Recipe> readRecipesFromCSV(Path filePath) throws IOException {
-        try (Reader reader = Files.newBufferedReader(filePath)) {
-            ColumnPositionMappingStrategy<Recipe> strategy = new ColumnPositionMappingStrategy<>();
-            strategy.setType(Recipe.class);
-            String[] memberFieldsToBindTo = {
-                    "id", "name", "ingredient", "description", "url", "difficulty", "servers",
-                    "foodMethod", "foodSituation", "foodIngredients", "foodTypes", "energy", "carbohydrates",
-                "protein", "dietaryFiber", "calcium", "sodium", "iron", "fats", "vitaminA", "vitaminC"
-            };
-            strategy.setColumnMapping(memberFieldsToBindTo);
+    public List<Recipe> readRecipesFromCSV(Reader reader) throws IOException {
+        ColumnPositionMappingStrategy<Recipe> strategy = new ColumnPositionMappingStrategy<>();
+        strategy.setType(Recipe.class);
+        String[] memberFieldsToBindTo = {
+            "id", "name", "ingredient", "description", "url", "difficulty", "servers",
+            "foodMethod", "foodSituation", "foodIngredients", "foodTypes", "energy", "carbohydrates",
+            "protein", "dietaryFiber", "calcium", "sodium", "iron", "fats", "vitaminA", "vitaminC"
+        };
+        strategy.setColumnMapping(memberFieldsToBindTo);
 
-            CsvToBean<Recipe> csvToBean = new CsvToBeanBuilder<Recipe>(reader)
-                    .withMappingStrategy(strategy)
-                    .withSkipLines(1)
-                    .withType(Recipe.class)
-                    .build();
+        CsvToBean<Recipe> csvToBean = new CsvToBeanBuilder<Recipe>(reader)
+            .withMappingStrategy(strategy)
+            .withSkipLines(1)
+            .withType(Recipe.class)
+            .build();
 
-            return csvToBean.parse();
-        }
+        return csvToBean.parse();
     }
 
     @Bean
@@ -103,10 +102,16 @@ public class DataLoader {
         return (args) -> {
             boolean exists = recipeCustomRepository.isExistsData();
             ClassPathResource resource = new ClassPathResource("recipe/foody_recipe.csv");
-            Path path = resource.getFile().toPath();
-            if(!exists) {
-                List<Recipe> recipes = readRecipesFromCSV(path);
-                recipeCustomRepository.bulkInsert(recipes);
+
+            // InputStream을 사용하여 파일을 읽음
+            try (InputStream inputStream = resource.getInputStream();
+                Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+                if (!exists) {
+                    List<Recipe> recipes = readRecipesFromCSV(reader);
+                    recipeCustomRepository.bulkInsert(recipes);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         };
     }

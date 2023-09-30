@@ -18,10 +18,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.GrantedAuthority;
 
 @Getter
@@ -54,6 +54,7 @@ public class Member extends UserInfo {
     private Mbti mbti;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @Builder.Default
     private List<MealPlan> mealPlans = new ArrayList<>();
 
     public void createNutrient(Nutrient nutrient) {

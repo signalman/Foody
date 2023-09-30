@@ -1,5 +1,5 @@
 import BarChart from 'components/atom/BarChart/BarChart';
-import NutrientInfo from 'components/atom/NutrientInfo/NutrientInfo';
+import NutrientInfo from 'components/atom/NutrientCheck/NutrientCheck';
 import { BarColor } from 'constants/color';
 import './NutrientInformation.scss';
 import React from 'react';

@@ -1,11 +1,14 @@
 package com.foody.mbti.service;
 
+import com.foody.global.exception.ErrorCode;
 import com.foody.mbti.dto.request.MbtiRequest;
+import com.foody.mbti.dto.response.MbtiResponse;
 import com.foody.mbti.entity.Mbti;
 import com.foody.mbti.repository.MbtiRepository;
 import com.foody.member.entity.Member;
+import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
-import com.foody.member.service.MemberService;
+import com.foody.nutrient.entity.Nutrient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MbtiService {
 
     private final MemberRepository memberRepository;
-    private final MemberService memberService;
     private final MbtiRepository mbtiRepository;
 
     @Transactional
@@ -54,7 +56,8 @@ public class MbtiService {
         int rawCook = 0; // 날것
         int etcCook = 0; // 기타
 
-        Member member = memberService.findByEmail(email);
+        Member member = memberRepository.findByEmail(email)
+                                        .orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
 
         // 갈비찜
         if(arr.get(0)==1){
@@ -411,19 +414,19 @@ public class MbtiService {
             "된장국", "카레", "탕수육", "파전"
         };
 
-        String[] extensions = {
-            "jfif", "jfif", "jpg", "jfif", "jfif", "jfif",
-            "jfif", "jfif", "jfif", "jfif", "jfif", "jfif",
-            "jfif", "jfif", "jfif", "jfif", "jfif", "jfif",
-            "jpg", "jpg", "jpg", "jpg", "jpg", "jpg",
-            "jpg", "jpg", "jpg", "jfif"
-        };
-
         for (int i = 0; i < foods.length; i++) {
             arr[i][0] = foods[i];
-            arr[i][1] = baseImgURL + String.format("%02d", i) + "." + extensions[i];
+            arr[i][1] = baseImgURL + String.format("%02d", i) + "." + "jpg";
         }
 
         return arr;
+    }
+
+    public MbtiResponse getMemberMbti(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+
+        Mbti mbti = member.getMbti();
+
+        return new MbtiResponse(mbti);
     }
 }

@@ -14,6 +14,9 @@ import com.foody.mbti.service.MbtiService;
 import com.foody.member.controller.MemberController;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
+import com.foody.nutrient.controller.NutrientController;
+import com.foody.nutrient.repository.NutrientRepository;
+import com.foody.nutrient.service.NutrientService;
 import com.foody.recipe.controller.RecipeController;
 import com.foody.recipe.repository.RecipeRepository;
 import com.foody.recipe.service.RecipeService;
@@ -62,7 +65,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
     MbtiController.class,
     BookmarkController.class,
     RecipeController.class,
-    RecommendController.class
+    RecommendController.class,
+    MbtiController.class,
+    NutrientController.class
 })
 public class ControllerTest {
 
@@ -89,6 +94,7 @@ public class ControllerTest {
     @MockBean protected MemberService memberService;
     @MockBean protected RefrigeratorsService refrigeratorsService;
     @MockBean protected MbtiService mbtiService;
+    @MockBean protected NutrientService nutrientService;
     @MockBean protected RecipeService recipeService;
     @MockBean protected BookmarkService bookmarkService;
     @MockBean protected BookmarkFacade bookmarkFacade;
@@ -98,6 +104,7 @@ public class ControllerTest {
     @MockBean protected MemberRepository memberRepository;
     @MockBean protected IngredientRepository ingredientRepository;
     @MockBean protected MbtiRepository mbtiRepository;
+    @MockBean protected NutrientRepository nutrientRepository;
     @MockBean protected RecipeRepository recipeRepository;
     @MockBean protected BookmarkRepository bookmarkRepository;
 

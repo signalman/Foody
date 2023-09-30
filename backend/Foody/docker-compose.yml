@@ -17,6 +17,7 @@ services:
     build: .
     depends_on:
       - db
+    image: back-image:latest
     container_name: back-container
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
@@ -38,6 +39,7 @@ services:
       NAVER_CLIENT_ID: ${NAVER_CLIENT_ID}
       NAVER_CLIENT_SECRET: ${NAVER_CLIENT_SECRET}
       X_OCR_SECRET : ${X_OCR_SECRET}
+      DATA_URL : ${DATA_URL}
 
     ports:
       - "8082:8082"

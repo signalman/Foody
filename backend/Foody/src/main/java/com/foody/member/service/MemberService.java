@@ -116,12 +116,14 @@ public class MemberService {
         nutrientService.createNutrient(email);
     }
 
+    @Transactional
     public void logout(LoginInfo loginInfo) {
         if(redisTemplate.hasKey(loginInfo.email())) {
             redisTemplate.delete(loginInfo.email());
         }
     }
 
+    @Transactional
     public RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         String accessToken = jwtProvider.recreateAccessToken(refreshTokenRequest.refreshToken(), secretKey);
 

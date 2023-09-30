@@ -1,0 +1,21 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.meal-nutrient-simple-info-box {
+	@include f.flex(column, center, center, 30px);
+	background-color: var.$primary-green-alpa-60;
+	height: 200px;
+	width: 100%;
+	border-radius: 10px;
+	color: var.$white;
+
+	.meal-nutrient-simple-info-title {
+		@include f.flex(row, between, center, 0px);
+		font-weight: var.$fw-400;
+		font-size: var.$h4;
+	}
+
+	.meal-nutrient-simple-info-content {
+		@include f.flex(column, center, center, 10px);
+	}
+}

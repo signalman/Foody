@@ -1,0 +1,29 @@
+=== 회원 1일 권장 영양소 조회
+
+==== HTTP Request
+include::{snippets}/nutrient/getNutrient/http-request.adoc[]
+include::{snippets}/nutrient/getNutrient/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/nutrient/getNutrient/http-response.adoc[]
+include::{snippets}/nutrient/getNutrient/response-body.adoc[]
+
+=== 회원 끼니별 권장 영양소 조회
+
+==== HTTP Request
+include::{snippets}/nutrient/getTypeNutrient/http-request.adoc[]
+include::{snippets}/nutrient/getTypeNutrient/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/nutrient/getTypeNutrient/http-response.adoc[]
+include::{snippets}/nutrient/getTypeNutrient/response-body.adoc[]
+
+=== 회원 끼니별 먹은 영양소 조회
+
+==== HTTP Request
+include::{snippets}/nutrient/nutrientInfo/http-request.adoc[]
+include::{snippets}/nutrient/nutrientInfo/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/nutrient/nutrientInfo/http-response.adoc[]
+include::{snippets}/nutrient/nutrientInfo/response-body.adoc[]

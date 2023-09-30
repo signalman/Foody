@@ -1,22 +1,37 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, constr
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import random
+from sklearn.preprocessing import MinMaxScaler
+
 
 router = APIRouter()
 
 # 데이터 로딩
 recipe_data = pd.read_csv('data/recipe_information_reprocessed.csv')
-recipe_data_cleaned = recipe_data.dropna(subset=['ingredients_concat'])
-recipe_data_jaccard = pd.read_csv('data/recipe_jaccard.csv')
+recipe_data_encoded = pd.get_dummies(recipe_data,
+                                     columns=['food_preparation_methods', 'food_situations', 'food_ingredients',
+                                              'food_types'])
+
+
+class UserDeficiencyInput(BaseModel):
+    energy: float
+    carbohydrates: float
+    protein: float
+    fats: float
+    dietaryFiber: float
+    calcium: float
+    sodium: float
+    iron: float
+    vitaminA: float
+    vitaminC: float
 
 
 class UserPreference(BaseModel):
     # 난이도
-    difficulty: constr(regex="^(초급|중급|아무나)$")
+    # difficulty: constr(regex="^(초급|중급|아무나)$")
 
     # 종류별
     koreanMainDish: int
@@ -46,35 +61,128 @@ class UserPreference(BaseModel):
     etcCook: int
 
 
-@router.post("/preference")
+class CombineUserInput(BaseModel):
+    user_deficiency: UserDeficiencyInput
+    user_preference: UserPreference
+
+
+# 범주형 열에 대한 선호도 정보의 순서
+preference_columns = [
+    "koreanMainDish", "westernMainDish", "sideDish", "dessert",
+    "dailyFood", "festivalFood", "convenienceFood", "snackFood", "etcFood",
+    "meat", "vegetableSeafood", "processedFood", "healthFood", "grain",
+    "lowCook", "highCook", "waterCook", "rawCook", "etcCook"
+]
+
+# 범주형 열에 대한 One-Hot Encoding 열의 순서
+encoded_columns = [
+    "food_types_한식메인디시", "food_types_양식메인디시", "food_types_밑반찬", "food_types_디저트",
+    "food_situations_일상", "food_situations_접대", "food_situations_간편식", "food_situations_술", "food_situations_기타",
+    "food_ingredients_고기류", "food_ingredients_채소/해물류", "food_ingredients_가공식품류", "food_ingredients_건강류",
+    "food_ingredients_주식류",
+    "food_preparation_methods_저온조리", "food_preparation_methods_고온조리", "food_preparation_methods_수분조리",
+    "food_preparation_methods_날것", "food_preparation_methods_기타"
+]
+
+
+# 취향 기반 추천
+@router.post("/")
 def get_recommendations_based_on_preference(data: UserPreference, top_k: int = 5):
     # 사용자의 선호도 정보를 배열로 변환
-    user_vector = np.array(list(data.dict().values()))
+    user_vector = np.array([data.dict()[col] for col in preference_columns])
 
-    recipe_vectors = recipe_data[list(data.dict().keys())].values
+    # 각 레시피에 대한 One-Hot Encoding 벡터 추출
+    recipe_vectors = recipe_data_encoded[encoded_columns].values
 
-    # 각 레시피에 대한 코사인 유사도 계산
-    similarities = cosine_similarity(user_vector.reshape(1, -1), recipe_vectors).flatten()
+    # 각 레시피에 대한 가중 평균 점수 계산
+    weighted_scores = np.sum(user_vector * recipe_vectors, axis=1)
 
-    # 가장 유사한 top_k 개의 레시피 인덱스 가져오기
-    top_indices = similarities.argsort()[-top_k:][::-1]
+    # 가중 평균 점수를 기반으로 상위 top_k개의 레시피 인덱스 추출
+    top_indices = weighted_scores.argsort()[-top_k * 2:][::-1]  # 두 배의 인덱스를 가져와 무작위 선택의 범위를 확장
 
-    # 가장 높은 유사도 점수를 가진 레시피가 5개 이상인지 확인
-    max_similarity = similarities[top_indices[0]]
-    max_similarity_indices = [index for index in top_indices if similarities[index] == max_similarity]
+    # 동일한 점수를 가진 레시피에 대해 무작위로 선택
+    unique_scores = np.unique(weighted_scores[top_indices])
+    final_indices = []
+    for score in unique_scores:
+        indices_with_same_score = np.where(weighted_scores == score)[0]
+        indices_to_add = np.random.choice(indices_with_same_score,
+                                          min(len(indices_with_same_score), top_k - len(final_indices)), replace=False)
+        final_indices.extend(indices_to_add)
+        if len(final_indices) >= top_k:
+            break
 
-    # 가장 높은 유사도 점수를 가진 레시피가 5개 이상이면, 그 중에서 랜덤하게 5개 선택
-    if len(max_similarity_indices) > 5:
-        max_similarity_indices = random.sample(max_similarity_indices, 5)
-
-    # 가장 유사한 레시피와 그들의 세부 사항 추출
+    # 추천된 레시피의 세부 정보 추출
     top_recipes = [
         {
-            "recipe_id": int(recipe_data.iloc[index]['id']),
-            "ingredients": recipe_data.iloc[index]['ingredients_concat'],
-            "similarity_score": similarities[index]
+            "recipe_id": int(recipe_data_encoded.iloc[index]['recipe_id']),
+            "ingredients": str(recipe_data_encoded.iloc[index]['ingredients_concat']),  # python 형식으로 변경
+            "score": int(weighted_scores[index])  # numpy.int32 to int
         }
-        for index in max_similarity_indices
+        for index in final_indices
     ]
 
     return top_recipes
+
+
+# 정규화를 사용한 취향 기반 추천
+@router.post("/hello")
+def get_normalized_recommendations_based_on_preference(data: UserPreference, top_k: int = 5):
+    # 사용자의 선호도 정보를 배열로 변환
+    user_vector = np.array([data.dict()[col] for col in preference_columns])
+
+    # 선호도 정보를 0과 1 사이로 정규화
+    user_vector = MinMaxScaler().fit_transform(user_vector.reshape(-1, 1)).flatten()
+
+    # 각 레시피에 대한 One-Hot Encoding 벡터 추출
+    recipe_vectors = recipe_data_encoded[encoded_columns].values
+
+    # 각 레시피에 대한 가중 평균 점수 계산
+    weighted_scores = np.sum(user_vector * recipe_vectors, axis=1)
+
+    # 가중 평균 점수를 기반으로 상위 top_k개의 레시피 인덱스 추출
+    top_indices = weighted_scores.argsort()[-top_k:][::-1]
+
+    # 추천된 레시피의 세부 정보 추출
+    top_recipes = [
+        {
+            "recipe_id": int(recipe_data_encoded.iloc[index]['recipe_id']),
+            "ingredients": str(recipe_data_encoded.iloc[index]['ingredients_concat']),
+            "score": int(weighted_scores[index])
+        }
+        for index in top_indices
+    ]
+
+    return top_recipes
+
+# 취향 + 영양소 기반 추천
+@router.post("/nutrient")
+def get_combined_recommendations_without_ingredients(data: CombineUserInput, top_k: int = 5):
+    # 영양소 추천 점수 계산 (과다 섭취에 대한 패널티 적용)
+    def calculate_score(row):
+        score = 0
+        for nutrient, deficiency in data.user_deficiency.dict().items():
+            nutrient_value = row[nutrient]
+            if nutrient_value > deficiency:
+                score -= (nutrient_value - deficiency)  # 과다 섭취에 대한 패널티 적용
+            else:
+                score += nutrient_value
+        return score
+
+    recipe_data['recommendation_score'] = recipe_data.apply(calculate_score, axis=1)
+    nutrient_top_indices = recipe_data['recommendation_score'].argsort()[-1000:][::-1]
+
+    # 선호도 정보 기반으로 점수 계산
+    preference_vector = np.array(list(data.user_preference.dict().values()))
+    preference_scores = cosine_similarity(preference_vector.reshape(1, -1),
+                                          recipe_data[list(data.user_preference.dict().keys())].values)
+    recipe_data['preference_score'] = preference_scores.flatten()
+
+    # 최종 점수는 영양소 추천 점수와 선호도 점수의 합으로 결정
+    recipe_data['final_score'] = recipe_data['recommendation_score'] + recipe_data['preference_score']
+    final_top_indices = recipe_data['final_score'].argsort()[-top_k:][::-1]
+
+    # 상위 레시피와 그 점수 추출
+    top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']),
+                    "final_score": recipe_data.iloc[index]['final_score']} for index in final_top_indices]
+
+    return {"Top Combined Recommendations Without Ingredients": top_recipes}

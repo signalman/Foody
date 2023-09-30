@@ -1,5 +1,7 @@
 package com.foody.global.util;
 
+import com.foody.food.entity.FoodSearch;
+import com.foody.food.repository.FoodSearchRepository;
 import com.foody.mbti.entity.Mbti;
 import com.foody.mbti.repository.MbtiRepository;
 import com.foody.member.entity.Member;
@@ -14,9 +16,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
@@ -24,9 +29,11 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class DataLoader {
 
     private final RecipeCustomRepository recipeCustomRepository;
+    private final FoodSearchRepository foodSearchRepository;
     private final MemberRepository memberRepository;
     private final MbtiRepository mbtiRepository;
 
@@ -128,6 +135,40 @@ public class DataLoader {
                     Member member = createRandomMember(i, mbti); // 저장된 Mbti를 사용하여 Member 생성
                     memberRepository.save(member);
                 }
+            }
+        };
+    }
+
+
+    public List<FoodSearch> readFoodsFromCSV(Path filePath) throws IOException {
+        try (Reader reader = Files.newBufferedReader(filePath)) {
+            ColumnPositionMappingStrategy<FoodSearch> strategy = new ColumnPositionMappingStrategy<>();
+            strategy.setType(FoodSearch.class);
+            String[] memberFieldsToBindTo = {
+                "id", "name", "energy", "carbohydrates",
+                "protein", "dietaryFiber", "calcium", "sodium", "iron", "fats", "vitaminA", "vitaminC"
+            };
+            strategy.setColumnMapping(memberFieldsToBindTo);
+
+            CsvToBean<FoodSearch> csvToBean = new CsvToBeanBuilder<FoodSearch>(reader)
+                .withMappingStrategy(strategy)
+                .withSkipLines(1)
+                .withType(FoodSearch.class)
+                .build();
+
+            return csvToBean.parse();
+        }
+    }
+
+    @Bean
+    public CommandLineRunner foodDataLoad() {
+        return (args) -> {
+            boolean exists = foodSearchRepository.isExistsData();
+            ClassPathResource resource = new ClassPathResource("food/foody_food.csv");
+            Path path = resource.getFile().toPath();
+            if(!exists) {
+                List<FoodSearch> foodSearchList = readFoodsFromCSV(path);
+                foodSearchRepository.bulkInsert(foodSearchList);
             }
         };
     }

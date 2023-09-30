@@ -2,10 +2,12 @@ package com.foody.bookmark.service;
 
 import com.foody.bookmark.dto.response.BookmarkListResponse;
 import com.foody.bookmark.entity.Bookmark;
+import com.foody.mbti.entity.Mbti;
 import com.foody.member.entity.Member;
 import com.foody.member.service.MemberService;
 import com.foody.recipe.dto.IngredientUnit;
 import com.foody.recipe.entity.Recipe;
+import com.foody.recipe.entity.RecipeCategory;
 import com.foody.recipe.util.RecipeUtils;
 import java.util.List;
 import java.util.Objects;
@@ -43,10 +45,28 @@ public class BookmarkFacade {
 
     private void deleteBookmark(Member member, Recipe recipe) {
         bookmarkService.delete(member, recipe);
+        updatePreference(member, recipe, -3);
     }
 
     private void addBookmark(Member member, Recipe recipe) {
         bookmarkService.save(member, recipe);
+        updatePreference(member, recipe, 3);
+    }
+
+    private void updatePreference(Member member, Recipe recipe, int value) {
+
+        Mbti mbti = member.getMbti();
+        String foodMethod = recipe.getFoodMethod().equals("기타")? "기타조리" : recipe.getFoodMethod();
+        String foodSituation = recipe.getFoodSituation();
+        String foodIngredients = recipe.getFoodIngredients();
+        String foodTypes = recipe.getFoodTypes();
+
+        List<String> preferenceList = List.of(foodMethod, foodSituation, foodIngredients, foodTypes);
+
+        preferenceList.stream()
+            .map(String::valueOf)
+            .map(RecipeCategory::fromKoreanName)
+            .forEach(preference -> preference.applyPreference(mbti, value));
     }
 
     public boolean existsByMemberAndRecipe(Long memberId, Long recipeId) {

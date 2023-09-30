@@ -1,5 +1,5 @@
 import React from 'react';
-import './NutrientInfo.scss';
+import './NutrientCheck.scss';
 
 interface NutrientInfoProps {
 	value: number;

@@ -1,0 +1,77 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.meal-input-box {
+	margin : 10px 0px;
+	position: relative;
+	height: 80px;
+	line-height: 40px;
+	.meal-input-title {
+		@include f.flex(row, start, center, 5px);
+		p {
+			font-size: var.$h4;
+			font-weight: var.$fw-400;
+			color: var.$black-400;
+		}
+
+		.meal-input-icon {
+			color: var.$primary-green-500;
+		}
+	}
+
+	.meal-input-sub-box {
+		position: relative;
+		input {
+			position: absolute;
+			width: 100%;
+			outline: none;
+			font-size: var.$h3;
+			padding: 0 10px;
+			line-height: 40px;
+			border: none;
+			border-bottom: 1px solid var.$black-100;
+			background: transparent;
+			transition: 0.1s ease;
+
+			::placeholder {
+				color: var.$black-200;
+			}
+		}
+
+		.g {
+			position: absolute;
+			top: 0;
+			right: 15px;
+			color: var.$black-400;
+			font-size: var.$h2;
+			font-weight: var.$fw-400;
+		}
+
+		.mg {
+			position: absolute;
+			top: 0;
+			right: 15px;
+			color: var.$black-400;
+			font-size: var.$h2;
+			font-weight: var.$fw-400;
+		}
+
+		.ug {
+			position: absolute;
+			top: 0;
+			right: 15px;
+			color: var.$black-400;
+			font-size: var.$h2;
+			font-weight: var.$fw-400;
+		}
+
+		.kcal {
+			position: absolute;
+			top: 0;
+			right: 15px;
+			color: var.$black-400;
+			font-size: var.$h2;
+			font-weight: var.$fw-400;
+		}
+	}
+}

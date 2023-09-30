@@ -37,7 +37,7 @@ public class RecommendController {
 
         log.debug("{} request recommend by preference" , loginInfo.email());
         List<RecipeListResponse> preferenceRecommendList = recommendService.findRecommendItemByPreferenceWithNutrient(loginInfo.email());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(preferenceRecommendList);
     }
 
     @GetMapping("/hybrid")

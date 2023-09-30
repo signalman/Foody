@@ -2,6 +2,7 @@ package com.foody.nutrient.entity;
 
 import com.foody.global.entity.BaseEntity;
 import com.foody.nutrient.dto.request.NutrientRequest;
+import com.foody.nutrient.dto.response.NutrientResponse;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,5 +30,12 @@ public class Nutrient extends BaseEntity {
             nutrientRequest.protein(), nutrientRequest.dietaryFiber(), nutrientRequest.calcium(),
             nutrientRequest.sodium(), nutrientRequest.iron(), nutrientRequest.fats(),
             nutrientRequest.vitaminA(), nutrientRequest.vitaminC());
+    }
+
+    public static Nutrient changeTypetoNutrient(NutrientResponse nutrientResponse) {
+        return new Nutrient(nutrientResponse.energy(), nutrientResponse.carbohydrates(),
+            nutrientResponse.protein(), nutrientResponse.dietaryFiber(), nutrientResponse.calcium(),
+            nutrientResponse.sodium(), nutrientResponse.iron(), nutrientResponse.fats(),
+            nutrientResponse.vitaminA(), nutrientResponse.vitaminC());
     }
 }

@@ -9,5 +9,5 @@ services:
     image: bigdata-image:latest
     ports:
       - "8000:80"
-#    environment:
-#      - DATABASE_URL=your_database_url
+    environment:
+      - DATABASE_URL=${DATABASE_URL}

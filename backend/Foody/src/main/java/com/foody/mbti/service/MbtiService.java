@@ -2,11 +2,13 @@ package com.foody.mbti.service;
 
 import com.foody.global.exception.ErrorCode;
 import com.foody.mbti.dto.request.MbtiRequest;
+import com.foody.mbti.dto.response.MbtiResponse;
 import com.foody.mbti.entity.Mbti;
 import com.foody.mbti.repository.MbtiRepository;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
+import com.foody.nutrient.entity.Nutrient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -418,5 +420,13 @@ public class MbtiService {
         }
 
         return arr;
+    }
+
+    public MbtiResponse getMemberMbti(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+
+        Mbti mbti = member.getMbti();
+
+        return new MbtiResponse(mbti);
     }
 }

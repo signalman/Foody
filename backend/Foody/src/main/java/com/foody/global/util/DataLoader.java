@@ -16,8 +16,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -140,24 +138,22 @@ public class DataLoader {
     }
 
 
-    public List<FoodSearch> readFoodsFromCSV(Path filePath) throws IOException {
-        try (Reader reader = Files.newBufferedReader(filePath)) {
-            ColumnPositionMappingStrategy<FoodSearch> strategy = new ColumnPositionMappingStrategy<>();
-            strategy.setType(FoodSearch.class);
-            String[] memberFieldsToBindTo = {
-                "id", "name", "energy", "carbohydrates",
-                "protein", "dietaryFiber", "calcium", "sodium", "iron", "fats", "vitaminA", "vitaminC"
-            };
-            strategy.setColumnMapping(memberFieldsToBindTo);
+    public List<FoodSearch> readFoodsFromCSV(Reader reader) {
+        ColumnPositionMappingStrategy<FoodSearch> strategy = new ColumnPositionMappingStrategy<>();
+        strategy.setType(FoodSearch.class);
+        String[] memberFieldsToBindTo = {
+            "id", "name", "energy", "carbohydrates",
+            "protein", "dietaryFiber", "calcium", "sodium", "iron", "fats", "vitaminA", "vitaminC"
+        };
+        strategy.setColumnMapping(memberFieldsToBindTo);
 
-            CsvToBean<FoodSearch> csvToBean = new CsvToBeanBuilder<FoodSearch>(reader)
-                .withMappingStrategy(strategy)
-                .withSkipLines(1)
-                .withType(FoodSearch.class)
-                .build();
+        CsvToBean<FoodSearch> csvToBean = new CsvToBeanBuilder<FoodSearch>(reader)
+            .withMappingStrategy(strategy)
+            .withSkipLines(1)
+            .withType(FoodSearch.class)
+            .build();
 
-            return csvToBean.parse();
-        }
+        return csvToBean.parse();
     }
 
     @Bean
@@ -165,10 +161,15 @@ public class DataLoader {
         return (args) -> {
             boolean exists = foodSearchRepository.isExistsData();
             ClassPathResource resource = new ClassPathResource("food/foody_food.csv");
-            Path path = resource.getFile().toPath();
-            if(!exists) {
-                List<FoodSearch> foodSearchList = readFoodsFromCSV(path);
-                foodSearchRepository.bulkInsert(foodSearchList);
+
+            try (InputStream inputStream = resource.getInputStream();
+                Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+                if(!exists) {
+                    List<FoodSearch> foodSearchList = readFoodsFromCSV(reader);
+                    foodSearchRepository.bulkInsert(foodSearchList);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         };
     }

@@ -2,17 +2,23 @@ package com.foody.member.entity;
 
 import com.foody.global.entity.UserInfo;
 import com.foody.mbti.entity.Mbti;
+import com.foody.mealplan.entity.MealPlan;
 import com.foody.member.dto.request.MemberInfoModifyRequest;
 import com.foody.member.dto.request.MemberJoinRequest;
 import com.foody.member.dto.request.MemberSignupRequest;
 import com.foody.nutrient.entity.Nutrient;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -39,13 +45,17 @@ public class Member extends UserInfo {
 
     private String profileImg;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nutrient_id")
     private Nutrient nutrient;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mbti_id")
     private Mbti mbti;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<MealPlan> mealPlans = new ArrayList<>();
 
     public void createNutrient(Nutrient nutrient) {
         this.nutrient = nutrient;

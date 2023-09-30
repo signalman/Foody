@@ -42,7 +42,7 @@ public class DataLoader {
         int activityLevel = x % 3 == 0? 1 : (x % 3 == 1)? 2 : 3;      // 1 ~ 3
         String profileImg = "dummyImage" + x;
 
-        return new Member(nickname, height, weight, gender, age, activityLevel, profileImg, null, mbti);
+        return new Member(nickname, height, weight, gender, age, activityLevel, profileImg, null, mbti, null);
     }
 
     public Mbti createRandomMbti() {

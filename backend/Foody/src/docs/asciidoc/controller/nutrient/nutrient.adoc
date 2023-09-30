@@ -27,3 +27,13 @@ include::{snippets}/nutrient/nutrientInfo/request-body.adoc[]
 ==== HTTP Response
 include::{snippets}/nutrient/nutrientInfo/http-response.adoc[]
 include::{snippets}/nutrient/nutrientInfo/response-body.adoc[]
+
+
+=== 회원 권장 영양소 총집합
+==== HTTP Request
+include::{snippets}/nutrient/allTypeNutrient/http-request.adoc[]
+include::{snippets}/nutrient/allTypeNutrient/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/nutrient/allTypeNutrient/http-response.adoc[]
+include::{snippets}/nutrient/allTypeNutrient/response-body.adoc[]

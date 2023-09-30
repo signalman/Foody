@@ -10,6 +10,7 @@ import com.foody.recipe.repository.RecipeRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,9 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final BookmarkFacade bookmarkFacade;
+    private final StringRedisTemplate redisTemplate;
 
+    @Transactional
     public RecipeResponse findById(long id, String email) {
 
         Recipe recipe = recipeRepository.findById(id)
@@ -28,8 +31,20 @@ public class RecipeService {
                                             ErrorCode.RECIPE_NOT_FOUND));
 
         boolean isBookmarked = bookmarkFacade.existsByMemberEmailAndRecipe(email, id);
-
+        String key = email + ":" + id;
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+            storeUserRecipeViewKey(key);
+            userPreferenceUpdate(recipe, email);
+        }
         return new RecipeResponse(recipe, isBookmarked);
+    }
+
+    private void userPreferenceUpdate(Recipe recipe, String email) {
+        bookmarkFacade.updatePreference(email, recipe, 1);
+    }
+
+    private void storeUserRecipeViewKey(String key) {
+        redisTemplate.opsForValue().set(key, "true");
     }
 
     public List<RecipeListResponse> findRecipeListByRecommend(List<Long> recipeIdList) {

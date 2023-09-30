@@ -15,6 +15,9 @@ function MealTemplate({ children }: { children: ReactNode[] }) {
 				<ContentsLayout>{children[2]}</ContentsLayout>
 				<ContentsLayout>{children[3]}</ContentsLayout>
 			</Layout>
+			{/* <Layout marginTop={LayoutTopMargin.mt10} marginBottom={LayoutBottomMargin.mbTabbar} padding={LayoutPadding.p20}>
+				<ContentsLayout>{children[1]}</ContentsLayout>
+			</Layout> */}
 		</>
 	);
 }

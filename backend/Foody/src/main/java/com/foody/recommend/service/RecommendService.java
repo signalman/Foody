@@ -93,6 +93,7 @@ public class RecommendService {
         return recommendItemList;
     }
 
+    @Transactional(readOnly = true)
     public List<RecipeListResponse> findHybridItemByPreference(String email) {
 
         Member member = memberService.findByEmail(email);
@@ -133,6 +134,7 @@ public class RecommendService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<RecipeListResponse> findRecommendItemByPreferenceWithNutrient(String email) {
 
         Member member = memberService.findByEmail(email);

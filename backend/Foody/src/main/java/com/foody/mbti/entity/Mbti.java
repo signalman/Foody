@@ -1,10 +1,7 @@
 package com.foody.mbti.entity;
 
 import com.foody.global.entity.BaseEntity;
-import com.foody.member.entity.Member;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,4 +38,5 @@ public class Mbti extends BaseEntity {
     private int waterCook; // 수분조리
     private int rawCook; // 날것
     private int etcCook; // 기타
+
 }

@@ -132,4 +132,30 @@ class BookmarkFacadeTest extends ServiceTest {
 
     }
 
+    @Test
+    @Transactional
+    @DisplayName("선호도 변경시 조리방법 기타 기타조리로 치환된다")
+    void t6() throws Exception {
+
+        Mbti mbti = new Mbti(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        mbtiRepository.save(mbti);
+
+        Member member = Member.builder()
+                              .email("sangwon@google.com")
+                              .mbti(mbti)
+                              .build();
+        memberRepository.save(member);
+
+        long recipeId = 221097L;
+        bookmarkFacade.changeStatus(recipeId, "sangwon@google.com");
+
+        mbti = member.getMbti();
+        assertThat(mbti).satisfies(
+            pre -> assertThat(pre.getEtcCook()).isEqualTo(3),
+            pre -> assertThat(pre.getEtcFood()).isEqualTo(0)
+        );
+
+
+    }
+
 }

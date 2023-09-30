@@ -29,7 +29,7 @@ public class FoodSearchJDBCRepository implements FoodSearchRepository{
 
     @Override
     public boolean isExistsData(){
-        String sql = "SELECT count(*) FROM FOOD_SEARCH WHERE id = ?";
+        String sql = "SELECT count(*) FROM food_search WHERE id = ?";
         int count = jdbcTemplate.queryForObject(sql, new Object[]{8200}, Integer.class);
         return count > 0;
     }

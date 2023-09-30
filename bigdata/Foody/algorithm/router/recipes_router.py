@@ -91,7 +91,6 @@ def ingredient_similarity(A, B):
 # top_k를 IngredientInput에 넣었음. 아래 메소드들도 전부 바꿔줘야 함
 @router.post("/ingredients")
 async def get_top_recipes_from_refrigerator(item: IngredientInput):
-
     top_k = item.top_k
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
@@ -288,8 +287,9 @@ def get_combined_recommendations(data: CombinedInput, top_k: int = 5):
     return {"Top Combined Recipes": top_recipes}
 
 
+# 냉장고와 유사한 재료 사용 api
 @router.post("/nutrients/recommend")
-def get_combined_recommendations_v3(data: CombinedInput, top_k: int = 5):
+def get_combined_recommendations_v3(data: CombinedInput, top_k: int = 4):
     # Calculate ingredient similarity scores
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
@@ -322,7 +322,10 @@ def get_combined_recommendations_v3(data: CombinedInput, top_k: int = 5):
                     "combined_score": recipe_data.iloc[index]['recommendation_score']} for index in
                    combined_indices[:top_k]]
 
-    return {"Top Combined Recipes": top_recipes}
+    # 상위 레시피 추출 (recipe_id만 포함하도록 수정)
+    top_recipes = [int(recipe_data.iloc[index]['recipe_id']) for index in combined_indices[:top_k]]
+
+    return top_recipes
 
 
 # 새로운 유사도 계산 방식

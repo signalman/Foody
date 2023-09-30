@@ -99,23 +99,25 @@ async def get_top_recipes_from_refrigerator(item: IngredientInput):
     cosine_similarities = cosine_similarity(ingredients_vector, tfidf_matrix).flatten()
     top_indices = cosine_similarities.argsort()[-top_k:][::-1]
 
-    top_recipes = [
-        {
-            "id": int(recipe_data_cleaned.iloc[index]['recipe_id']),
-            "energy": recipe_data_cleaned.iloc[index]['energy'],
-            "protein": recipe_data_cleaned.iloc[index]['protein'],
-            "dietaryFiber": recipe_data_cleaned.iloc[index]['dietaryFiber'],
-            "calcium": recipe_data_cleaned.iloc[index]['calcium'],
-            "sodium": recipe_data_cleaned.iloc[index]['sodium'],
-            "iron": recipe_data_cleaned.iloc[index]['iron'],
-            "fats": recipe_data_cleaned.iloc[index]['fats'],
-            "vitaminA": recipe_data_cleaned.iloc[index]['vitaminA'],
-            "vitaminC": recipe_data_cleaned.iloc[index]['vitaminC']
-        }
-        for index in top_indices
-    ]
+    # top_recipes = [
+    #     {
+    #         "id": int(recipe_data_cleaned.iloc[index]['recipe_id']),
+    #         "energy": recipe_data_cleaned.iloc[index]['energy'],
+    #         "protein": recipe_data_cleaned.iloc[index]['protein'],
+    #         "dietaryFiber": recipe_data_cleaned.iloc[index]['dietaryFiber'],
+    #         "calcium": recipe_data_cleaned.iloc[index]['calcium'],
+    #         "sodium": recipe_data_cleaned.iloc[index]['sodium'],
+    #         "iron": recipe_data_cleaned.iloc[index]['iron'],
+    #         "fats": recipe_data_cleaned.iloc[index]['fats'],
+    #         "vitaminA": recipe_data_cleaned.iloc[index]['vitaminA'],
+    #         "vitaminC": recipe_data_cleaned.iloc[index]['vitaminC']
+    #     }
+    #     for index in top_indices
+    # ]
 
-    return top_recipes
+    top_recipe_ids = [int(recipe_data_cleaned.iloc[index]['recipe_id']) for index in top_indices]
+
+    return top_recipe_ids
 
 
 @router.post("/ingredients/jaccard")

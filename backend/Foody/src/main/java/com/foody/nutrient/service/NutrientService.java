@@ -255,8 +255,7 @@ public class NutrientService {
     public NutrientResponse getNutrient(String email) {
         Member member =memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
 
-        Long id = member.getId();
-        Nutrient nutrient = nutrientRepository.findById(id).orElseThrow(() -> new NutrientException(ErrorCode.NUTRIENT_NOT_FOUND));
+        Nutrient nutrient = member.getNutrient();
 
         return new NutrientResponse(nutrient);
     }

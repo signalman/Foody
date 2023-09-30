@@ -2,7 +2,6 @@ package com.foody.security.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foody.member.dto.response.TokenResponse;
-import com.foody.member.entity.Member;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
 import java.io.IOException;

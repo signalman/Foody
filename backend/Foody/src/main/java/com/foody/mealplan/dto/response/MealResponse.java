@@ -18,7 +18,7 @@ public record MealResponse(
     }
     public MealResponse(Meal meal) {
         this(
-            new NutrientResponse(meal.totalNutrient()),
+            new NutrientResponse(meal.totalMealNutrient()),
             FoodResponse.fromFoods(meal.getFoods()),
             meal.getRepImg(),
             meal.getTime());

@@ -1,11 +1,15 @@
 package com.foody.bookmark.service;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.foody.bookmark.dto.response.BookmarkListResponse;
+import com.foody.mbti.entity.Mbti;
+import com.foody.mbti.repository.MbtiRepository;
 import com.foody.member.entity.Member;
+import com.foody.member.repository.MemberRepository;
 import com.foody.recipe.entity.Recipe;
 import com.foody.recipe.service.RecipeService;
 import com.foody.util.ServiceTest;
@@ -23,6 +27,10 @@ class BookmarkFacadeTest extends ServiceTest {
     private BookmarkFacade bookmarkFacade;
     @Autowired
     private RecipeService recipeService;
+    @Autowired
+    private MbtiRepository mbtiRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Test
     @Transactional
@@ -35,7 +43,8 @@ class BookmarkFacadeTest extends ServiceTest {
 
         long id = bookmarkService.save(member, recipe);
 
-        boolean isBookmarked = bookmarkService.existsByMemberAndRecipe(member.getId(), recipe.getId());
+        boolean isBookmarked = bookmarkService.existsByMemberAndRecipe(member.getId(),
+            recipe.getId());
 
         assertTrue(isBookmarked);
 
@@ -85,11 +94,42 @@ class BookmarkFacadeTest extends ServiceTest {
 
         bookmarkFacade.changeStatus(recipeId, "lkm454545@gmail.com");
 
-        List<BookmarkListResponse> bookmarkList = bookmarkFacade.findBookmarkByMember(member.getEmail());
+        List<BookmarkListResponse> bookmarkList = bookmarkFacade.findBookmarkByMember(
+            member.getEmail());
 
         System.out.println(bookmarkList.get(0));
 
         assertEquals(1, bookmarkList.size());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("레시피 조회 시, 선호도 변경된다")
+    void t5() throws Exception {
+
+        Mbti mbti = new Mbti(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        mbtiRepository.save(mbti);
+
+        Member member = Member.builder()
+                              .email("sangwon@google.com")
+                              .mbti(mbti)
+                              .build();
+        memberRepository.save(member);
+
+        long recipeId = 128671L;
+        bookmarkFacade.changeStatus(recipeId, "sangwon@google.com");
+
+        mbti = member.getMbti();
+        System.out.println(mbti.getLowCook());
+        System.out.println(mbti.getHighCook());
+        assertThat(mbti).satisfies(
+            pre -> assertThat(pre.getHighCook()).isEqualTo(3),
+            pre -> assertThat(pre.getConvenienceFood()).isEqualTo(3),
+            pre -> assertThat(pre.getProcessedFood()).isEqualTo(3),
+            pre -> assertThat(pre.getDessert()).isEqualTo(3)
+        );
+
+
     }
 
 }

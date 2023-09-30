@@ -3,6 +3,7 @@ package com.foody.nutrient.controller;
 import com.amazonaws.Response;
 import com.foody.nutrient.dto.request.AteFoodNutrientInfoRequest;
 import com.foody.nutrient.dto.request.NutrientTypeRequest;
+import com.foody.nutrient.dto.response.NutrientByTypeResponse;
 import com.foody.nutrient.dto.response.NutrientResponse;
 import com.foody.nutrient.service.NutrientService;
 import com.foody.security.util.LoginInfo;
@@ -52,5 +53,14 @@ public class NutrientController {
         NutrientResponse nutrientResponse = nutrientService.calcMealNutrient(loginInfo.email(), ateFoodNutrientInfoRequest.time(), ateFoodNutrientInfoRequest.mealType());
 
         return ResponseEntity.ok().body(nutrientResponse);
+    }
+
+    @GetMapping("/alltype")
+    public ResponseEntity<NutrientByTypeResponse> getAllTypeNutrient(@AuthenticationPrincipal LoginInfo loginInfo) {
+        log.debug("{} request All Type Nutrient", loginInfo.email());
+
+        NutrientByTypeResponse nutrientByTypeResponse = nutrientService.getAllNutrient(loginInfo.email());
+
+        return ResponseEntity.ok().body(nutrientByTypeResponse);
     }
 }

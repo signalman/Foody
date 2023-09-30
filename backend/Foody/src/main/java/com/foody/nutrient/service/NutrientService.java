@@ -11,6 +11,7 @@ import com.foody.mealplan.service.MealPlanService;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
+import com.foody.nutrient.dto.response.NutrientByTypeResponse;
 import com.foody.nutrient.dto.response.NutrientResponse;
 import com.foody.nutrient.entity.Nutrient;
 import com.foody.nutrient.exception.NutrientException;
@@ -488,5 +489,18 @@ public class NutrientService {
         else {
             return 4;
         }
+    }
+
+    @Transactional
+    public NutrientByTypeResponse getAllNutrient(String email) {
+        Member member =memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+
+        Nutrient nutrient = member.getNutrient();
+        NutrientResponse breakfast = calculate(2,nutrient);
+        NutrientResponse lunch = calculate(3,nutrient);
+        NutrientResponse dinner = calculate(3,nutrient);
+        NutrientResponse snack = calculate(2,nutrient);
+
+        return new NutrientByTypeResponse(breakfast,lunch,dinner,snack);
     }
 }

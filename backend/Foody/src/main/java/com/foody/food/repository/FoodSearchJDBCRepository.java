@@ -29,14 +29,14 @@ public class FoodSearchJDBCRepository implements FoodSearchRepository{
 
     @Override
     public boolean isExistsData(){
-        String sql = "SELECT count(*) FROM FOOD_SEARCH WHERE id = ?";
+        String sql = "SELECT count(*) FROM food_search WHERE id = ?";
         int count = jdbcTemplate.queryForObject(sql, new Object[]{8200}, Integer.class);
         return count > 0;
     }
 
     private void batchInsert(List<FoodSearch> foodSearchList) {
 
-        String sql = "INSERT INTO FOOD_SEARCH (id, name, energy, carbohydrates, protein, dietary_fiber, calcium, sodium, iron, fats, vitamina, vitaminc) "
+        String sql = "INSERT INTO food_search (id, name, energy, carbohydrates, protein, dietary_fiber, calcium, sodium, iron, fats, vitamina, vitaminc) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, foodSearchList, 1000, (ps, foodSearch) -> {

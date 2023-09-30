@@ -38,4 +38,5 @@ public class Mbti extends BaseEntity {
     private int waterCook; // 수분조리
     private int rawCook; // 날것
     private int etcCook; // 기타
+
 }

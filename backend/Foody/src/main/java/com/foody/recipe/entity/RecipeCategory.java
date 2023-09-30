@@ -115,7 +115,7 @@ public enum RecipeCategory {
             mbti.updateRawCook(value);
         }
     },
-    ETC_COOK("기타2") {
+    ETC_COOK("기타조리") {
         @Override
         public void applyPreference(Mbti mbti, int value) {
             mbti.updateEtcCook(value);

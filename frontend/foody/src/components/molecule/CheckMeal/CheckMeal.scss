@@ -1,0 +1,29 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.check-meal-box {
+	@include f.flex(column, center, center, 5px);
+	width: 100%;
+	font-size: var.$h3;
+	font-weight: var.$fw-400;
+	color: var.$black-600;
+
+	.check-meal-title {
+        width: 100%;
+		@include f.flex(row, between, center, 0px);
+
+        .check-meal-sub-box {
+            @include f.flex(row, between, center, 0px);
+            
+            .check-meal-title-cal {
+                color: var.$primary-green-500;
+                margin-left: 10px;
+            }
+        }
+	}
+
+	.check-meal-content {
+        width: 100%;
+		@include f.flex(row, between, center, 20px);
+	}
+}

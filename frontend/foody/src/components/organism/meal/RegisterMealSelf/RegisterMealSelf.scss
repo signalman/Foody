@@ -1,0 +1,9 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.register-info {
+	font-size: var.$h3;
+	font-weight: var.$fw-500;
+	color: var.$black-500;
+	padding: 20px 0px 0px 0px;
+}

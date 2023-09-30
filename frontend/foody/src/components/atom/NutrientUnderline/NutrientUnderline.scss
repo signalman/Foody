@@ -1,0 +1,39 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.nutrient-underline-box {
+	@include f.flex(row, between, center, 0px);
+	width: 100%;
+	border: none;
+	padding-bottom: 8px;
+	font-weight: var.$fw-400;
+}
+
+.white {
+	color: var.$white;
+	border-bottom: 1px solid var.$white;
+}
+
+.black {
+	color: var.$black-500;
+	border-bottom: 1px solid var.$black-500;
+}
+
+.white-title {
+	font-size: var.$p4;
+}
+
+.white-value {
+	@include f.flex(row, between, center, 3px);
+	font-size: var.$p4;
+}
+
+.black-title {
+	font-size: var.$p2;
+	color: var.$black-300;
+}
+
+.nutrient-underline-value {
+	@include f.flex(row, between, center, 3px);
+	font-size: var.$p1;
+}

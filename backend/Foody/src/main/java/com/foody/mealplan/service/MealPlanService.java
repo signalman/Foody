@@ -12,6 +12,8 @@ import com.foody.mealplan.entity.MealType;
 import com.foody.mealplan.exception.MealPlanException;
 import com.foody.mealplan.repository.MealPlanRepository;
 import com.foody.member.entity.Member;
+import com.foody.member.exception.MemberException;
+import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
 import com.foody.security.util.LoginInfo;
 import java.time.LocalDate;
@@ -28,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MealPlanService {
 
     private final MealPlanRepository mealPlanRepository;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
     public MealPlan findById(long mealPlanId) {
@@ -46,7 +48,7 @@ public class MealPlanService {
     @Transactional(readOnly = true)
     public MealPlanResponse getMealPlanByDate(String date, LoginInfo loginInfo) {
 
-        Member member = memberService.findByEmail(loginInfo.email());
+        Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         LocalDate localDate = FoodyDateFormatter.toLocalDate(date);
 
         MealPlan mealplan = findByDateAndMemberId(localDate, member.getId());
@@ -71,7 +73,7 @@ public class MealPlanService {
 
     @Transactional
     public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest) {
-        Member member = memberService.findByEmail(loginInfo.email());
+        Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
 
         MealPlan mealPlan = mealPlanRepository.findByDateAndMemberId(localDate, member.getId())
@@ -93,7 +95,7 @@ public class MealPlanService {
     @Transactional(readOnly = true)
     public List<LocalDate> findLast20DaysRecords(LoginInfo loginInfo) {
         LocalDate startDate = LocalDate.now().minusDays(19);
-        Member member = memberService.findByEmail(loginInfo.email());
+        Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         return mealPlanRepository.findDatesByMemberIdAndDateAfter(member.getId(), startDate);
     }
 }

@@ -5,6 +5,7 @@ import com.foody.global.exception.ErrorCode;
 import com.foody.mealplan.entity.Meal;
 import com.foody.mealplan.entity.MealPlan;
 import com.foody.mealplan.entity.MealType;
+import com.foody.mealplan.exception.MealPlanException;
 import com.foody.mealplan.repository.MealPlanRepository;
 import com.foody.mealplan.service.MealPlanService;
 import com.foody.member.entity.Member;
@@ -31,7 +32,7 @@ public class NutrientService {
 
     private final MemberRepository memberRepository;
     private final NutrientRepository nutrientRepository;
-    private final MealPlanService mealPlanService;
+    private final MealPlanRepository mealPlanRepository;
 
     // 1일 권장 영양 정보 생성
     @Transactional
@@ -262,7 +263,7 @@ public class NutrientService {
 
     // 1일 끼니별 영양 정보 조회
     @Transactional
-    public Nutrient getMealNutrient(String email, MealType mealType) {
+    public NutrientResponse getMealNutrient(String email, MealType mealType) {
 
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         Nutrient nutrient = member.getNutrient();
@@ -285,7 +286,7 @@ public class NutrientService {
         }
     }
 
-    public Nutrient calculate(int ratio, Nutrient nutrient) {
+    private NutrientResponse calculate(int ratio, Nutrient nutrient) {
 
         double energy = nutrient.getEnergy() * ((double) ratio /10);
         double carbohydrates = nutrient.getCarbohydrates() * ((double) ratio /10);
@@ -298,12 +299,45 @@ public class NutrientService {
         double vitaminA = nutrient.getVitaminA() * ((double) ratio /10);
         double vitaminC = nutrient.getVitaminC() * ((double) ratio /10);
 
-        return new Nutrient(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron, fats, vitaminA, vitaminC);
+        return new NutrientResponse(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron, fats, vitaminA, vitaminC);
+    }
+
+    private double[] calculateNeccessaryNutrient(List<Food> foodList, double[] arr) {
+
+        for(Food food: foodList) { // 권장 영양소 총합(arr 배열)에서 먹은 것(foodList) 빼주기
+            arr[0] -= food.getNutrient().getEnergy();
+            arr[1] -= food.getNutrient().getCarbohydrates();
+            arr[2] -= food.getNutrient().getProtein();
+            arr[3] -= food.getNutrient().getDietaryFiber();
+            arr[4] -= food.getNutrient().getCalcium();
+            arr[5] -= food.getNutrient().getSodium();
+            arr[6] -= food.getNutrient().getCalcium();
+            arr[7] -= food.getNutrient().getSodium();
+            arr[8] -= food.getNutrient().getVitaminA();
+            arr[9] -= food.getNutrient().getVitaminC();
+        }
+
+        return arr;
+    }
+
+    private double[] addNutrient(double[] arr, Nutrient nutrient) {
+        arr[0] = nutrient.getEnergy();
+        arr[1] = nutrient.getCarbohydrates();
+        arr[2] = nutrient.getProtein();
+        arr[3] = nutrient.getDietaryFiber();
+        arr[4] = nutrient.getCalcium();
+        arr[5] = nutrient.getSodium();
+        arr[6] = nutrient.getIron();
+        arr[7] = nutrient.getFats();
+        arr[8] = nutrient.getVitaminA();
+        arr[9] = nutrient.getVitaminC();
+
+        return arr;
     }
 
     // 추천용 부족 영양소 반환
     // +면 부족한 것, -면 더먹은 것
-    @Transactional
+    @Transactional(readOnly = true)
     public Nutrient getNutrientForRecommendation(LocalDateTime recommendTime, String email) {
         // 함수 호출 시간대별 아=1, 점=2, 저=3, 야=4 분리
         LocalTime mealTime = LocalTime.of(recommendTime.getHour(), recommendTime.getMinute(),
@@ -313,173 +347,95 @@ public class NutrientService {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
 
         if(calcMealTime(mealTime) == 1) { // 아침
-            return getMealNutrient(email, MealType.BREAKFAST);
+            return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.BREAKFAST));
         }
         else if(calcMealTime(mealTime) == 2){ // 점심
-            MealPlan mealPlan = mealPlanService.findByDateAndMemberId(mealDate, member.getId());
+            MealPlan mealPlan = mealPlanRepository.findByDateAndMemberId(mealDate, member.getId())
+                                                  .orElseThrow(
+                                                      () -> new MealPlanException(ErrorCode.MEAL_PLAN_NOT_FOUND));
 
             if(mealPlan.getBreakfast() != null){ // 아침 O
                 // 부족 영양분 계산
                 Meal breakfast = mealPlan.getBreakfast();
-                Nutrient breakfastTmp = getMealNutrient(email, MealType.BREAKFAST);
-                Nutrient lunchTmp = getMealNutrient(email, MealType.LUNCH);
+                Nutrient breakfastTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.BREAKFAST));
+                Nutrient lunchTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.LUNCH));
                 double[] arr = new double[10]; // 영양정보 저장용
 
                 // 아침 + 점심 권장 영양소
-                arr[0] = breakfastTmp.getEnergy() + lunchTmp.getEnergy();
-                arr[1] = breakfastTmp.getCarbohydrates() + lunchTmp.getCarbohydrates();
-                arr[2] = breakfastTmp.getProtein() + lunchTmp.getProtein();
-                arr[3] = breakfastTmp.getDietaryFiber() + lunchTmp.getDietaryFiber();
-                arr[4] = breakfastTmp.getCalcium() + lunchTmp.getCalcium();
-                arr[5] = breakfastTmp.getSodium() + lunchTmp.getSodium();
-                arr[6] = breakfastTmp.getIron() + lunchTmp.getIron();
-                arr[7] = breakfastTmp.getFats() + lunchTmp.getFats();
-                arr[8] = breakfastTmp.getVitaminA() + lunchTmp.getVitaminA();
-                arr[9] = breakfastTmp.getVitaminC() + lunchTmp.getVitaminC();
+                addNutrient(arr, breakfastTmp);
+                addNutrient(arr, lunchTmp);
 
                 List<Food> breakfastList = breakfast.getFoods();
-                for(Food food: breakfastList) { // 아침에 먹은 음식별로 권장 영양소에 뺴주기
-                    arr[0] -= food.getNutrient().getEnergy();
-                    arr[1] -= food.getNutrient().getCarbohydrates();
-                    arr[2] -= food.getNutrient().getProtein();
-                    arr[3] -= food.getNutrient().getDietaryFiber();
-                    arr[4] -= food.getNutrient().getCalcium();
-                    arr[5] -= food.getNutrient().getSodium();
-                    arr[6] -= food.getNutrient().getCalcium();
-                    arr[7] -= food.getNutrient().getSodium();
-                    arr[8] -= food.getNutrient().getVitaminA();
-                    arr[9] -= food.getNutrient().getVitaminC();
-                }
+                calculateNeccessaryNutrient(breakfastList, arr);
+
                 return new Nutrient(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9]);
             }
             else{ // 아침 X
-                return getMealNutrient(email, MealType.LUNCH);
+                return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.LUNCH));
             }
         }
         else if(calcMealTime(mealTime) == 3) { // 저녁
-            MealPlan mealPlan = mealPlanService.findByDateAndMemberId(mealDate, member.getId());
-            Nutrient breakfastTmp = getMealNutrient(email, MealType.BREAKFAST);
-            Nutrient lunchTmp = getMealNutrient(email, MealType.LUNCH);
-            Nutrient dinnerTmp = getMealNutrient(email, MealType.DINNER);
+            MealPlan mealPlan = mealPlanRepository.findByDateAndMemberId(mealDate, member.getId())
+                                                  .orElseThrow(
+                                                      () -> new MealPlanException(ErrorCode.MEAL_PLAN_NOT_FOUND));
+            Nutrient breakfastTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.BREAKFAST));
+            Nutrient lunchTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.LUNCH));
+            Nutrient dinnerTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.DINNER));
             double[] arr = new double[10];
 
             if(mealPlan.getBreakfast() != null && mealPlan.getLunch() != null) { // 아침 O 점심 O
                 // 아침 + 점심 + 저녁 권장 영양소
-                arr[0] = breakfastTmp.getEnergy() + lunchTmp.getEnergy() + dinnerTmp.getEnergy();
-                arr[1] = breakfastTmp.getCarbohydrates() + lunchTmp.getCarbohydrates() + dinnerTmp.getCarbohydrates();
-                arr[2] = breakfastTmp.getProtein() + lunchTmp.getProtein() + dinnerTmp.getProtein();
-                arr[3] = breakfastTmp.getDietaryFiber() + lunchTmp.getDietaryFiber() + dinnerTmp.getDietaryFiber();
-                arr[4] = breakfastTmp.getCalcium() + lunchTmp.getCalcium() + dinnerTmp.getCalcium();
-                arr[5] = breakfastTmp.getSodium() + lunchTmp.getSodium() + dinnerTmp.getSodium();
-                arr[6] = breakfastTmp.getIron() + lunchTmp.getIron() + dinnerTmp.getIron();
-                arr[7] = breakfastTmp.getFats() + lunchTmp.getFats() + dinnerTmp.getFats();
-                arr[8] = breakfastTmp.getVitaminA() + lunchTmp.getVitaminA() + dinnerTmp.getVitaminA();
-                arr[9] = breakfastTmp.getVitaminC() + lunchTmp.getVitaminC() + dinnerTmp.getCalcium();
+                addNutrient(arr, breakfastTmp);
+                addNutrient(arr, lunchTmp);
+                addNutrient(arr, dinnerTmp);
 
                 // 부족 영양소 계산
                 List<Food> breakfastList = mealPlan.getBreakfast().getFoods();
                 List<Food> lunchList = mealPlan.getLunch().getFoods();
-                for(Food food : breakfastList) {
-                    arr[0] -= food.getNutrient().getEnergy();
-                    arr[1] -= food.getNutrient().getCarbohydrates();
-                    arr[2] -= food.getNutrient().getProtein();
-                    arr[3] -= food.getNutrient().getDietaryFiber();
-                    arr[4] -= food.getNutrient().getCalcium();
-                    arr[5] -= food.getNutrient().getSodium();
-                    arr[6] -= food.getNutrient().getCalcium();
-                    arr[7] -= food.getNutrient().getSodium();
-                    arr[8] -= food.getNutrient().getVitaminA();
-                    arr[9] -= food.getNutrient().getVitaminC();
-                }
-                for(Food food : lunchList) {
-                    arr[0] -= food.getNutrient().getEnergy();
-                    arr[1] -= food.getNutrient().getCarbohydrates();
-                    arr[2] -= food.getNutrient().getProtein();
-                    arr[3] -= food.getNutrient().getDietaryFiber();
-                    arr[4] -= food.getNutrient().getCalcium();
-                    arr[5] -= food.getNutrient().getSodium();
-                    arr[6] -= food.getNutrient().getCalcium();
-                    arr[7] -= food.getNutrient().getSodium();
-                    arr[8] -= food.getNutrient().getVitaminA();
-                    arr[9] -= food.getNutrient().getVitaminC();
-                }
+                calculateNeccessaryNutrient(breakfastList, arr);
+                calculateNeccessaryNutrient(lunchList, arr);
 
                 return new Nutrient(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9]);
             }
             else if(mealPlan.getBreakfast() != null && mealPlan.getLunch() == null) { // 아침 O 점심 X
                 // 아침 + 저녁 권장 영양소
-                arr[0] = breakfastTmp.getEnergy() + dinnerTmp.getEnergy();
-                arr[1] = breakfastTmp.getCarbohydrates() + dinnerTmp.getCarbohydrates();
-                arr[2] = breakfastTmp.getProtein() + dinnerTmp.getProtein();
-                arr[3] = breakfastTmp.getDietaryFiber() + dinnerTmp.getDietaryFiber();
-                arr[4] = breakfastTmp.getCalcium() + dinnerTmp.getCalcium();
-                arr[5] = breakfastTmp.getSodium() + dinnerTmp.getSodium();
-                arr[6] = breakfastTmp.getIron() + dinnerTmp.getIron();
-                arr[7] = breakfastTmp.getFats() + dinnerTmp.getFats();
-                arr[8] = breakfastTmp.getVitaminA() + dinnerTmp.getVitaminA();
-                arr[9] = breakfastTmp.getVitaminC() + dinnerTmp.getCalcium();
+                addNutrient(arr, breakfastTmp);
+                addNutrient(arr, dinnerTmp);
 
                 List<Food> breakfastList = mealPlan.getBreakfast().getFoods();
-                for(Food food : breakfastList) {
-                    arr[0] -= food.getNutrient().getEnergy();
-                    arr[1] -= food.getNutrient().getCarbohydrates();
-                    arr[2] -= food.getNutrient().getProtein();
-                    arr[3] -= food.getNutrient().getDietaryFiber();
-                    arr[4] -= food.getNutrient().getCalcium();
-                    arr[5] -= food.getNutrient().getSodium();
-                    arr[6] -= food.getNutrient().getCalcium();
-                    arr[7] -= food.getNutrient().getSodium();
-                    arr[8] -= food.getNutrient().getVitaminA();
-                    arr[9] -= food.getNutrient().getVitaminC();
-                }
+                calculateNeccessaryNutrient(breakfastList, arr);
+
                 return new Nutrient(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9]);
             }
             else if(mealPlan.getBreakfast() == null && mealPlan.getLunch() != null) { // 아침 X 점심 O
                 // 점심 + 저녁 권장 영양소
-                arr[0] = lunchTmp.getEnergy() + dinnerTmp.getEnergy();
-                arr[1] = lunchTmp.getCarbohydrates() + dinnerTmp.getCarbohydrates();
-                arr[2] = lunchTmp.getProtein() + dinnerTmp.getProtein();
-                arr[3] = lunchTmp.getDietaryFiber() + dinnerTmp.getDietaryFiber();
-                arr[4] = lunchTmp.getCalcium() + dinnerTmp.getCalcium();
-                arr[5] = lunchTmp.getSodium() + dinnerTmp.getSodium();
-                arr[6] = lunchTmp.getIron() + dinnerTmp.getIron();
-                arr[7] = lunchTmp.getFats() + dinnerTmp.getFats();
-                arr[8] = lunchTmp.getVitaminA() + dinnerTmp.getVitaminA();
-                arr[9] = lunchTmp.getVitaminC() + dinnerTmp.getCalcium();
+                addNutrient(arr, breakfastTmp);
+                addNutrient(arr, lunchTmp);
 
                 List<Food> lunchList = mealPlan.getLunch().getFoods();
-                for(Food food : lunchList) {
-                    arr[0] -= food.getNutrient().getEnergy();
-                    arr[1] -= food.getNutrient().getCarbohydrates();
-                    arr[2] -= food.getNutrient().getProtein();
-                    arr[3] -= food.getNutrient().getDietaryFiber();
-                    arr[4] -= food.getNutrient().getCalcium();
-                    arr[5] -= food.getNutrient().getSodium();
-                    arr[6] -= food.getNutrient().getCalcium();
-                    arr[7] -= food.getNutrient().getSodium();
-                    arr[8] -= food.getNutrient().getVitaminA();
-                    arr[9] -= food.getNutrient().getVitaminC();
-                }
+                calculateNeccessaryNutrient(lunchList, arr);
 
                 return new Nutrient(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9]);
             }
             else { // 아침 X 점심 X
-                return getMealNutrient(email, MealType.DINNER);
+                return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.DINNER));
             }
         }
         else { // 야식
-            return getMealNutrient(email, MealType.SNACK);
+            return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.SNACK));
         }
 
     }
 
     // 해당 끼니의 먹은 영양소 반환
     @Transactional
-    public Nutrient calcMealNutrient(String email, LocalDateTime localDateTime, MealType mealType) {
+    public NutrientResponse calcMealNutrient(String email, LocalDateTime localDateTime, MealType mealType) {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         LocalDate mealDate = LocalDate.of(localDateTime.getYear(), localDateTime.getMonth(),
             localDateTime.getDayOfMonth());
-        MealPlan mealplan = mealPlanService.findByDateAndMemberId(mealDate, member.getId());
+        MealPlan mealplan = mealPlanRepository.findByDateAndMemberId(mealDate, member.getId())
+                                              .orElseThrow(
+                                                  () -> new MealPlanException(ErrorCode.MEAL_PLAN_NOT_FOUND));
         Meal meal;
 
         if(mealType.equals(MealType.BREAKFAST)){
@@ -510,10 +466,10 @@ public class NutrientService {
             arr[9] += food.getNutrient().getVitaminC();
         }
 
-        return new Nutrient(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8],arr[9]);
+        return new NutrientResponse(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8],arr[9]);
     }
 
-    public int calcMealTime(LocalTime time) {
+    private int calcMealTime(LocalTime time) {
         LocalTime breakfastStart = LocalTime.of(5,0,0);
         LocalTime breakfastEnd = LocalTime.of(10,0,0);
         LocalTime lunchStart = LocalTime.of(10,0,0);

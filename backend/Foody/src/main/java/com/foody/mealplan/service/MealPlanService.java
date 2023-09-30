@@ -3,6 +3,7 @@ package com.foody.mealplan.service;
 import com.foody.food.dto.request.FoodRequest;
 import com.foody.food.entity.Food;
 import com.foody.global.exception.ErrorCode;
+import com.foody.global.service.AmazonS3Service;
 import com.foody.global.util.FoodyDateFormatter;
 import com.foody.mealplan.dto.request.MealPlanRequest;
 import com.foody.mealplan.dto.response.MealPlanResponse;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,7 @@ public class MealPlanService {
 
     private final MealPlanRepository mealPlanRepository;
     private final MemberService memberService;
+    private final AmazonS3Service amazonS3Service;
 
     @Transactional(readOnly = true)
     public MealPlan findById(long mealPlanId) {
@@ -71,7 +74,7 @@ public class MealPlanService {
 
 
     @Transactional
-    public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest) {
+    public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest, MultipartFile mealImage) {
         Member member = memberService.findByEmail(loginInfo.email());
         LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
 
@@ -80,9 +83,12 @@ public class MealPlanService {
                                                   MealPlan newMealPlan = new MealPlan(member, localDate);
                                                   return mealPlanRepository.save(newMealPlan);
                                               });
-
         List<FoodRequest> foodRequests = mealPlanRequest.foodRequestList();
         Meal meal = getMealByType(mealPlan, mealPlanRequest.type());
+        if(mealImage != null){
+            String uploadUrl = amazonS3Service.uploadFile(mealImage);
+            meal.updateImage(uploadUrl);
+        }
 
         for (FoodRequest foodRequest : foodRequests) {
             meal.getFoods()

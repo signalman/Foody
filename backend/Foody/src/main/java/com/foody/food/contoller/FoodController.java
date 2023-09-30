@@ -17,6 +17,7 @@ public class FoodController {
 
     private final FoodService foodService;
 
+
     @GetMapping("/search-suggest")
     public ResponseEntity<List<FoodResponse>> getFoodSuggestion(@RequestParam String query){
         List<FoodResponse> foodResponseList = foodService.getFoodSuggestion(query);

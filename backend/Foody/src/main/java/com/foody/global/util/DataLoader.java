@@ -172,7 +172,7 @@ public class DataLoader {
                 if(!exists) {
                     List<FoodSearch> foodSearchList = readFoodsFromCSV(reader);
                     foodSearchRepository.bulkInsert(foodSearchList);
-                    saveFoodsFromCSVToRedis(foodSearchList)
+                    saveFoodsFromCSVToRedis(foodSearchList);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

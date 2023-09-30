@@ -3,6 +3,7 @@ package com.foody.mealplan.service;
 import com.foody.food.dto.request.FoodRequest;
 import com.foody.food.entity.Food;
 import com.foody.global.exception.ErrorCode;
+import com.foody.global.service.AmazonS3Service;
 import com.foody.global.util.FoodyDateFormatter;
 import com.foody.mealplan.dto.request.MealPlanRequest;
 import com.foody.mealplan.dto.response.MealPlanResponse;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MealPlanService {
 
     private final MealPlanRepository mealPlanRepository;
+    private final MemberService memberService;
+    private final AmazonS3Service amazonS3Service;
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
@@ -51,8 +55,9 @@ public class MealPlanService {
         Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         LocalDate localDate = FoodyDateFormatter.toLocalDate(date);
 
-        MealPlan mealplan = findByDateAndMemberId(localDate, member.getId());
-        return new MealPlanResponse(mealplan);
+        MealPlan mealPlan = mealPlanRepository.findByDateAndMemberId(localDate, member.getId()).orElse(null);
+        if(mealPlan == null) return new MealPlanResponse();
+        return new MealPlanResponse(mealPlan);
     }
 
     private Meal getMealByType(MealPlan mealPlan, MealType type) {
@@ -81,9 +86,12 @@ public class MealPlanService {
                                                   MealPlan newMealPlan = new MealPlan(member, localDate);
                                                   return mealPlanRepository.save(newMealPlan);
                                               });
-
         List<FoodRequest> foodRequests = mealPlanRequest.foodRequestList();
         Meal meal = getMealByType(mealPlan, mealPlanRequest.type());
+        if(mealImage != null){
+            String uploadUrl = amazonS3Service.uploadFile(mealImage);
+            meal.updateImage(uploadUrl);
+        }
 
         for (FoodRequest foodRequest : foodRequests) {
             meal.getFoods()

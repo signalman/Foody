@@ -14,6 +14,9 @@ public record NutrientResponse(
     double vitaminA, // 비타민A
     double vitaminC // 비타민C
 ) {
+    public NutrientResponse(){
+        this(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
     public NutrientResponse(Nutrient nutrient) {
         this(
             nutrient.getEnergy(),

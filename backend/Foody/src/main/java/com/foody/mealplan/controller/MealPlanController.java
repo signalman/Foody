@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MealPlanController {
 
     private final MealPlanService mealPlanService;
-    
+
     /* 오늘부터 최근 20일간 식사 기록이 있는지 여부 */
     @GetMapping("/recent")
     public ResponseEntity<List<LocalDate>> getLast20DaysRecords(@AuthenticationPrincipal LoginInfo loginInfo){
@@ -32,7 +32,7 @@ public class MealPlanController {
         return ResponseEntity.ok()
                              .body(dates);
     }
-    
+
 
     /* 날짜별 식단 조회 */
     @GetMapping

@@ -5,7 +5,7 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface DonutChartProbs {
+interface DonutChartProps {
 	breakfast: number;
 	lunch: number;
 	dinner: number;
@@ -36,7 +36,7 @@ function DonutChart({
 	testDinner,
 	testSnack,
 	carolie,
-}: DonutChartProbs) {
+}: DonutChartProps) {
 	const rangeBreakfast = checkRange((breakfast / testBreakfast) * 25);
 	const rangeLunch = checkRange((lunch / testLunch) * 25);
 	const rangeDinner = checkRange((dinner / testDinner) * 25);

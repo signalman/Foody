@@ -15,15 +15,15 @@
 	transform: translate(-50%, -50%);
 	text-align: center;
 
-	p {
+	.carolie-title {
 		font-size: var.$p3;
 	}
 
-	h3 {
+	.carolie-value {
 		font-size: var.$h3;
 	}
 
-	h1 {
+	.carlorie-percentage {
 		color: var.$primary-orange-500;
 		font-size: var.$h1;
 	}

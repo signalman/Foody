@@ -20,13 +20,24 @@ public class RecommendController {
 
     private final RecommendService recommendService;
 
+
+    //TODO : 냉장고 재료 + 취향, 냉장고 재료 + 영양소, 취향 + 영양소
+    // 냉장고 재료 기반 추천 API
     @GetMapping("/ingredients")
     public ResponseEntity<List<RecipeListResponse>> recommendByIngredients(@AuthenticationPrincipal LoginInfo loginInfo) {
 
-        log.debug("{} request recommend By Ingredients", loginInfo.email());
+        log.debug("{} request recommend by ingredients", loginInfo.email());
         List<RecipeListResponse> recommendItemList = recommendService.findRecommendItemByIngredients(loginInfo.email());
 
         return ResponseEntity.ok().body(recommendItemList);
+    }
+
+    @GetMapping("/preference")
+    public ResponseEntity<List<RecipeListResponse>> recommendByPreference(@AuthenticationPrincipal LoginInfo loginInfo) {
+
+        log.debug("{} request recommend by preference" , loginInfo.email());
+
+        return ResponseEntity.noContent().build();
     }
 
 }

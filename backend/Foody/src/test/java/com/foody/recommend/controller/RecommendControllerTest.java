@@ -51,4 +51,32 @@ class RecommendControllerTest extends ControllerTest {
             );
 
     }
+
+    @Test
+    @DisplayName("하이브리드 추천 조회된다")
+    void hybridRecommendShouldReserved() throws Exception {
+
+        List<RecipeListResponse> responseList = new ArrayList<>();
+        RecipeListResponse mockResponse = new RecipeListResponse(123456L, "맛있는 김치찌개", "ssafy.com");
+        responseList.add(mockResponse);
+
+        when(recommendService.findHybridItemByPreference(any())).thenReturn(responseList);
+        setAuthentication();
+
+        mockMvc.perform(
+                   get(BASEURL + "/hybrid")
+                       .with(authentication(new TestingAuthenticationToken(new LoginInfo("lkm454545@gmail.com"), null)))
+               ).andExpect(status().isOk())
+               .andDo(
+                   document("/recommend/hybrid",
+                       preprocessResponse(prettyPrint()),
+                       responseFields(
+                           fieldWithPath("[]").description("추천 레시피 목록"),
+                           fieldWithPath("[].id").description("추천 레시피 id"),
+                           fieldWithPath("[].name").description("추천 레시피 제목"),
+                           fieldWithPath("[].url").description("추천 레시피 사진 url")
+                       ))
+               );
+
+    }
 }

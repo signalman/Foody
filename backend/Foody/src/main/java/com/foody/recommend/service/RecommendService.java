@@ -1,6 +1,10 @@
 package com.foody.recommend.service;
 
 import com.foody.global.exception.ErrorCode;
+import com.foody.mbti.dto.response.MbtiResponse;
+import com.foody.mbti.entity.Mbti;
+import com.foody.member.entity.Member;
+import com.foody.member.service.MemberService;
 import com.foody.recipe.dto.response.RecipeListResponse;
 import com.foody.recipe.service.RecipeService;
 import com.foody.recommend.dto.resquest.IngredientInput;
@@ -29,6 +33,7 @@ public class RecommendService {
 
     private final RefrigeratorsService refrigeratorsService;
     private final RecipeService recipeService;
+    private final MemberService memberService;
     @Value("${recommend.server.url}")
     private String serverUrl;
 
@@ -83,4 +88,45 @@ public class RecommendService {
 
         return recommendItemList;
     }
+
+    public List<RecipeListResponse> findHybridItemByPreference(String email) {
+
+        Member member = memberService.findByEmail(email);
+        Mbti mbti = member.getMbti();
+
+        MbtiResponse mbtiResponse = new MbtiResponse(mbti);
+
+        List<Long> hybridRecommendItemIds = preferenceSendToServer(mbtiResponse);
+
+        return recipeService.findRecipeListByRecommend(hybridRecommendItemIds);
+    }
+
+    public List<Long> preferenceSendToServer(MbtiResponse mbti) {
+
+        WebClient webClient = WebClient.builder()
+                                       .build();
+
+        URI uri = URI.create(serverUrl + "/preference/hybrid");
+        log.debug("starting inter-server communication for hybrid");
+        List<Long> recommendItemList = webClient.post()
+                                                .uri(uri)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .body(BodyInserters.fromValue(mbti))
+                                                .retrieve()
+                                                .onStatus(HttpStatus::is5xxServerError,
+                                                    response -> Mono.error(
+                                                        new RecommendException(
+                                                            ErrorCode.BIGDATA_SERVER_ERROR)
+                                                    ))
+                                                .bodyToMono(
+                                                    new ParameterizedTypeReference<List<Long>>() {
+                                                    })
+                                                .block();
+
+        log.debug("inter-server communication terminated");
+
+        return recommendItemList;
+    }
+
+
 }

@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.foody.mbti.dto.response.MbtiResponse;
 import com.foody.nutrient.dto.response.NutrientResponse;
-import com.foody.recommend.dto.resquest.CombineMemberInformation;
+import com.foody.recommend.dto.resquest.CombineInfoForPreference;
+import com.foody.recommend.dto.resquest.CombineInfoForRefrigerator;
 import com.foody.util.ServiceTest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,14 +28,16 @@ class RecommendServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("재료 기반으로 유사한 레시피 도출한다")
+    @DisplayName("재료 기반, 영양소 기반으로 유사한 레시피 추천한다")
     void t2() throws Exception {
         String ingredients = "대파 고추가루 돼지고기 고추 파프리카 피망 동태 황태";
-        List<Long> recommendItemList = recommendService.ingredientSendToServer(ingredients);
+        NutrientResponse nutrientResponse = new NutrientResponse(600.5, 50.2, 15.3, 20.4, 10.1, 75.6, 200.7, 8.3, 55.9, 30.2);
+        CombineInfoForRefrigerator combineInfoForRefrigerator = new CombineInfoForRefrigerator(ingredients, nutrientResponse);
+        List<Long> recommendItemList = recommendService.ingredientSendToServer(combineInfoForRefrigerator);
 
         System.out.println(recommendItemList.get(0));
 
-        assertEquals(5, recommendItemList.size());
+        assertEquals(4, recommendItemList.size());
     }
 
     @Test
@@ -53,9 +56,10 @@ class RecommendServiceTest extends ServiceTest {
 
         NutrientResponse nutrientResponse = new NutrientResponse(600.5, 50.2, 15.3, 20.4, 10.1, 75.6, 200.7, 8.3, 55.9, 30.2);
         MbtiResponse mbtiResponse = new MbtiResponse(1, 2 ,3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
-        CombineMemberInformation combineMemberInformation = new CombineMemberInformation(nutrientResponse, mbtiResponse);
+        CombineInfoForPreference combineInfoForPreference = new CombineInfoForPreference(nutrientResponse, mbtiResponse);
 
-        List<Long> preferenceRecommendList = recommendService.preferenceAndNutrientSendToServer(combineMemberInformation);
+        List<Long> preferenceRecommendList = recommendService.preferenceAndNutrientSendToServer(
+            combineInfoForPreference);
 
         assertEquals(4, preferenceRecommendList.size());
 

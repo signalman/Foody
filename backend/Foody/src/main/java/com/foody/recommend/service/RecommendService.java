@@ -9,8 +9,8 @@ import com.foody.nutrient.dto.response.NutrientResponse;
 import com.foody.nutrient.service.NutrientService;
 import com.foody.recipe.dto.response.RecipeListResponse;
 import com.foody.recipe.service.RecipeService;
-import com.foody.recommend.dto.resquest.CombineMemberInformation;
-import com.foody.recommend.dto.resquest.IngredientInput;
+import com.foody.recommend.dto.resquest.CombineInfoForPreference;
+import com.foody.recommend.dto.resquest.CombineInfoForRefrigerator;
 import com.foody.recommend.exception.RecommendException;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
@@ -52,7 +52,9 @@ public class RecommendService {
         }
 
         String ingredients = getIngredientsString(refrigerator);
-        List<Long> recipeIds = ingredientSendToServer(ingredients);
+        NutrientResponse nutrient = new NutrientResponse(nutrientService.getNutrientForRecommendation(LocalDateTime.now(), email));
+        CombineInfoForRefrigerator combineInfoForRefrigerator = new CombineInfoForRefrigerator(ingredients, nutrient);
+        List<Long> recipeIds = ingredientSendToServer(combineInfoForRefrigerator);
 
         return recipeService.findRecipeListByRecommend(recipeIds);
     }
@@ -65,19 +67,17 @@ public class RecommendService {
     }
 
     // TODO : 테스트를 위해 PUBLIC으로 열어둠, 나중에 Private으로 닫아야 함
-    public List<Long> ingredientSendToServer(String ingredients) {
-
-        IngredientInput ingredientInput = new IngredientInput(ingredients, 5);
+    public List<Long> ingredientSendToServer(CombineInfoForRefrigerator combineInfoForRefrigerator) {
 
         WebClient webClient = WebClient.builder()
                                        .build();
 
-        URI uri = URI.create(serverUrl + "/recipes/ingredients");
+        URI uri = URI.create(serverUrl + "/recipes/nutrients/recommend");
         log.debug("starting inter-server communication for ingredient");
         List<Long> recommendItemList = webClient.post()
                                                          .uri(uri)
                                                          .contentType(MediaType.APPLICATION_JSON)
-                                                         .body(BodyInserters.fromValue(ingredientInput))
+                                                         .body(BodyInserters.fromValue(combineInfoForRefrigerator))
                                                          .retrieve()
                                                          .onStatus(HttpStatus::is5xxServerError,
                                                              response -> Mono.error(
@@ -145,14 +145,15 @@ public class RecommendService {
         // 회원의 취향
         MbtiResponse mbtiResponse = new MbtiResponse(mbti);
 
-        CombineMemberInformation combineMemberInformation = new CombineMemberInformation(nutrient, mbtiResponse);
+        CombineInfoForPreference combineInfoForPreference = new CombineInfoForPreference(nutrient, mbtiResponse);
 
-        List<Long> ids = preferenceAndNutrientSendToServer(combineMemberInformation);
+        List<Long> ids = preferenceAndNutrientSendToServer(combineInfoForPreference);
 
         return recipeService.findRecipeListByRecommend(ids);
     }
 
-    public List<Long> preferenceAndNutrientSendToServer(CombineMemberInformation combineMemberInformation) {
+    public List<Long> preferenceAndNutrientSendToServer(
+        CombineInfoForPreference combineInfoForPreference) {
 
         WebClient webClient = WebClient.builder()
                                        .build();
@@ -162,7 +163,8 @@ public class RecommendService {
         List<Long> recommendItemList = webClient.post()
                                                 .uri(uri)
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .body(BodyInserters.fromValue(combineMemberInformation))
+                                                .body(BodyInserters.fromValue(
+                                                    combineInfoForPreference))
                                                 .retrieve()
                                                 .onStatus(HttpStatus::is5xxServerError,
                                                     response -> Mono.error(

@@ -8,6 +8,10 @@ import com.foody.mbti.service.MbtiService;
 import com.foody.member.controller.MemberController;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
+import com.foody.nutrient.controller.NutrientController;
+import com.foody.nutrient.dto.response.NutrientResponse;
+import com.foody.nutrient.repository.NutrientRepository;
+import com.foody.nutrient.service.NutrientService;
 import com.foody.refrigerators.controller.RefrigeratorsController;
 import com.foody.refrigerators.repository.IngredientRepository;
 import com.foody.refrigerators.service.RefrigeratorsService;
@@ -37,7 +41,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest({
     MemberController.class,
     RefrigeratorsController.class,
-    MbtiController.class
+    MbtiController.class,
+    NutrientController.class
 })
 public class ControllerTest {
     // Util
@@ -56,11 +61,13 @@ public class ControllerTest {
     @MockBean protected MemberService memberService;
     @MockBean protected RefrigeratorsService refrigeratorsService;
     @MockBean protected MbtiService mbtiService;
+    @MockBean protected NutrientService nutrientService;
 
     // Repository
     @MockBean protected MemberRepository memberRepository;
     @MockBean protected IngredientRepository ingredientRepository;
     @MockBean protected MbtiRepository mbtiRepository;
+    @MockBean protected NutrientRepository nutrientRepository;
 
     protected String createToken(String email, String secretKey) {
 

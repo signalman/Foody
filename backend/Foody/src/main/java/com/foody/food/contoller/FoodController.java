@@ -1,9 +1,9 @@
 package com.foody.food.contoller;
 
-import com.foody.food.dto.response.FoodResponse;
 import com.foody.food.service.FoodService;
-import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +17,15 @@ public class FoodController {
 
     private final FoodService foodService;
 
+    @GetMapping
+    public void saveFoodDataToRedis() throws Exception {
+        ClassPathResource resource = new ClassPathResource("food/foody_food.csv");
+        foodService.saveFoodsFromCSV("");
+    }
 
     @GetMapping("/search-suggest")
-    public ResponseEntity<List<FoodResponse>> getFoodSuggestion(@RequestParam String query){
-        List<FoodResponse> foodResponseList = foodService.getFoodSuggestion(query);
+    public ResponseEntity<Set<String>> getFoodSuggestion(@RequestParam String query){
+        Set<String> foodResponseList = foodService.getFoodSuggestion(query, 10);
         return ResponseEntity.ok()
                              .body(foodResponseList);
     }

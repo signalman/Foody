@@ -3,6 +3,8 @@ package com.foody.recommend.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.foody.mbti.dto.response.MbtiResponse;
+import com.foody.nutrient.dto.response.NutrientResponse;
+import com.foody.recommend.dto.resquest.CombineMemberInformation;
 import com.foody.util.ServiceTest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +45,20 @@ class RecommendServiceTest extends ServiceTest {
         List<Long> hybridRecommendList = recommendService.preferenceSendToServer(mbtiResponse);
 
         assertEquals(4, hybridRecommendList.size());
+    }
+
+    @Test
+    @DisplayName("취향 + 결핍영양소 레시피 추천된다")
+    void t4() throws Exception {
+
+        NutrientResponse nutrientResponse = new NutrientResponse(600.5, 50.2, 15.3, 20.4, 10.1, 75.6, 200.7, 8.3, 55.9, 30.2);
+        MbtiResponse mbtiResponse = new MbtiResponse(1, 2 ,3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+        CombineMemberInformation combineMemberInformation = new CombineMemberInformation(nutrientResponse, mbtiResponse);
+
+        List<Long> preferenceRecommendList = recommendService.preferenceAndNutrientSendToServer(combineMemberInformation);
+
+        assertEquals(4, preferenceRecommendList.size());
+
     }
 
 }

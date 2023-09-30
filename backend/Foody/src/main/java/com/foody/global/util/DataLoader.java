@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 @Slf4j
-@Order(Ordered.LOWEST_PRECEDENCE)
 public class DataLoader {
 
     private final RecipeCustomRepository recipeCustomRepository;

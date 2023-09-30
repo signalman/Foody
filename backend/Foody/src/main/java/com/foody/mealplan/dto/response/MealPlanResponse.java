@@ -14,7 +14,7 @@ public record MealPlanResponse(
     LocalDate date
 ) {
     public MealPlanResponse(){
-        this(new MealResponse(), new MealResponse(), new MealResponse(), new MealResponse(), LocalDate.MIN);
+        this(new MealResponse(), new MealResponse(), new MealResponse(), new MealResponse(), LocalDate.now());
     }
     public MealPlanResponse(MealPlan mealPlan){
         this(

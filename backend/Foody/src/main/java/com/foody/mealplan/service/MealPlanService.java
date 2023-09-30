@@ -77,7 +77,7 @@ public class MealPlanService {
 
 
     @Transactional
-    public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest) {
+    public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest, MultipartFile mealImage) {
         Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
 

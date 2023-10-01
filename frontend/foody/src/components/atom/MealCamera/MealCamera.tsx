@@ -33,20 +33,24 @@ function MealCamera() {
 		ctx.drawImage(video, 0, 0, width, height);
 
 		photo.toBlob((blob) => {
+			console.log(blob);
 			if (blob) {
-				const imgFile = new File([blob], 'captured-image.jpg', { type: 'image/jpeg' });
-				setCaptureImg(imgFile);
+				setCaptureImg(new File([blob], 'captured-image.jpg', { type: 'image/jpeg' }));
 			}
+			setIsLoading(true);
 		});
+	};
 
+	useEffect(() => {
+		console.log(captureImg);
 		if (captureImg) {
+			setIsLoading(false);
+			console.log(captureImg);
 			mealCamera(captureImg).then((response) => {
 				console.log(response);
 			});
 		}
-
-		setIsLoading(true);
-	};
+	}, [captureImg]);
 
 	const closePhoto = () => {
 		const photo = photoRef.current;

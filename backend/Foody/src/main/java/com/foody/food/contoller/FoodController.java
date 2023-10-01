@@ -1,6 +1,6 @@
 package com.foody.food.contoller;
 
-import com.foody.food.dto.response.FoodResponse;
+import com.foody.food.dto.response.FoodSearchResponse;
 import com.foody.food.service.FoodService;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +28,10 @@ public class FoodController {
 
     /* 음식 이름으로 dto 반환 */
     @GetMapping("")
-    public ResponseEntity<FoodResponse> getFoodName(@RequestParam String name){
-
+    public ResponseEntity<FoodSearchResponse> getFoodByName(@RequestParam String name){
+        FoodSearchResponse foodResponse = foodService.getFoodNameByName(name);
+        return ResponseEntity.ok()
+                             .body(foodResponse);
     }
 
 

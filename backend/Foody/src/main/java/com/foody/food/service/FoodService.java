@@ -1,10 +1,12 @@
 package com.foody.food.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.foody.food.dto.response.FoodSearchResponse;
 import com.foody.food.entity.Food;
 import com.foody.food.entity.FoodSearch;
 import com.foody.food.exception.FoodException;
 import com.foody.food.repository.FoodRepository;
+import com.foody.food.repository.FoodSearchRepository;
 import com.foody.global.exception.ErrorCode;
 import com.opencsv.CSVReader;
 import java.io.BufferedReader;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class FoodService {
 
     private final FoodRepository foodRepository;
+    private final FoodSearchRepository foodSearchRepository;
     private final RedisTemplate redisTemplate;
     private static final String SEARCH_KEY = "search:keywords";
     private final ObjectMapper objectMapper;
@@ -37,6 +40,10 @@ public class FoodService {
     public Food findByName(String name){
         return foodRepository.findByName(name)
                              .orElseThrow(() -> new FoodException(ErrorCode.FOOD_NOT_FOUND));
+    }
+    public FoodSearch findFoodSearchByName(String name){
+        return foodSearchRepository.findByName(name)
+                                       .orElseThrow(() -> new FoodException(ErrorCode.FOOD_NOT_FOUND));
     }
     public Set<String> getFoodSuggestions(String prefix, int limit) {
         log.info("Prefix: {}", prefix);
@@ -106,5 +113,11 @@ public class FoodService {
 
     private long parseLongSafe(String value) {
         return value != null && !value.trim().isEmpty() ? Long.parseLong(value) : 0;
+    }
+
+    public FoodSearchResponse getFoodNameByName(String name) {
+        FoodSearch findFood = findFoodSearchByName(name);
+        FoodSearchResponse foodResponse = new FoodSearchResponse(findFood);
+        return foodResponse;
     }
 }

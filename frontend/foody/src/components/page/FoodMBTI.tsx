@@ -10,6 +10,7 @@ function FoodMBTI() {
 	const { movePage } = useMovePage();
 	const [arr, setArr] = useState([]);
 	const [idx, setIdx] = useState(0);
+
 	const resultImages = (data: number[]) => {
 		resultMBTI(data).then(() => {
 			movePage('/home', null);

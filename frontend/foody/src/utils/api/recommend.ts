@@ -1,9 +1,16 @@
 import { instance } from './instance';
 
-export const getRecommendList = async (keyword: string) => {
-	const response = await instance.get(`/recommend?keyword=${keyword}`);
-	console.log('response', response);
+export const getAllRecommendList = async () => {
+	const requests = ['hybrid', 'preference', 'ingredients'].map((item) => {
+		return instance.get(`/recommend/${item}`);
+	});
+	const response = await Promise.all(requests);
 	return response;
 };
 
-export default getRecommendList;
+export const getRecommendList = async (key: string) => {
+	const response = instance.get(`/recommend/${key}`);
+	return response;
+};
+
+export default getAllRecommendList;

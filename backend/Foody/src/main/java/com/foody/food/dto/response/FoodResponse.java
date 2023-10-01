@@ -9,6 +9,9 @@ public record FoodResponse(
     String name,
     NutrientResponse nutrient
 ) {
+    public FoodResponse(){
+        this("", new NutrientResponse());
+    }
     public FoodResponse(Food food) {
         this(food.getName(), new NutrientResponse(food.getNutrient()));
     }

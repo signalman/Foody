@@ -1,5 +1,6 @@
 package com.foody.food.contoller;
 
+import com.foody.food.dto.response.FoodResponse;
 import com.foody.food.service.FoodService;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,21 @@ public class FoodController {
 
     private final FoodService foodService;
 
+
+    /* 자동완성 기능 */
     @GetMapping("/autocomplete")
     public ResponseEntity<Set<String>> getFoodSuggestion(@RequestParam String query){
         Set<String> suggestion = foodService.getFoodSuggestions(query, 10);
         return ResponseEntity.ok()
                              .body(suggestion);
     }
+
+    /* 음식 이름으로 dto 반환 */
+    @GetMapping("")
+    public ResponseEntity<FoodResponse> getFoodName(@RequestParam String name){
+
+    }
+
 
 
 }

@@ -12,6 +12,19 @@ export const recentMeal = async () => {
 
 export const getDaoyofNutrient = async () => {
 	const response = await instance.get('/nutrient/');
+	return response;
+};
+
+export const getUserMealInfo = async () => {
+	const response = await instance.get('/nutrient/alltype');
+	console.log(response);
+	return response;
+};
+
+export const mealCamera = async (data: File) => {
+	const formData = new FormData();
+	formData.append('image', data);
+	const response = await instance.post('/detect/', formData);
 	console.log(response);
 	return response;
 };

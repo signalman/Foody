@@ -16,6 +16,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import com.foody.mealplan.entity.MealType;
 import com.foody.nutrient.dto.request.AteFoodNutrientInfoRequest;
 import com.foody.nutrient.dto.request.NutrientTypeRequest;
+import com.foody.nutrient.dto.response.NutrientByTypeResponse;
 import com.foody.nutrient.dto.response.NutrientResponse;
 import com.foody.security.util.LoginInfo;
 import com.foody.util.ControllerTest;
@@ -154,6 +155,82 @@ public class NutrientControllerTest extends ControllerTest {
                         fieldWithPath("vitaminC").description("비타민C, mg")
                     )
                 )
+            );
+    }
+
+    @Test
+    @DisplayName("회원의_끼니별_권장_영양소_총집합_반환")
+    void getAllTypeNutrientTest() throws Exception {
+        LoginInfo loginInfo = new LoginInfo("lkm454545@gmail.com");
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        NutrientResponse nutrientResponse = new NutrientResponse(1000,50,30,20,10,10,10,10,10,10);
+
+        NutrientByTypeResponse nutrientByTypeResponse = new NutrientByTypeResponse(nutrientResponse,nutrientResponse,nutrientResponse,nutrientResponse);
+
+        when(nutrientService.getAllNutrient(loginInfo.email())).thenReturn(nutrientByTypeResponse);
+
+        mockMvc.perform(
+            get(baseUrl + "/alltype")
+                .with(authentication(new TestingAuthenticationToken(loginInfo,null)))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk())
+            .andDo(
+                document("/nutrient/allTypeNutrient",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    responseFields(
+                        fieldWithPath("breakfast").description("아침 권장 영양정보"),
+                        fieldWithPath("breakfast.energy").description("칼로리, Kcal"),
+                        fieldWithPath("breakfast.carbohydrates").description("탄수화물, g"),
+                        fieldWithPath("breakfast.protein").description("단백질, g"),
+                        fieldWithPath("breakfast.dietaryFiber").description("식이섬유, g"),
+                        fieldWithPath("breakfast.calcium").description("칼슘, mg"),
+                        fieldWithPath("breakfast.sodium").description("나트륨, mg"),
+                        fieldWithPath("breakfast.iron").description("철분, mg"),
+                        fieldWithPath("breakfast.fats").description("지방, g"),
+                        fieldWithPath("breakfast.vitaminA").description("비타민A, μg"),
+                        fieldWithPath("breakfast.vitaminC").description("비타민C, mg"),
+
+                        fieldWithPath("lunch").description("점심 권장 영양정보"),
+                        fieldWithPath("lunch.energy").description("칼로리, Kcal"),
+                        fieldWithPath("lunch.carbohydrates").description("탄수화물, g"),
+                        fieldWithPath("lunch.protein").description("단백질, g"),
+                        fieldWithPath("lunch.dietaryFiber").description("식이섬유, g"),
+                        fieldWithPath("lunch.calcium").description("칼슘, mg"),
+                        fieldWithPath("lunch.sodium").description("나트륨, mg"),
+                        fieldWithPath("lunch.iron").description("철분, mg"),
+                        fieldWithPath("lunch.fats").description("지방, g"),
+                        fieldWithPath("lunch.vitaminA").description("비타민A, μg"),
+                        fieldWithPath("lunch.vitaminC").description("비타민C, mg"),
+
+                        fieldWithPath("dinner").description("저녁 권장 영양정보"),
+                        fieldWithPath("dinner.energy").description("칼로리, Kcal"),
+                        fieldWithPath("dinner.carbohydrates").description("탄수화물, g"),
+                        fieldWithPath("dinner.protein").description("단백질, g"),
+                        fieldWithPath("dinner.dietaryFiber").description("식이섬유, g"),
+                        fieldWithPath("dinner.calcium").description("칼슘, mg"),
+                        fieldWithPath("dinner.sodium").description("나트륨, mg"),
+                        fieldWithPath("dinner.iron").description("철분, mg"),
+                        fieldWithPath("dinner.fats").description("지방, g"),
+                        fieldWithPath("dinner.vitaminA").description("비타민A, μg"),
+                        fieldWithPath("dinner.vitaminC").description("비타민C, mg"),
+
+                        fieldWithPath("snack").description("야식 권장 영양정보"),
+                        fieldWithPath("snack.energy").description("칼로리, Kcal"),
+                        fieldWithPath("snack.carbohydrates").description("탄수화물, g"),
+                        fieldWithPath("snack.protein").description("단백질, g"),
+                        fieldWithPath("snack.dietaryFiber").description("식이섬유, g"),
+                        fieldWithPath("snack.calcium").description("칼슘, mg"),
+                        fieldWithPath("snack.sodium").description("나트륨, mg"),
+                        fieldWithPath("snack.iron").description("철분, mg"),
+                        fieldWithPath("snack.fats").description("지방, g"),
+                        fieldWithPath("snack.vitaminA").description("비타민A, μg"),
+                        fieldWithPath("snack.vitaminC").description("비타민C, mg")
+                    )
+                    )
             );
     }
 }

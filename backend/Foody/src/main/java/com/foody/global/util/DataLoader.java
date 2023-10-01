@@ -1,5 +1,6 @@
 package com.foody.global.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foody.food.entity.FoodSearch;
 import com.foody.food.repository.FoodSearchRepository;
 import com.foody.mbti.entity.Mbti;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -32,6 +34,9 @@ public class DataLoader {
 
     private final RecipeCustomRepository recipeCustomRepository;
     private final FoodSearchRepository foodSearchRepository;
+    private final RedisTemplate redisTemplate;
+    private static final String SEARCH_KEY = "search:keywords";
+    private final ObjectMapper objectMapper;
     private final MemberRepository memberRepository;
     private final MbtiRepository mbtiRepository;
 
@@ -167,11 +172,26 @@ public class DataLoader {
                 if(!exists) {
                     List<FoodSearch> foodSearchList = readFoodsFromCSV(reader);
                     foodSearchRepository.bulkInsert(foodSearchList);
+                    saveFoodsFromCSVToRedis(foodSearchList);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         };
+    }
+
+    public void saveFoodsFromCSVToRedis(List<FoodSearch> foodSearchList) throws Exception {
+
+        /* 기존의 레디스 데이터 삭제 */
+        redisTemplate.getConnectionFactory().getConnection().flushAll();
+
+        /* 레디스에 음식 데이터 삽입  */
+        for (FoodSearch food : foodSearchList) {
+            String key = "FOOD:" + food.getName();
+            String jsonValue = objectMapper.writeValueAsString(food);
+            redisTemplate.opsForValue().set(key, jsonValue);
+            redisTemplate.opsForZSet().add(SEARCH_KEY, food.getName(), 0);
+        }
     }
 
 }

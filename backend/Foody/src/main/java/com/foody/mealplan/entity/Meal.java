@@ -28,7 +28,7 @@ public class Meal extends BaseEntity {
     private LocalTime time = LocalTime.parse(
         LocalTime.MIN.format(DateTimeFormatter.ofPattern("HH:mm")));
 
-    private String repImg;
+    private String repImg = "";
 
     public void updateTime(LocalTime time){
         this.time = LocalTime.parse(time.format(DateTimeFormatter.ofPattern("HH:mm")));

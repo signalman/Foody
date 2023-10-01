@@ -49,9 +49,10 @@ function MealPage() {
 			setTotal(response.data.total);
 		});
 		console.log(selectedDate);
+
 		setDisplayMonth(selectedDate);
 	}, [selectedDate]);
-
+	console.log(breakfast);
 	return (
 		<MealTemplate>
 			<MealCalendar
@@ -60,7 +61,7 @@ function MealPage() {
 				displayMonth={displayMonth}
 				setDisplayMonth={setDisplayMonth}
 			/>
-			<MealTable />
+			<MealTable total={total} breakfast={breakfast} lunch={lunch} dinner={dinner} snack={snack} />
 			<NutrientOfDay total={total} />
 			<MealInformation breakfast={breakfast} lunch={lunch} dinner={dinner} snack={snack} />
 		</MealTemplate>

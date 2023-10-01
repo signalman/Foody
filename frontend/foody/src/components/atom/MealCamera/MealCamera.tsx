@@ -35,7 +35,7 @@ function MealCamera() {
 		photo.toBlob((blob) => {
 			console.log(blob);
 			if (blob) {
-				setCaptureImg(new File([blob], 'captured-image.jpg', { type: 'image/jpeg' }));
+				setCaptureImg(new File([blob], 'image', { type: 'image/jpeg' }));
 			}
 			setIsLoading(true);
 		});

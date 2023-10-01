@@ -3,8 +3,7 @@ import LocalStorage from 'constants/LocalStorage';
 import toast from 'react-hot-toast';
 
 export const instanceMultiPart: AxiosInstance = axios.create({
-	// baseURL: process.env.REACT_APP_DEVELOP_BASE_URL,
-	baseURL: process.env.REACT_APP_SERVER_BASE_URL,
+	baseURL: 'https://j9c106.p.ssafy.io/',
 	headers: {
 		'Content-Type': 'multipart/form-data',
 	},

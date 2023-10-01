@@ -45,7 +45,6 @@ function MealCamera() {
 		console.log(captureImg);
 		if (captureImg) {
 			setIsLoading(false);
-			console.log(captureImg);
 			mealCamera(captureImg).then((response) => {
 				console.log(response);
 			});

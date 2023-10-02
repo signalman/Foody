@@ -15,7 +15,7 @@ function RecommendPage() {
 			<RecommendList title={RECOMMEND_LIST[0].title} index={RECOMMEND_LIST[0].index} />
 
 			{/* 건강을 채우는 음식 */}
-			{/* <RecommendList title={RECOMMEND_LIST[1].title} index={RECOMMEND_LIST[1].index} /> */}
+			<RecommendList title={RECOMMEND_LIST[1].title} index={RECOMMEND_LIST[1].index} />
 
 			{/* 직접 만들어 보세요! */}
 			<RecommendList title={RECOMMEND_LIST[2].title} index={RECOMMEND_LIST[2].index} />

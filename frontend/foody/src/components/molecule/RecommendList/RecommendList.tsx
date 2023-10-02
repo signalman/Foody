@@ -44,9 +44,11 @@ function RecommendList({ index, title }: RecommendListProps) {
 		<div className="recommend-list-container">
 			<div className="recommend-list-header">
 				<h2>{title}</h2>
-				<button type="button" onClick={handleRecommendRefresh}>
-					{index === 'hybrid' && <FiRefreshCw size={12} />}
-				</button>
+				{index === 'hybrid' && (
+					<button type="button" onClick={handleRecommendRefresh}>
+						<FiRefreshCw size={12} />
+					</button>
+				)}
 			</div>
 			<div className="recommend-list-body">
 				<ul className="recipe-list slider-container no-scrollbar" onWheel={handleScroll} ref={containerRef}>
@@ -65,7 +67,9 @@ function RecommendList({ index, title }: RecommendListProps) {
 							<li key={item.id}>
 								<Link to={`/recipe/${item.id}`}>
 									<div className="info-wrap">
-										<img src={item.url} alt="" />
+										<div className="img-wrap">
+											<img src={item.url} alt="" />
+										</div>
 										<div className="title">{item.name}</div>
 									</div>
 								</Link>

@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import math
 
 router = APIRouter()
 
@@ -289,21 +290,21 @@ def get_combined_recommendations(data: CombinedInput, top_k: int = 5):
 
 # 냉장고와 유사한 재료 사용 api
 @router.post("/nutrients/recommend")
-def get_combined_recommendations_v3(data: CombinedInput, top_k: int = 4):
-    # Calculate ingredient similarity scores
+def get_combined_recommendations_v3(data: CombinedInput, top_k: int = 10):
+    # 재료 유사성 점수 계산
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform(recipe_data_cleaned['ingredients_concat'])
     ingredients_vector = vectorizer.transform([data.ingredients])
     cosine_similarities = cosine_similarity(ingredients_vector, tfidf_matrix).flatten()
     ingredient_top_indices = cosine_similarities.argsort()[-1000:][::-1]
 
-    # Calculate nutrient recommendation scores with penalties for exceeding values
+    # 영양소 추천 점수 계산
     def calculate_score(row):
         score = 0
         for nutrient, deficiency in data.user_deficiency.dict().items():
             nutrient_value = row[nutrient]
             if nutrient_value > deficiency:
-                score -= (nutrient_value - deficiency)  # Apply penalty for exceeding amount
+                score -= (nutrient_value - deficiency)
             else:
                 score += nutrient_value
         return score
@@ -311,21 +312,27 @@ def get_combined_recommendations_v3(data: CombinedInput, top_k: int = 4):
     recipe_data['recommendation_score'] = recipe_data.apply(calculate_score, axis=1)
     nutrient_top_indices = recipe_data['recommendation_score'].argsort()[-1000:][::-1]
 
-    # Get the intersection of the two indices
+    # 두 인덱스의 교집합 계산
     combined_indices = list(set(ingredient_top_indices) & set(nutrient_top_indices))
-
-    # Sort combined recipes by their nutrient recommendation scores
     combined_indices.sort(key=lambda x: recipe_data.iloc[x]['recommendation_score'], reverse=True)
 
-    # Extract top recipes and their scores
-    top_recipes = [{"recipe_id": int(recipe_data.iloc[index]['recipe_id']),
-                    "combined_score": recipe_data.iloc[index]['recommendation_score']} for index in
-                   combined_indices[:top_k]]
-
-    # 상위 레시피 추출 (recipe_id만 포함하도록 수정)
+    # 교집합에서 레시피 추출
     top_recipes = [int(recipe_data.iloc[index]['recipe_id']) for index in combined_indices[:top_k]]
 
-    return top_recipes
+    # 교집합의 크기가 top_k보다 작을 경우 추가적인 레시피 추출
+    if len(top_recipes) < top_k:
+        additional_needed = top_k - len(top_recipes)
+
+        # 재료 유사성 점수와 영양소 점수 상위 목록에서 아직 선택되지 않은 레시피 추출
+        additional_ingredient_indices = [idx for idx in ingredient_top_indices if idx not in combined_indices][
+                                        :math.ceil(additional_needed / 2)]
+        additional_nutrient_indices = [idx for idx in nutrient_top_indices if idx not in combined_indices][
+                                      :math.floor(additional_needed / 2)]
+
+        top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_ingredient_indices])
+        top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_nutrient_indices])
+
+    return top_recipes[:top_k]
 
 
 # 새로운 유사도 계산 방식

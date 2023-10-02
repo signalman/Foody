@@ -8,6 +8,7 @@ import com.foody.recipe.entity.Recipe;
 import com.foody.recipe.exception.RecipeException;
 import com.foody.recipe.repository.RecipeRepository;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -44,7 +45,7 @@ public class RecipeService {
     }
 
     private void storeUserRecipeViewKey(String key) {
-        redisTemplate.opsForValue().set(key, "true");
+        redisTemplate.opsForValue().set(key, "true", 3600, TimeUnit.SECONDS);
     }
 
     public List<RecipeListResponse> findRecipeListByRecommend(List<Long> recipeIdList) {

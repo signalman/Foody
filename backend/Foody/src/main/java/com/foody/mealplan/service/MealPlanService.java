@@ -2,7 +2,6 @@ package com.foody.mealplan.service;
 
 import com.foody.food.dto.request.FoodRequest;
 import com.foody.food.entity.Food;
-import com.foody.food.repository.FoodRepository;
 import com.foody.global.exception.ErrorCode;
 import com.foody.global.service.AmazonS3Service;
 import com.foody.global.util.FoodyDateFormatter;
@@ -13,7 +12,6 @@ import com.foody.mealplan.entity.MealPlan;
 import com.foody.mealplan.entity.MealType;
 import com.foody.mealplan.exception.MealPlanException;
 import com.foody.mealplan.repository.MealPlanRepository;
-import com.foody.mealplan.repository.MealRepository;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
@@ -23,7 +21,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +81,7 @@ public class MealPlanService {
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest, MultipartFile mealImage) {
+    public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest, MultipartFile mealImage, List<MultipartFile> foodImages) {
         Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
 
@@ -100,10 +97,17 @@ public class MealPlanService {
             meal.updateImage(uploadUrl);
         }
 
-        for (FoodRequest foodRequest : foodRequests) {
+        for(int idx = 0; idx < foodRequests.size(); idx++){
+
+            String imageUrl = "";
+            if (foodImages.get(idx) != null) {
+                //빈 스트링으로
+                imageUrl = amazonS3Service.uploadFile(foodImages.get(idx));
+            }
             meal.getFoods()
-                .add(Food.fromRequest(foodRequest, meal));
+                .add(Food.fromRequest(foodRequests.get(idx), meal, imageUrl));
         }
+
         meal.updateTime(LocalTime.now());
     }
 
@@ -115,23 +119,35 @@ public class MealPlanService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void modifyMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest) {
+    public void modifyMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest, List<MultipartFile> foodImages) {
         LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
         Member member = memberService.findByEmail(loginInfo.email());
         MealPlan findMealPlan = findByDateAndMemberId(localDate, member.getId());
         Meal findMeal = getMealByType(findMealPlan, mealPlanRequest.type());
 
-        List<Food> newFoods = getFoods(mealPlanRequest, findMeal);
+        List<Food> foods = findMeal.getFoods();
+        for (Food food : foods) {
+            if(!food.getImageUrl().equals("")){
+                amazonS3Service.deleteFile(food.getImageUrl());
+            }
+        }
+        List<Food> newFoods = getFoods(mealPlanRequest, findMeal, foodImages);
         findMeal.updateFoods(newFoods);
     }
 
-    private static List<Food> getFoods(MealPlanRequest mealPlanRequest, Meal findMeal) {
-        List<Food> foods = mealPlanRequest.foodRequestList()
-                                             .stream()
-                                             .map(foodRequest -> Food.fromRequest(foodRequest,
-                                                 findMeal))
-                                             .collect(
-                                                 Collectors.toList());
+    private List<Food> getFoods(MealPlanRequest mealPlanRequest, Meal findMeal, List<MultipartFile> foodImages) {
+
+        List<Food> foods = new ArrayList<>();
+        List<FoodRequest> foodRequestList = mealPlanRequest.foodRequestList();
+        for(int idx = 0; idx < foodRequestList.size(); idx++){
+
+            String imageUrl = "";
+            if(foodImages.get(idx) != null){
+                imageUrl = amazonS3Service.uploadFile(foodImages.get(idx));
+            }
+            Food food = Food.fromRequest(foodRequestList.get(idx), findMeal, imageUrl);
+            foods.add(food);
+        }
         return foods;
     }
 
@@ -143,6 +159,9 @@ public class MealPlanService {
         Meal findMeal = getMealByType(findMealPlan, MealType.valueOf(type));
         List<Food> foodsToRemove = new ArrayList<>(findMeal.getFoods());
         for (Food food : foodsToRemove) {
+            if(!food.getImageUrl().equals("")){
+                amazonS3Service.deleteFile(food.getImageUrl());
+            }
             findMeal.getFoods().remove(food);
             em.remove(food);
         }

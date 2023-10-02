@@ -289,7 +289,7 @@ async def collaborative_filtering_recommendation(user_data: UserPreference, top_
 
 # 협업 필터링 + 아이템 기반 추천 합친 하이브리드
 @router.post("/hybrid")
-async def hybrid_recommendation(user_data: UserPreference, top_k: int = 4):
+async def hybrid_recommendation(user_data: UserPreference, top_k: int = 10):
     # 각 방식으로부터 추천 받기
     collaborative_recommendations = await collaborative_filtering_recommendation(user_data, top_k=top_k//2)
     item_based_recommendations = get_recommendations_based_on_preference(user_data, top_k=top_k//2)

@@ -35,8 +35,8 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_PW}
-            redirect-uri: https://j9c106.p.ssafy.io/login/oauth2/code/google
-#            redirect_uri: http://localhost:80/login/oauth2/code/google
+#            redirect-uri: https://j9c106.p.ssafy.io/login/oauth2/code/google
+            redirect_uri: http://localhost:80/login/oauth2/code/google
             scope:
               - email
               - profile

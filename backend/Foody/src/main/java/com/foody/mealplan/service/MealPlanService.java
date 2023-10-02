@@ -2,6 +2,7 @@ package com.foody.mealplan.service;
 
 import com.foody.food.dto.request.FoodRequest;
 import com.foody.food.entity.Food;
+import com.foody.food.repository.FoodRepository;
 import com.foody.global.exception.ErrorCode;
 import com.foody.global.service.AmazonS3Service;
 import com.foody.global.util.FoodyDateFormatter;
@@ -20,12 +21,14 @@ import com.foody.member.service.MemberService;
 import com.foody.security.util.LoginInfo;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +41,6 @@ public class MealPlanService {
     private final MemberService memberService;
     private final AmazonS3Service amazonS3Service;
     private final MemberRepository memberRepository;
-    private final MealRepository mealRepository;
     private final EntityManager em;
 
     @Transactional(readOnly = true)
@@ -81,7 +83,7 @@ public class MealPlanService {
     }
 
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest, MultipartFile mealImage) {
         Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
@@ -112,7 +114,7 @@ public class MealPlanService {
         return mealPlanRepository.findDatesByMemberIdAndDateAfter(member.getId(), startDate);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void modifyMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest) {
         LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
         Member member = memberService.findByEmail(loginInfo.email());
@@ -133,14 +135,18 @@ public class MealPlanService {
         return foods;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteMealPlan(LoginInfo loginInfo, String date, String type) {
         Member member = memberService.findByEmail(loginInfo.email());
         LocalDate localDate = FoodyDateFormatter.toLocalDate(date);
         MealPlan findMealPlan = findByDateAndMemberId(localDate, member.getId());
         Meal findMeal = getMealByType(findMealPlan, MealType.valueOf(type));
-        mealRepository.delete(findMeal);
-        em.flush();
-        em.clear();
+        List<Food> foodsToRemove = new ArrayList<>(findMeal.getFoods());
+        for (Food food : foodsToRemove) {
+            findMeal.getFoods().remove(food);
+            em.remove(food);
+        }
+        findMeal.updateImage("");
+        findMeal.updateTime(LocalTime.MIN);
     }
 }

@@ -34,4 +34,18 @@ public class Food extends BaseEntity {
         Nutrient getNutrient = Nutrient.fromNutrientRequest(foodRequest.nutrientRequest());
         return new Food(foodRequest.name(), getNutrient, meal);
     }
+    public void assignMeal(Meal meal){
+        if (this.meal != null) {
+            this.meal.getFoods().remove(this);
+        }
+        this.meal = meal;
+        meal.getFoods().add(this);
+    }
+
+    public void removeMeal() {
+        if (this.meal != null) {
+            this.meal.getFoods().remove(this);
+        }
+        this.meal = null;
+    }
 }

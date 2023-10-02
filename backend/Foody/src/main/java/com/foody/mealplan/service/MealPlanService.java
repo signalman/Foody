@@ -12,6 +12,7 @@ import com.foody.mealplan.entity.MealPlan;
 import com.foody.mealplan.entity.MealType;
 import com.foody.mealplan.exception.MealPlanException;
 import com.foody.mealplan.repository.MealPlanRepository;
+import com.foody.mealplan.repository.MealRepository;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
@@ -20,6 +21,8 @@ import com.foody.security.util.LoginInfo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,8 @@ public class MealPlanService {
     private final MemberService memberService;
     private final AmazonS3Service amazonS3Service;
     private final MemberRepository memberRepository;
+    private final MealRepository mealRepository;
+    private final EntityManager em;
 
     @Transactional(readOnly = true)
     public MealPlan findById(long mealPlanId) {
@@ -105,5 +110,37 @@ public class MealPlanService {
         LocalDate startDate = LocalDate.now().minusDays(19);
         Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         return mealPlanRepository.findDatesByMemberIdAndDateAfter(member.getId(), startDate);
+    }
+
+    @Transactional
+    public void modifyMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest) {
+        LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
+        Member member = memberService.findByEmail(loginInfo.email());
+        MealPlan findMealPlan = findByDateAndMemberId(localDate, member.getId());
+        Meal findMeal = getMealByType(findMealPlan, mealPlanRequest.type());
+
+        List<Food> newFoods = getFoods(mealPlanRequest, findMeal);
+        findMeal.updateFoods(newFoods);
+    }
+
+    private static List<Food> getFoods(MealPlanRequest mealPlanRequest, Meal findMeal) {
+        List<Food> foods = mealPlanRequest.foodRequestList()
+                                             .stream()
+                                             .map(foodRequest -> Food.fromRequest(foodRequest,
+                                                 findMeal))
+                                             .collect(
+                                                 Collectors.toList());
+        return foods;
+    }
+
+    @Transactional
+    public void deleteMealPlan(LoginInfo loginInfo, String date, String type) {
+        Member member = memberService.findByEmail(loginInfo.email());
+        LocalDate localDate = FoodyDateFormatter.toLocalDate(date);
+        MealPlan findMealPlan = findByDateAndMemberId(localDate, member.getId());
+        Meal findMeal = getMealByType(findMealPlan, MealType.valueOf(type));
+        mealRepository.delete(findMeal);
+        em.flush();
+        em.clear();
     }
 }

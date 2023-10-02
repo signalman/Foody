@@ -48,6 +48,16 @@ include::{snippets}/refrigerators/delete/request-body.adoc[]
 include::{snippets}/refrigerators/delete/http-response.adoc[]
 include::{snippets}/refrigerators/delete/response-body.adoc[]
 
+=== 냉장고 재료 한꺼번에 삭제
+
+==== HTTP Request
+include::{snippets}/refrigerators/deleteList/http-request.adoc[]
+include::{snippets}/refrigerators/deleteList/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/deleteList/http-response.adoc[]
+include::{snippets}/refrigerators/deleteList/response-body.adoc[]
+
 === 영수증 재료 인식
 
 ==== HTTP Request

@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import torch
 import os
 from PIL import Image
@@ -12,6 +13,7 @@ from detect import run
 model_path = './models/best.pt'  # 모델 파일의 경로 (적절하게 수정)
 model = torch.load(model_path, map_location=torch.device('cpu'))
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/detect', methods=['POST'])
 def detect():

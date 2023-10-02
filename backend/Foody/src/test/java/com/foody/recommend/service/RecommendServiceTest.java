@@ -36,8 +36,8 @@ class RecommendServiceTest extends ServiceTest {
         List<Long> recommendItemList = recommendService.ingredientSendToServer(combineInfoForRefrigerator);
 
         System.out.println(recommendItemList.get(0));
-
-        assertEquals(4, recommendItemList.size());
+        recommendItemList.forEach(System.out::println);
+        assertEquals(10, recommendItemList.size());
     }
 
     @Test
@@ -47,7 +47,7 @@ class RecommendServiceTest extends ServiceTest {
 
         List<Long> hybridRecommendList = recommendService.preferenceSendToServer(mbtiResponse);
 
-        assertEquals(4, hybridRecommendList.size());
+        assertEquals(10, hybridRecommendList.size());
     }
 
     @Test
@@ -61,7 +61,7 @@ class RecommendServiceTest extends ServiceTest {
         List<Long> preferenceRecommendList = recommendService.preferenceAndNutrientSendToServer(
             combineInfoForPreference);
 
-        assertEquals(4, preferenceRecommendList.size());
+        assertEquals(10, preferenceRecommendList.size());
 
     }
 

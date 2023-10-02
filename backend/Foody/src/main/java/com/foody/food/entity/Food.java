@@ -30,9 +30,11 @@ public class Food extends BaseEntity {
     @JoinColumn(name = "meal_id")
     private Meal meal;
 
-    public static Food fromRequest(FoodRequest foodRequest, Meal meal) {
+    private String imageUrl = "";
+
+    public static Food fromRequest(FoodRequest foodRequest, Meal meal, String url) {
         Nutrient getNutrient = Nutrient.fromNutrientRequest(foodRequest.nutrientRequest());
-        return new Food(foodRequest.name(), getNutrient, meal);
+        return new Food(foodRequest.name(), getNutrient, meal, url);
     }
     public void assignMeal(Meal meal){
         if (this.meal != null) {

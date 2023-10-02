@@ -11,6 +11,10 @@ import com.foody.global.service.AmazonS3Service;
 import com.foody.mbti.controller.MbtiController;
 import com.foody.mbti.repository.MbtiRepository;
 import com.foody.mbti.service.MbtiService;
+import com.foody.mealplan.controller.MealPlanController;
+import com.foody.mealplan.controller.MealPlanControllerTest;
+import com.foody.mealplan.repository.MealPlanRepository;
+import com.foody.mealplan.service.MealPlanService;
 import com.foody.member.controller.MemberController;
 import com.foody.member.repository.MemberRepository;
 import com.foody.member.service.MemberService;
@@ -67,7 +71,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
     RecipeController.class,
     RecommendController.class,
     MbtiController.class,
-    NutrientController.class
+    NutrientController.class,
+    MealPlanController.class
 })
 public class ControllerTest {
 
@@ -99,6 +104,7 @@ public class ControllerTest {
     @MockBean protected BookmarkService bookmarkService;
     @MockBean protected BookmarkFacade bookmarkFacade;
     @MockBean protected RecommendService recommendService;
+    @MockBean protected MealPlanService mealPlanService;
 
     // Repository
     @MockBean protected MemberRepository memberRepository;
@@ -107,6 +113,7 @@ public class ControllerTest {
     @MockBean protected NutrientRepository nutrientRepository;
     @MockBean protected RecipeRepository recipeRepository;
     @MockBean protected BookmarkRepository bookmarkRepository;
+    @MockBean protected MealPlanRepository mealPlanRepository;
 
     @BeforeEach
     void setUp() {

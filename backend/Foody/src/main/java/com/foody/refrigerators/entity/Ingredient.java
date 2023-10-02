@@ -1,6 +1,5 @@
 package com.foody.refrigerators.entity;
 
-import com.foody.global.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,14 +8,16 @@ import javax.persistence.*;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Ingredient extends BaseEntity {
+@NoArgsConstructor
+public class Ingredient {
+    @Id @GeneratedValue
+    long id;
     @Column(nullable = false)
     String ingredientName;
     @Column
     String iconImg;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "ingredient_category_id")
     IngredientCategory ingredientCategory;
     @Enumerated
     IngredientType ingredientType;

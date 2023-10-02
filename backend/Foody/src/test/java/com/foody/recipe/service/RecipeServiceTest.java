@@ -3,6 +3,8 @@ package com.foody.recipe.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.foody.mbti.entity.Mbti;
+import com.foody.member.entity.Member;
 import com.foody.recipe.dto.response.RecipeListResponse;
 import com.foody.recipe.dto.response.RecipeResponse;
 import com.foody.recipe.exception.RecipeException;
@@ -17,7 +19,6 @@ class RecipeServiceTest extends ServiceTest {
 
     @Autowired
     private RecipeService recipeService;
-
     String email = "lkm454545@gmail.com";
     @Test
     @Transactional
@@ -26,9 +27,12 @@ class RecipeServiceTest extends ServiceTest {
 
         memberInfoGenerator();
 
+        Member member = memberService.findByEmail(email);
         long id = 393505;
         RecipeResponse recipeResponse = recipeService.findById(id, email);
 
+        Mbti mbti = member.getMbti();
+        System.out.println(mbti.toString());
         System.out.println(recipeResponse);
         assertEquals(recipeResponse.name(), "브라우니");
     }
@@ -53,5 +57,7 @@ class RecipeServiceTest extends ServiceTest {
         assertThrows(RecipeException.class, () -> recipeService.findById(inValidId, email));
 
     }
+
+
 
 }

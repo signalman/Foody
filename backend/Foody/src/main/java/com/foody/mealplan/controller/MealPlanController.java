@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -53,17 +52,20 @@ public class MealPlanController {
     public ResponseEntity<String> registMealPlan(
         @AuthenticationPrincipal LoginInfo loginInfo,
         @RequestPart MealPlanRequest mealPlanRequest,
-        @RequestPart MultipartFile mealImage){
-        mealPlanService.registMealPlan(loginInfo, mealPlanRequest, mealImage);
+        @RequestPart MultipartFile mealImage,
+        @RequestPart List<MultipartFile> foodImages
+        ){
+        mealPlanService.registMealPlan(loginInfo, mealPlanRequest, mealImage, foodImages);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/food")
     public ResponseEntity<String> modifyMealPlan(
         @AuthenticationPrincipal LoginInfo loginInfo,
-        @RequestBody MealPlanRequest mealPlanRequest
+        @RequestPart MealPlanRequest mealPlanRequest,
+        @RequestPart List<MultipartFile> foodImages
         ){
-        mealPlanService.modifyMealPlan(loginInfo, mealPlanRequest);
+        mealPlanService.modifyMealPlan(loginInfo, mealPlanRequest, foodImages);
         return ResponseEntity.noContent().build();
     }
 

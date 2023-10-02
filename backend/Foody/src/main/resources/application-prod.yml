@@ -12,6 +12,7 @@ spring:
         show_sql: true
         format_sql: true
         generate_statistics: true
+    defer-datasource-initialization: true
 
   security:
     oauth2:
@@ -31,6 +32,11 @@ spring:
       host: redis
       port: 6379
       password: ${REDIS_PASSWORD}
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:ingredient/foody_ingredient_category.sql
 
 jwt:
   token:

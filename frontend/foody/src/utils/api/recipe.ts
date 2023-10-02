@@ -6,4 +6,14 @@ export const getSearchRecipe = async (keyword: string) => {
 	return response;
 };
 
+export const getRecipeDetail = async (id: number) => {
+	const response = await instance.get(`/recipe/${id}`);
+	return response;
+};
+
+export const setBookmark = async (id: number) => {
+	const response = await instance.post(`/bookmark/${id}`);
+	return response;
+};
+
 export default getSearchRecipe;

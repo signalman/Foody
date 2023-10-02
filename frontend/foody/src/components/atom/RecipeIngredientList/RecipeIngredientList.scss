@@ -1,0 +1,31 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.recipe-ingredient-list-container {
+	h3 {
+		font-weight: var.$fw-600;
+		margin-bottom: 10px;
+	}
+
+	.desc {
+		font-size: var.$p3;
+		font-weight: var.$fw-400;
+		color: var.$black-300;
+		margin-bottom: 10px;
+	}
+
+	.list-wrap {
+		@include f.flex(column, center, end);
+
+		ul {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+
+		button {
+			@include f.flex(row, center, center, 2px);
+			font-size: var.$p4;
+			color: var.$black-300;
+		}
+	}
+}

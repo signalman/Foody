@@ -159,7 +159,7 @@ def get_normalized_recommendations_based_on_preference(data: UserPreference, top
 
 # 취향 + 영양소 기반 추천
 @router.post("/nutrient")
-def get_combined_recommendations_without_ingredients(data: CombineUserInput, top_k: int = 4):
+def get_combined_recommendations_without_ingredients(data: CombineUserInput, top_k: int = 10):
     # 영양소 추천 점수 계산 (과다 섭취에 대한 패널티 적용)
     def calculate_score(row):
         score = 0

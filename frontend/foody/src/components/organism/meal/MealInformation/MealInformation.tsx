@@ -1,8 +1,20 @@
 import React from 'react';
 import './MealInformation.scss';
 import DayofMealPart from 'components/molecule/DayofMealPart/DayofMealPart';
+import { Meal } from 'types/meal';
 
-function MealInformation() {
+interface DailyMeals {
+	breakfast: Meal;
+	lunch: Meal;
+	dinner: Meal;
+	snack: Meal;
+}
+
+function MealInformation({ breakfast, lunch, dinner, snack }: DailyMeals) {
+	console.log(breakfast);
+	console.log(lunch);
+	console.log(dinner);
+	console.log(snack);
 	return (
 		<div className="meal-information-box">
 			<p className="meal-information-title">일일 식단 정보</p>

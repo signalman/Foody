@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { subWeeks, addWeeks, startOfWeek, endOfWeek, isWithinInterval } from 'date-fns';
 import { DayPicker, RowProps, Row } from 'react-day-picker';
 import { ko } from 'date-fns/locale';
@@ -26,11 +26,13 @@ function PresentWeek({ dates, displayMonth }: RowProps, selectedDate: Date) {
 	);
 }
 
-function MealCalendar() {
-	const [selectedDate, setSelectedDate] = useState(new Date());
-	const [displayMonth, setDisplayMonth] = useState(new Date());
-	// const [booked, setBooked] = React.useState(false);
-
+interface MealCalendarProps {
+	selectedDate: Date;
+	displayMonth: Date;
+	setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+	setDisplayMonth: React.Dispatch<React.SetStateAction<Date>>;
+}
+function MealCalendar({ selectedDate, setSelectedDate, displayMonth, setDisplayMonth }: MealCalendarProps) {
 	const handleDayClick = (date: any) => {
 		setSelectedDate(date);
 	};
@@ -44,17 +46,14 @@ function MealCalendar() {
 		setSelectedDate(nextWeekFirstDay);
 	};
 
-	useEffect(() => {
-		setDisplayMonth(selectedDate);
-	}, [selectedDate]);
-
 	const handleMonthChange = (newMonth: Date) => {
 		setDisplayMonth(newMonth);
+		console.log(displayMonth);
 		setSelectedDate(newMonth);
 	};
 
 	return (
-		<div className="calendar-box">
+		<div className="meal-calendar-box">
 			<button type="button" onClick={goToPreviousWeek}>
 				<HiOutlineChevronLeft size={20} />
 			</button>
@@ -69,8 +68,8 @@ function MealCalendar() {
 				toYear={2023}
 				selected={selectedDate}
 				onDayClick={handleDayClick}
-				onMonthChange={handleMonthChange}
 				month={displayMonth}
+				onMonthChange={handleMonthChange}
 				components={{ Row: (props) => PresentWeek(props, selectedDate) }}
 			/>
 			<button type="button" onClick={goToNextWeek}>

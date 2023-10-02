@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Meal extends BaseEntity {
 
-    @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "meal", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Food> foods = new ArrayList<>();
 
     private LocalTime time = LocalTime.parse(
@@ -82,4 +82,16 @@ public class Meal extends BaseEntity {
         return Math.round(value * 10.0) / 10.0;
     }
 
+    public void updateFoods(List<Food> foods){
+        List<Food> originFoods = new ArrayList<>(this.foods);
+        for (Food food : originFoods) {
+            food.removeMeal();
+        }
+        this.foods.clear();
+
+        for (Food food : foods) {
+            food.assignMeal(this);
+        }
+        this.foods.addAll(foods);
+    }
 }

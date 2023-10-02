@@ -45,12 +45,12 @@ public class BookmarkFacade {
 
     private void deleteBookmark(Member member, Recipe recipe) {
         bookmarkService.delete(member, recipe);
-        updatePreference(member, recipe, -3);
+        updatePreference(member, recipe, -5);
     }
 
     private void addBookmark(Member member, Recipe recipe) {
         bookmarkService.save(member, recipe);
-        updatePreference(member, recipe, 3);
+        updatePreference(member, recipe, 5);
     }
 
     private void updatePreference(Member member, Recipe recipe, int value) {

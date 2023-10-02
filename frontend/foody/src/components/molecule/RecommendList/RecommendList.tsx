@@ -1,4 +1,4 @@
-import React, { WheelEvent, useRef, useState } from 'react';
+import React, { WheelEvent, useCallback, useEffect, useRef, useState } from 'react';
 import './RecommendList.scss';
 import { Link } from 'react-router-dom';
 import { FiRefreshCw } from 'react-icons/fi';
@@ -6,23 +6,24 @@ import { getRecommendList } from 'utils/api/recommend';
 import RecommendListSkeleton from '../RecommendListSkeleton/RecommendListSkeleton';
 
 interface RecommendListProps {
-	title: string;
 	index: string;
-	list: [] | RecommendItem[];
+	title: string;
 }
 
-function RecommendList({ title, index, list }: RecommendListProps) {
+function RecommendList({ index, title }: RecommendListProps) {
 	const containerRef = useRef<HTMLUListElement | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [data, setData] = useState<[] | RecommendItem[]>([]);
 
-	const handleRecommendRefresh = () => {
+	const handleRecommendRefresh = useCallback(() => {
 		setIsLoading(true);
 		getRecommendList(index).then((res) => {
 			if (res.data) {
+				setData(res.data);
 				setIsLoading(false);
 			}
 		});
-	};
+	}, [index]);
 
 	const handleScroll = (e: WheelEvent<HTMLUListElement>) => {
 		const container = containerRef.current;
@@ -30,6 +31,10 @@ function RecommendList({ title, index, list }: RecommendListProps) {
 			container.scrollLeft += e.deltaY;
 		}
 	};
+
+	useEffect(() => {
+		handleRecommendRefresh();
+	}, [handleRecommendRefresh]);
 
 	if (isLoading) {
 		return <RecommendListSkeleton title={title} />;
@@ -45,7 +50,7 @@ function RecommendList({ title, index, list }: RecommendListProps) {
 			</div>
 			<div className="recommend-list-body">
 				<ul className="recipe-list slider-container no-scrollbar" onWheel={handleScroll} ref={containerRef}>
-					{index === 'ingredients' && list.length === 0 ? (
+					{index === 'ingredients' && data.length === 0 ? (
 						<li className="blank-item-container">
 							<span className="blank-desc">
 								가지고 있는 재료를 3개 이상 등록하고
@@ -55,8 +60,8 @@ function RecommendList({ title, index, list }: RecommendListProps) {
 							<Link to="/refri">재료 등록하러 가기</Link>
 						</li>
 					) : (
-						list &&
-						list.map((item) => (
+						data &&
+						data.map((item) => (
 							<li key={item.id}>
 								<Link to={`/recipe/${item.id}`}>
 									<div className="info-wrap">

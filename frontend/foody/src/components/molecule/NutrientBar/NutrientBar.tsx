@@ -1,4 +1,5 @@
 import React from 'react';
+import './NutrientBar.scss';
 import { useRecoilState } from 'recoil';
 import nutrientState from 'recoil/atoms/nutrientState';
 import { NutrientTotal } from 'types/meal';
@@ -38,7 +39,7 @@ function NutrientBar({ title, mealNutrient, isempty }: NutrientBarProps) {
 	};
 
 	return (
-		<div>
+		<div className="nutrient-bar-container">
 			{isempty && (
 				<div className="nutirent-of-day-title-box">
 					<p className="nutrient-of-day-title">{title}</p>

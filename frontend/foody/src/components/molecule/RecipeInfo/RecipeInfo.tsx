@@ -19,7 +19,7 @@ function RecipeInfo({ id, name, url, energy, isBookmarked }: RecipeInfoProps) {
 					<h2>{name}</h2>
 					<span className="kcal">{energy}kcal</span>
 				</div>
-				<Bookmark isBookmarked={isBookmarked} id={id} />
+				<Bookmark isBookmarked={isBookmarked} id={id} size={24} />
 			</div>
 			<Link to={`https://www.10000recipe.com/recipe/${id}`}>
 				<span>레시피 보러 가기</span>

@@ -6,15 +6,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public record FoodResponse(
+    String foodImage,
     String name,
     NutrientResponse nutrient
 ) {
+    public FoodResponse(){
+        this("","", new NutrientResponse());
+    }
     public FoodResponse(Food food) {
-        this(food.getName(), new NutrientResponse(food.getNutrient()));
+        this(food.getImageUrl(), food.getName(), new NutrientResponse(food.getNutrient()));
     }
     public static List<FoodResponse> fromFoods(List<Food> foods) {
         return foods.stream()
-                    .map(FoodResponse::new)
+                    .map(food -> new FoodResponse(food))
                     .collect(Collectors.toList());
     }
 }

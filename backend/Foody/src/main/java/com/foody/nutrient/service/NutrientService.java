@@ -10,6 +10,7 @@ import com.foody.mealplan.repository.MealPlanRepository;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
+import com.foody.nutrient.dto.response.NutrientByTypeResponse;
 import com.foody.nutrient.dto.response.NutrientResponse;
 import com.foody.nutrient.entity.Nutrient;
 import com.foody.nutrient.repository.NutrientRepository;
@@ -347,75 +348,83 @@ public class NutrientService {
         }
         else if(calcMealTime(mealTime) == 2){ // 점심
             MealPlan mealPlan = mealPlanRepository.findByDateAndMemberId(mealDate, member.getId())
-                                                  .orElseThrow(
-                                                      () -> new MealPlanException(ErrorCode.MEAL_PLAN_NOT_FOUND));
+                .orElse(null);
 
-            if(mealPlan.getBreakfast() != null){ // 아침 O
-                // 부족 영양분 계산
-                Meal breakfast = mealPlan.getBreakfast();
-                Nutrient breakfastTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.BREAKFAST));
-                Nutrient lunchTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.LUNCH));
-                double[] arr = new double[10]; // 영양정보 저장용
-
-                // 아침 + 점심 권장 영양소
-                addNutrient(arr, breakfastTmp);
-                addNutrient(arr, lunchTmp);
-
-                List<Food> breakfastList = breakfast.getFoods();
-                calculateNeccessaryNutrient(breakfastList, arr);
-
-                return new Nutrient(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9]);
-            }
-            else{ // 아침 X
+            if(mealPlan == null) {
                 return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.LUNCH));
+            }
+            else {
+                if(mealPlan.getBreakfast() != null){ // 아침 O
+                    // 부족 영양분 계산
+                    Meal breakfast = mealPlan.getBreakfast();
+                    Nutrient breakfastTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.BREAKFAST));
+                    Nutrient lunchTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.LUNCH));
+                    double[] arr = new double[10]; // 영양정보 저장용
+
+                    // 아침 + 점심 권장 영양소
+                    addNutrient(arr, breakfastTmp);
+                    addNutrient(arr, lunchTmp);
+
+                    List<Food> breakfastList = breakfast.getFoods();
+                    calculateNeccessaryNutrient(breakfastList, arr);
+
+                    return Nutrient.makeNutrient(arr);
+                }
+                else{ // 아침 X
+                    return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.LUNCH));
+                }
             }
         }
         else if(calcMealTime(mealTime) == 3) { // 저녁
             MealPlan mealPlan = mealPlanRepository.findByDateAndMemberId(mealDate, member.getId())
-                                                  .orElseThrow(
-                                                      () -> new MealPlanException(ErrorCode.MEAL_PLAN_NOT_FOUND));
+                                                  .orElse(null);
             Nutrient breakfastTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.BREAKFAST));
             Nutrient lunchTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.LUNCH));
             Nutrient dinnerTmp = Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.DINNER));
             double[] arr = new double[10];
 
-            if(mealPlan.getBreakfast() != null && mealPlan.getLunch() != null) { // 아침 O 점심 O
-                // 아침 + 점심 + 저녁 권장 영양소
-                addNutrient(arr, breakfastTmp);
-                addNutrient(arr, lunchTmp);
-                addNutrient(arr, dinnerTmp);
+           if(mealPlan == null){
+               return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.DINNER));
+           }
+           else {
+               if(mealPlan.getBreakfast() != null && mealPlan.getLunch() != null) { // 아침 O 점심 O
+                   // 아침 + 점심 + 저녁 권장 영양소
+                   addNutrient(arr, breakfastTmp);
+                   addNutrient(arr, lunchTmp);
+                   addNutrient(arr, dinnerTmp);
 
-                // 부족 영양소 계산
-                List<Food> breakfastList = mealPlan.getBreakfast().getFoods();
-                List<Food> lunchList = mealPlan.getLunch().getFoods();
-                calculateNeccessaryNutrient(breakfastList, arr);
-                calculateNeccessaryNutrient(lunchList, arr);
+                   // 부족 영양소 계산
+                   List<Food> breakfastList = mealPlan.getBreakfast().getFoods();
+                   List<Food> lunchList = mealPlan.getLunch().getFoods();
+                   calculateNeccessaryNutrient(breakfastList, arr);
+                   calculateNeccessaryNutrient(lunchList, arr);
 
-                return new Nutrient(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9]);
-            }
-            else if(mealPlan.getBreakfast() != null && mealPlan.getLunch() == null) { // 아침 O 점심 X
-                // 아침 + 저녁 권장 영양소
-                addNutrient(arr, breakfastTmp);
-                addNutrient(arr, dinnerTmp);
+                   return Nutrient.makeNutrient(arr);
+               }
+               else if(mealPlan.getBreakfast() != null && mealPlan.getLunch() == null) { // 아침 O 점심 X
+                   // 아침 + 저녁 권장 영양소
+                   addNutrient(arr, breakfastTmp);
+                   addNutrient(arr, dinnerTmp);
 
-                List<Food> breakfastList = mealPlan.getBreakfast().getFoods();
-                calculateNeccessaryNutrient(breakfastList, arr);
+                   List<Food> breakfastList = mealPlan.getBreakfast().getFoods();
+                   calculateNeccessaryNutrient(breakfastList, arr);
 
-                return new Nutrient(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9]);
-            }
-            else if(mealPlan.getBreakfast() == null && mealPlan.getLunch() != null) { // 아침 X 점심 O
-                // 점심 + 저녁 권장 영양소
-                addNutrient(arr, breakfastTmp);
-                addNutrient(arr, lunchTmp);
+                   return Nutrient.makeNutrient(arr);
+               }
+               else if(mealPlan.getBreakfast() == null && mealPlan.getLunch() != null) { // 아침 X 점심 O
+                   // 점심 + 저녁 권장 영양소
+                   addNutrient(arr, breakfastTmp);
+                   addNutrient(arr, lunchTmp);
 
-                List<Food> lunchList = mealPlan.getLunch().getFoods();
-                calculateNeccessaryNutrient(lunchList, arr);
+                   List<Food> lunchList = mealPlan.getLunch().getFoods();
+                   calculateNeccessaryNutrient(lunchList, arr);
 
-                return new Nutrient(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9]);
-            }
-            else { // 아침 X 점심 X
-                return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.DINNER));
-            }
+                   return Nutrient.makeNutrient(arr);
+               }
+               else { // 아침 X 점심 X
+                   return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.DINNER));
+               }
+           }
         }
         else { // 야식
             return Nutrient.changeTypetoNutrient(getMealNutrient(email, MealType.SNACK));
@@ -485,5 +494,18 @@ public class NutrientService {
         else {
             return 4;
         }
+    }
+
+    @Transactional
+    public NutrientByTypeResponse getAllNutrient(String email) {
+        Member member =memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+
+        Nutrient nutrient = member.getNutrient();
+        NutrientResponse breakfast = calculate(2,nutrient);
+        NutrientResponse lunch = calculate(3,nutrient);
+        NutrientResponse dinner = calculate(3,nutrient);
+        NutrientResponse snack = calculate(2,nutrient);
+
+        return new NutrientByTypeResponse(breakfast,lunch,dinner,snack);
     }
 }

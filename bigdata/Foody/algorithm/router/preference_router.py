@@ -159,7 +159,7 @@ def get_normalized_recommendations_based_on_preference(data: UserPreference, top
 
 # 취향 + 영양소 기반 추천
 @router.post("/nutrient")
-def get_combined_recommendations_without_ingredients(data: CombineUserInput, top_k: int = 4):
+def get_combined_recommendations_without_ingredients(data: CombineUserInput, top_k: int = 10):
     # 영양소 추천 점수 계산 (과다 섭취에 대한 패널티 적용)
     def calculate_score(row):
         score = 0
@@ -289,7 +289,7 @@ async def collaborative_filtering_recommendation(user_data: UserPreference, top_
 
 # 협업 필터링 + 아이템 기반 추천 합친 하이브리드
 @router.post("/hybrid")
-async def hybrid_recommendation(user_data: UserPreference, top_k: int = 4):
+async def hybrid_recommendation(user_data: UserPreference, top_k: int = 10):
     # 각 방식으로부터 추천 받기
     collaborative_recommendations = await collaborative_filtering_recommendation(user_data, top_k=top_k//2)
     item_based_recommendations = get_recommendations_based_on_preference(user_data, top_k=top_k//2)

@@ -1,0 +1,47 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.recipe-info-container {
+	@include f.flex(column, start, start);
+
+	.img-wrap {
+		width: 100%;
+		height: 280px;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	.recipe-info-list,
+	a {
+		padding: 16px 10px;
+		border-bottom: 1px solid var.$border-200;
+	}
+
+	.recipe-info-list {
+		width: 100%;
+		@include f.flex(row, between, center);
+
+		.title {
+			@include f.flex(row, start, end, 8px);
+
+			.kcal {
+				font-size: var.$p2;
+				color: var.$primary-green-500;
+			}
+		}
+	}
+
+	a {
+		width: 100%;
+		@include f.flex(row, between, center);
+		color: var.$black-400;
+
+		svg {
+			color: var.$black-300;
+		}
+	}
+}

@@ -4,6 +4,7 @@ import SubHeader from 'components/organism/SubHeader/SubHeader';
 import RecipeInfo from 'components/molecule/RecipeInfo/RecipeInfo';
 import { useParams } from 'react-router-dom';
 import { getRecipeDetail } from 'utils/api/recipe';
+import RecipeNutrient from 'components/molecule/RecipeNutrient/RecipeNutrient';
 import RecipeIngredientList from '../atom/RecipeIngredientList/RecipeIngredientList';
 
 function RecipeDetailPage() {
@@ -40,6 +41,18 @@ function RecipeDetailPage() {
 			/>
 
 			{/* 채워지는 영양소 */}
+			<RecipeNutrient
+				energy={data.energy}
+				carbohydrates={data.carbohydrates}
+				protein={data.protein}
+				dietaryFiber={data.dietaryFiber}
+				calcium={data.calcium}
+				sodium={data.sodium}
+				iron={data.iron}
+				fats={data.fats}
+				vitaminA={data.vitaminA}
+				vitaminC={data.vitaminC}
+			/>
 		</RecipeDetailTemplate>
 	);
 }

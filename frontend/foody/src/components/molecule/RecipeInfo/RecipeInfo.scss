@@ -27,6 +27,7 @@
 
 		.title {
 			@include f.flex(row, start, end, 8px);
+			flex-wrap: wrap;
 
 			.kcal {
 				font-size: var.$p2;

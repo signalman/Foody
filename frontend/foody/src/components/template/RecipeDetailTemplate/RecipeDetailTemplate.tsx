@@ -16,7 +16,7 @@ function RecipeDetailTemplate({ children }: { children: ReactNode[] }) {
 				<ContentsLayout marginLR={LayoutLeftRightMargin.m20}>{children[2]}</ContentsLayout>
 
 				{/* 채워지는 영양소 */}
-				{children[3]}
+				<ContentsLayout marginLR={LayoutLeftRightMargin.m20}>{children[3]}</ContentsLayout>
 			</Layout>
 		</>
 	);

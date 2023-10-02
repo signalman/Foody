@@ -9,7 +9,7 @@ function RecipeIngredientList({ ingredient, servers, difficulty }: RecipeType) {
 	};
 
 	return (
-		<div className="recipe-ingredient-list-container">
+		<section className="recipe-ingredient-list-container">
 			<h3>필요한 재료</h3>
 			<div className="desc">
 				총 {ingredient.length}개, {servers}인분 기준, {difficulty}
@@ -24,7 +24,7 @@ function RecipeIngredientList({ ingredient, servers, difficulty }: RecipeType) {
 					해당 레시피로 요리하셨나요? <HiOutlineChevronRight size={14} />
 				</button>
 			</div>
-		</div>
+		</section>
 	);
 }
 

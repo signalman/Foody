@@ -2,6 +2,7 @@ package com.foody.mealplan.service;
 
 import com.foody.food.dto.request.FoodRequest;
 import com.foody.food.entity.Food;
+import com.foody.food.repository.FoodRepository;
 import com.foody.global.exception.ErrorCode;
 import com.foody.global.service.AmazonS3Service;
 import com.foody.global.util.FoodyDateFormatter;
@@ -12,6 +13,7 @@ import com.foody.mealplan.entity.MealPlan;
 import com.foody.mealplan.entity.MealType;
 import com.foody.mealplan.exception.MealPlanException;
 import com.foody.mealplan.repository.MealPlanRepository;
+import com.foody.mealplan.repository.MealRepository;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
@@ -19,10 +21,14 @@ import com.foody.member.service.MemberService;
 import com.foody.security.util.LoginInfo;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +41,7 @@ public class MealPlanService {
     private final MemberService memberService;
     private final AmazonS3Service amazonS3Service;
     private final MemberRepository memberRepository;
+    private final EntityManager em;
 
     @Transactional(readOnly = true)
     public MealPlan findById(long mealPlanId) {
@@ -76,7 +83,7 @@ public class MealPlanService {
     }
 
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void registMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest, MultipartFile mealImage) {
         Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
@@ -105,5 +112,41 @@ public class MealPlanService {
         LocalDate startDate = LocalDate.now().minusDays(19);
         Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
         return mealPlanRepository.findDatesByMemberIdAndDateAfter(member.getId(), startDate);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void modifyMealPlan(LoginInfo loginInfo, MealPlanRequest mealPlanRequest) {
+        LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
+        Member member = memberService.findByEmail(loginInfo.email());
+        MealPlan findMealPlan = findByDateAndMemberId(localDate, member.getId());
+        Meal findMeal = getMealByType(findMealPlan, mealPlanRequest.type());
+
+        List<Food> newFoods = getFoods(mealPlanRequest, findMeal);
+        findMeal.updateFoods(newFoods);
+    }
+
+    private static List<Food> getFoods(MealPlanRequest mealPlanRequest, Meal findMeal) {
+        List<Food> foods = mealPlanRequest.foodRequestList()
+                                             .stream()
+                                             .map(foodRequest -> Food.fromRequest(foodRequest,
+                                                 findMeal))
+                                             .collect(
+                                                 Collectors.toList());
+        return foods;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void deleteMealPlan(LoginInfo loginInfo, String date, String type) {
+        Member member = memberService.findByEmail(loginInfo.email());
+        LocalDate localDate = FoodyDateFormatter.toLocalDate(date);
+        MealPlan findMealPlan = findByDateAndMemberId(localDate, member.getId());
+        Meal findMeal = getMealByType(findMealPlan, MealType.valueOf(type));
+        List<Food> foodsToRemove = new ArrayList<>(findMeal.getFoods());
+        for (Food food : foodsToRemove) {
+            findMeal.getFoods().remove(food);
+            em.remove(food);
+        }
+        findMeal.updateImage("");
+        findMeal.updateTime(LocalTime.MIN);
     }
 }

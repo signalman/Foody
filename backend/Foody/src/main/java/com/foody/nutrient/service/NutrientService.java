@@ -2,6 +2,7 @@ package com.foody.nutrient.service;
 
 import com.foody.food.entity.Food;
 import com.foody.global.exception.ErrorCode;
+import com.foody.global.util.FoodyDateFormatter;
 import com.foody.mealplan.entity.Meal;
 import com.foody.mealplan.entity.MealPlan;
 import com.foody.mealplan.entity.MealType;
@@ -434,10 +435,11 @@ public class NutrientService {
 
     // 해당 끼니의 먹은 영양소 반환
     @Transactional
-    public NutrientResponse calcMealNutrient(String email, LocalDateTime localDateTime, MealType mealType) {
+    public NutrientResponse calcMealNutrient(String email, String date, MealType mealType) {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
-        LocalDate mealDate = LocalDate.of(localDateTime.getYear(), localDateTime.getMonth(),
-            localDateTime.getDayOfMonth());
+
+        // 시간 변경
+        LocalDate mealDate = FoodyDateFormatter.toLocalDate(date);
         MealPlan mealplan = mealPlanRepository.findByDateAndMemberId(mealDate, member.getId())
                                               .orElseThrow(
                                                   () -> new MealPlanException(ErrorCode.MEAL_PLAN_NOT_FOUND));

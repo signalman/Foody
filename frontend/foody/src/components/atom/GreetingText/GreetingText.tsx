@@ -8,7 +8,7 @@ function GreetingText() {
 
 	return (
 		<h1 className="greeting-text-container">
-			<div>{userInfo.nickname} 님,</div>
+			{userInfo && <div>{userInfo.nickname} 님,</div>}
 			<div>오늘도 건강한 하루 되세요!</div>
 		</h1>
 	);

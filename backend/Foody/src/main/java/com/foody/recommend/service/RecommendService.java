@@ -16,6 +16,7 @@ import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class RecommendService {
         List<UserRefrigeratorResponse> refrigerator = refrigeratorsService.getUserRefrigerator(email);
 
         if (refrigerator.isEmpty()) {
-            throw new RecommendException(ErrorCode.REFRIGERATOR_IS_EMPTY);
+            return new ArrayList<RecipeListResponse>();
         }
 
         String ingredients = getIngredientsString(refrigerator);

@@ -55,6 +55,11 @@ public class MealPlanController {
         @RequestPart(required = false) MultipartFile mealImage,
         @RequestPart(required = false) List<MultipartFile> foodImages
         ){
+        log.info("mealPlanRequest: {}", mealPlanRequest);
+        log.info("mealImage: {}", mealImage);
+        for (MultipartFile foodImage : foodImages) {
+            log.info("foodImage: {}", foodImage);
+        }
         mealPlanService.registMealPlan(loginInfo, mealPlanRequest, mealImage, foodImages);
         return ResponseEntity.noContent().build();
     }

@@ -7,7 +7,7 @@
 
 .nutirent-of-day-title-box {
 	@include f.flex(row, between, center, 0px);
-	padding-bottom: 20px;
+	padding-bottom: 10px;
 
 	.nutreint-of-day-title {
 		font-size: var.$h3;

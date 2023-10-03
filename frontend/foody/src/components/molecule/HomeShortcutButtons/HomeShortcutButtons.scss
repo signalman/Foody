@@ -40,6 +40,7 @@
 		.desc {
 			font-size: var.$p2;
 			color: var.$black-200;
+			text-wrap: nowrap;
 		}
 	}
 
@@ -50,14 +51,14 @@
 		}
 	}
 	.right-top {
-		@include f.flex(row, between);
+		@include f.flex(row, around);
 		grid-area: rt;
 		img {
 			height: 45px;
 		}
 	}
 	.right-bottom {
-		@include f.flex(row, between);
+		@include f.flex(row, around);
 		grid-area: rb;
 	}
 }

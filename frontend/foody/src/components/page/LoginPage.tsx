@@ -52,7 +52,7 @@ function LoginPage() {
 	return (
 		<LoginTemplate>
 			<img src={loginLogo} alt="" />
-			<SocialLoginButton value="구글 로그인 test2" logo_src={googleLogo} onclick={test2} />
+			<SocialLoginButton value="구글 로그인" logo_src={googleLogo} onclick={test2} />
 		</LoginTemplate>
 	);
 }

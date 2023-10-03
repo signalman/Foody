@@ -12,7 +12,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -30,10 +29,7 @@ public class RefrigeratorsController {
     }
 
     @PostMapping
-    public ResponseEntity<String> registerIngredient(
-            @RequestBody InsertIngredientRequest insertIngredients,
-            @AuthenticationPrincipal LoginInfo loginInfo
-    ) {
+    public ResponseEntity<String> registerIngredient(@RequestBody InsertIngredientRequest insertIngredients, @AuthenticationPrincipal LoginInfo loginInfo) {
         refrigeratorsService.insertIngredient(loginInfo.email(), insertIngredients.ingredients());
         refrigeratorsService.insertCustomIngredient(loginInfo.email(), insertIngredients.customIngredients());
         return ResponseEntity.noContent().build();
@@ -52,6 +48,12 @@ public class RefrigeratorsController {
     @DeleteMapping("/{ingredientId}")
     public ResponseEntity<String> deleteIngredient(@AuthenticationPrincipal LoginInfo loginInfo, @PathVariable Long ingredientId) {
         refrigeratorsService.deleteUserIngredient(loginInfo.email(), ingredientId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/ingredients")
+    public ResponseEntity<String> deleteIngredientList(@RequestBody Long[] ingredientIds, @AuthenticationPrincipal LoginInfo loginInfo) {
+        refrigeratorsService.deleteIngredientList(loginInfo.email(), ingredientIds);
         return ResponseEntity.noContent().build();
     }
 

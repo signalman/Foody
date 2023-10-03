@@ -52,8 +52,8 @@ public class MealPlanController {
     public ResponseEntity<String> registMealPlan(
         @AuthenticationPrincipal LoginInfo loginInfo,
         @RequestPart MealPlanRequest mealPlanRequest,
-        @RequestPart MultipartFile mealImage,
-        @RequestPart List<MultipartFile> foodImages
+        @RequestPart(required = false) MultipartFile mealImage,
+        @RequestPart(required = false) List<MultipartFile> foodImages
         ){
         mealPlanService.registMealPlan(loginInfo, mealPlanRequest, mealImage, foodImages);
         return ResponseEntity.noContent().build();

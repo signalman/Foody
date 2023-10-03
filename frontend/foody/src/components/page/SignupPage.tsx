@@ -5,13 +5,16 @@ import SignupStep3 from 'components/organism/signup/SignupStep3/SignupStep3';
 import SignupStep4 from 'components/organism/signup/SignupStep4/SignupStep4';
 import SignupStep5 from 'components/organism/signup/SignupStep5/SignupStep5';
 import SignupTemplate from 'components/template/SignupTemplate/SignupTemplate';
+import useMovePage from 'hooks/useMovePage';
 import React, { useState } from 'react';
+import { getSignupInformation } from 'utils/api/auth';
 
 function SignupPage() {
+	const { movePage } = useMovePage();
 	// 첫 번째 스텝
 	const [nickname, setNickname] = useState<string>('');
 	// 두 번째 스텝
-	const [selectGender, setSeleteGender] = useState<string>('여성');
+	const [gender, setGender] = useState<number>(2);
 
 	// 세 번째 스텝
 	const [age, setAge] = useState<string>('');
@@ -19,30 +22,57 @@ function SignupPage() {
 	const [height, setHeight] = useState<string>('');
 	const [weight, setWeight] = useState<string>('');
 	// 다섯 번째 스텝
-	const [move, setMove] = useState<number>(1);
+	const [activityLevel, setActivityLevel] = useState<number>(1);
 
-	const [index, setIndex] = useState<number>(0);
-	const check2 = [true, false, false, false, false];
+	// 프로그레스 바 설정
+	const [index, setIndex] = useState<number>(1);
+
+	const [bar, setBar] = useState([true, false, false, false, false]);
 
 	const nextButton = () => {
-		check2[index] = true;
+		const updateBar = [...bar];
 		setIndex(index + 1);
+		updateBar[index] = true;
+		setBar(updateBar);
+	};
+
+	const handleSignup = () => {
+		const information = {
+			nickname,
+			height: parseInt(height, 10),
+			weight: parseInt(weight, 10),
+			gender,
+			age: parseInt(age, 10),
+			activityLevel,
+		};
+
+		console.log(information);
+		getSignupInformation(information).then((res) => {
+			console.log(res);
+			movePage('/fbti', null);
+		});
 	};
 
 	return (
 		<SignupTemplate>
-			<ProgressBar ProgressCheck={check2} />
-			<SignupStep1 nextButton={nextButton} setNickname={setNickname} nickname={nickname} />
-			<SignupStep2 nextButton={nextButton} selectGender={selectGender} setSelectGender={setSeleteGender} />
-			<SignupStep3 nextButton={nextButton} setAge={setAge} age={age} />
-			<SignupStep4
-				nextButton={nextButton}
-				height={height}
-				weight={weight}
-				setHeight={setHeight}
-				setWeight={setWeight}
-			/>
-			<SignupStep5 nextButton={nextButton} move={move} setMove={setMove} />
+			<ProgressBar ProgressCheck={bar} />
+			{index === 1 && <SignupStep1 nextButton={nextButton} setNickname={setNickname} nickname={nickname} />}
+			{index === 2 && <SignupStep2 nextButton={nextButton} selectGender={gender} setSelectGender={setGender} />}
+			{index === 3 && <SignupStep3 nextButton={nextButton} setAge={setAge} age={age} />}
+			{index === 4 && (
+				<SignupStep4
+					nextButton={nextButton}
+					height={height}
+					weight={weight}
+					setHeight={setHeight}
+					setWeight={setWeight}
+				/>
+			)}
+			{index === 5 && <SignupStep5 nextButton={handleSignup} move={activityLevel} setMove={setActivityLevel} />}
+			<span>
+				닉네임 : {nickname} 성별 : {gender} 나이 : {age} 키 : {height} 몸무게 : {weight} 활동량 : {activityLevel}
+				인덱스 : {index}
+			</span>
 		</SignupTemplate>
 	);
 }

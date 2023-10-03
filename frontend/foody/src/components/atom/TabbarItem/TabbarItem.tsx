@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './TabbarItem.scss';
-import { ITabbarItem } from 'constants/Tabbar';
+import { ITabbarItem } from 'constants/TabbarList';
 import { Link, useLocation } from 'react-router-dom';
 
 function TabbarItem({ menu }: { menu: ITabbarItem }) {
@@ -14,8 +14,8 @@ function TabbarItem({ menu }: { menu: ITabbarItem }) {
 	return (
 		<li className="tabbar-item-container">
 			<Link to={`/${menu.url}`}>
-				<span>{isActive ? <menu.activeIcon size={24} /> : <menu.icon size={24} />}</span>
-				<span>{menu.menu}</span>
+				{isActive ? <menu.activeIcon /> : <menu.icon />}
+				{menu.menu}
 			</Link>
 		</li>
 	);

@@ -6,13 +6,14 @@
 	height: 100%;
 
 	a {
-		@include f.flex(column, center);
+		@include f.flex(column, center, center, 8px);
 		color: var.$black-400;
 		width: 100%;
 		height: 100%;
 
 		svg {
-			width: 20px;
+			width: 24px;
+			height: 24px;
 		}
 	}
 }

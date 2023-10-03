@@ -1,0 +1,28 @@
+@use 'styles/base/variable' as var;
+@use 'styles/mixins/flex' as f;
+
+.select-meal-list-container {
+	margin-bottom: 20px;
+
+	.select-meal-list {
+		border: 1px solid var.$border-300;
+		border-radius: 10px;
+		padding: 15px;
+
+		@include f.flex(row, start, start, 16px);
+		flex-wrap: wrap;
+
+		.select-meal-list-item {
+			@include f.flex(row, center, center, 4px);
+			svg {
+				color: var.$black-300;
+			}
+		}
+	}
+
+	.no-seleted-meal {
+		text-align: center;
+		padding: 15px;
+		color: var.$black-200;
+	}
+}

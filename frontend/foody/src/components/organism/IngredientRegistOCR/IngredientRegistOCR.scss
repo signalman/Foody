@@ -1,0 +1,30 @@
+@use 'styles/base/variable.scss' as var;
+
+.ingredient-regist-OCR-container {
+	position: relative;
+
+	.layout {
+		background-color: var.$black-500;
+	}
+
+	.btn-container {
+		position: fixed;
+		width: 100%;
+		height: 40px;
+		left: 0;
+		bottom: 0;
+		background-color: var.$white;
+		z-index: var.$camera-btn-container-z-index;
+
+		button {
+			background-color: var.$primary-green-500;
+			color: var.$white;
+			padding: 10px;
+			border-radius: 50%;
+			position: absolute;
+			left: 50%;
+			top: -20px;
+			transform: translateX(-50%);
+		}
+	}
+}

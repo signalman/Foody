@@ -1,6 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import NOT_ARROWED_PATH from 'constants/noTabbarPageList';
+import { useRecoilState } from 'recoil';
+import tabbarState from 'recoil/atoms/tabbarState';
 
 /**
  * 허용되지 않은 경로에 대해 Tabbar의 표시 유무를 확인하는 커스텀 훅.
@@ -9,6 +11,23 @@ import NOT_ARROWED_PATH from 'constants/noTabbarPageList';
 function useTabbarRender(newPath: string | RegExp = '') {
 	const [isTabbarRender, setIsTabbarRender] = useState(false);
 	const location = useLocation();
+	const [, setTabbar] = useRecoilState(tabbarState);
+
+	useEffect(() => {
+		const handleBackButton = () => {
+			console.log('뒤로가기');
+			// 뒤로가기 버튼이 눌릴 때 Recoil Atom 초기화
+			setTabbar(true); // initialValue에는 Atom의 초기값을 넣어주세요
+		};
+
+		// 뒤로가기 이벤트를 감지할 때마다 handleBackButton 함수가 실행됩니다.
+		window.addEventListener('popstate', handleBackButton);
+
+		// // 컴포넌트가 언마운트될 때 이벤트 리스너를 제거합니다.
+		// return () => {
+		// 	window.removeEventListener('popstate', handleBackButton);
+		// };
+	}, [setTabbar]);
 
 	const excludedCheck = useCallback(
 		(path_list: (string | RegExp)[]) => {

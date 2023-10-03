@@ -17,6 +17,7 @@ const nutrientState = atom({
 		vitaminA: 0,
 		vitaminC: 0,
 	}, // on일 경우 true
+	effects_UNSTABLE: [persistAtom],
 });
 
 export const breakfastState = atom({
@@ -86,4 +87,5 @@ export const snackState = atom({
 	},
 	effects_UNSTABLE: [persistAtom],
 });
+
 export default nutrientState; // 변수를 기본 내보내기로 설정

@@ -1,5 +1,7 @@
+import DetailMeal from 'components/molecule/DetailMeal/DetailMeal';
 import MealCalendar from 'components/organism/meal/MealCalendar/MealCalendar';
 import MealInformation from 'components/organism/meal/MealInformation/MealInformation';
+import MealSearch from 'components/organism/meal/MealSearch/MealSearch';
 import MealTable from 'components/organism/meal/MealTable/MealTable';
 import NutrientOfDay from 'components/organism/meal/NutrientOfDay/NutrientOfDay';
 import MealTemplate from 'components/template/MealTemplate/MealTemplate';
@@ -33,6 +35,12 @@ function MealPage() {
 	const [snack, setSnack] = useState(data);
 	const [total, setTotal] = useState(data.total);
 
+	const [getDate, setGetDate] = useState<string>('');
+
+	const [detailOpen, setDetailOpen] = useState<boolean>(false);
+	const [searchOpen, setSearchOpen] = useState<boolean>(false);
+	const [meal, setMeal] = useState<string>('');
+
 	useEffect(() => {
 		const dateObject = new Date(selectedDate);
 
@@ -41,6 +49,8 @@ function MealPage() {
 		const day = String(dateObject.getDate()).padStart(2, '0');
 
 		const sendDate = `${year}-${month}-${day}`;
+		setGetDate(sendDate);
+
 		getDayofMeal(sendDate).then((response) => {
 			setBreakfast(response.data.breakfast);
 			setLunch(response.data.lunch);
@@ -53,6 +63,15 @@ function MealPage() {
 		setDisplayMonth(selectedDate);
 	}, [selectedDate]);
 	console.log(breakfast);
+
+	if (searchOpen === true && meal) {
+		return <MealSearch setOpen={setSearchOpen} meal={meal} selectedDate={getDate} />;
+	}
+
+	if (detailOpen === true && meal) {
+		return <DetailMeal />;
+	}
+
 	return (
 		<MealTemplate>
 			<MealCalendar
@@ -63,7 +82,15 @@ function MealPage() {
 			/>
 			<MealTable total={total} breakfast={breakfast} lunch={lunch} dinner={dinner} snack={snack} />
 			<NutrientOfDay total={total} />
-			<MealInformation breakfast={breakfast} lunch={lunch} dinner={dinner} snack={snack} />
+			<MealInformation
+				setSearchOpen={setSearchOpen}
+				setDetailOpen={setDetailOpen}
+				setMeal={setMeal}
+				breakfast={breakfast}
+				lunch={lunch}
+				dinner={dinner}
+				snack={snack}
+			/>
 		</MealTemplate>
 	);
 }

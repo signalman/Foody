@@ -1,5 +1,5 @@
 import React, { Dispatch, useEffect, useState } from 'react';
-import './IngredientSearch.scss';
+import './MealSearch.scss';
 import { useRecoilState } from 'recoil';
 import tabbarState from 'recoil/atoms/tabbarState';
 import InputSearch from 'components/atom/InputSearch/InputSearch';
@@ -7,32 +7,59 @@ import SearchTemplate from 'components/template/SearchTemplate/SearchTemplate';
 import { HiPencil } from 'react-icons/hi';
 import LargeButton from 'components/atom/LargeButton/LargeButton';
 import LargeButtonColor from 'constants/color';
-import getSearchIngredients, { createIngredientList } from 'utils/api/ingredient';
-import formatSearchResultList from 'utils/common/ingredient';
-import { CustomIngredientItemType, IngredientSearchItem } from 'types/refrigerator';
+import { CustomIngredientItemType } from 'types/refrigerator';
 import toast from 'react-hot-toast';
-import { ReqReceiptItem } from 'types/receipt';
 import FloatingMenu from 'components/molecule/FloatingMenu/FloatingMenu';
-import IngredientRegistOCR from 'components/organism/IngredientRegistOCR/IngredientRegistOCR';
 import IngredientRegistAlbum from 'components/organism/IngredientRegistAlbum/IngredientRegistAlbum';
+import { getMealNutrient, getSearchMeal, postRegistMealText } from 'utils/api/meal';
+import MealSearchResultList from 'components/molecule/MealSearchResultList/MealSearchResultList';
+import SelectedMealList from 'components/molecule/SelectedMealList/SelectedMealList';
+import { RegistMeal, RegistSendData } from 'types/meal';
+import MealCamera from 'components/atom/MealCamera/MealCamera';
 import SubHeader from '../../SubHeader/SubHeader';
-import SelectIngredientList from '../../../molecule/SelectIngredientList/SelectIngredientList';
-import IngredientSearchResultList from '../../../molecule/IngredientSearchResultList/IngredientSearchResultList';
 
 interface IngredientSearchProps {
 	setOpen: Dispatch<React.SetStateAction<boolean>>;
-	receiptList?: ReqReceiptItem[] | null;
+	meal: string;
+	selectedDate: string;
+}
+
+function removeItemFromArray(item: string, array: string[]): string[] {
+	const index = array.indexOf(item);
+	if (index !== -1) {
+		array.splice(index, 1);
+	}
+	return array;
 }
 
 function MealSearch(props: IngredientSearchProps) {
-	const { setOpen, receiptList } = props;
+	const { setOpen, meal, selectedDate } = props;
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
+	setTabbarOn(false);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
-	const [searchResultList, setSearchResultList] = useState<IngredientSearchItem[] | null>(null);
-	const [selectedIngredientList, setSelectedIngredientList] = useState<IngredientSearchItem[] | null>(null);
+	const [searchResultList, setSearchResultList] = useState<string[] | null>(null);
+	const [selectedMealList, setSelectedMealList] = useState<string[] | null>(null);
 	const [customIngredientList, setCustomIngredientList] = useState<CustomIngredientItemType[] | []>([]);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
+	const [sendMeal, setSendMeal] = useState<string>('');
+	const [registMeal, setRegistMeal] = useState<RegistMeal>({
+		name: '',
+		nutrientRequest: {
+			energy: 0,
+			carbohydrates: 0,
+			protein: 0,
+			dietaryFiber: 0,
+			calcium: 0,
+			sodium: 0,
+			iron: 0,
+			fats: 0,
+			vitaminA: 0,
+			vitaminC: 0,
+		},
+	});
+
+	const [sendData, setSendData] = useState<RegistMeal[]>([]);
 
 	const handleMenuSelect = (menu: string) => {
 		setMenuOpen(!menuOpen);
@@ -57,49 +84,66 @@ function MealSearch(props: IngredientSearchProps) {
 		]);
 	};
 
-	const handleIngredientSelect = (idx: number) => {
-		if (searchResultList) {
-			const selectedIngredient = searchResultList[idx];
-			const isAlreadySelected = selectedIngredientList?.some((item) => item.key === selectedIngredient.key);
-			if (!isAlreadySelected) {
-				setSelectedIngredientList((prevList) => [...(prevList || []), selectedIngredient]);
-			}
-		}
+	const handleMealSelect = (data: string) => {
+		getMealNutrient(data).then((response) => {
+			console.log(response);
+			setRegistMeal({
+				name: response.data.name,
+				nutrientRequest: {
+					energy: response.data.energy,
+					carbohydrates: response.data.carbohydrates,
+					protein: response.data.protein,
+					dietaryFiber: response.data.dietaryFiber,
+					calcium: response.data.calcium,
+					sodium: response.data.sodium,
+					iron: response.data.iron,
+					fats: response.data.fats,
+					vitaminA: response.data.vitaminA,
+					vitaminC: response.data.vitaminC,
+				},
+			});
+		});
+
+		setSelectedMealList((prevList) => [...(prevList || []), data]);
+		console.log(selectedMealList);
 	};
 
-	const handleDelete = (key: number) => {
-		if (!selectedIngredientList) {
-			return;
+	const handleDelete = (data: string) => {
+		if (selectedMealList) {
+			setSelectedMealList(removeItemFromArray(data, selectedMealList));
 		}
-		const newSelectIngredientList = selectedIngredientList.filter((item) => item.key !== key);
-		setSelectedIngredientList(newSelectIngredientList);
 	};
+	useEffect(() => {
+		setSendData((prev) => [...prev, registMeal]);
+	}, [registMeal]);
 
-	const handleSubmitIngredientRegist = () => {
-		if (selectedIngredientList && selectedIngredientList.length !== 0) {
+	const handleSubmitMealRegist = () => {
+		if (selectedMealList && selectedMealList.length !== 0) {
 			console.log('등록');
-			console.log(customIngredientList);
-			createIngredientList(
-				selectedIngredientList.map((item) => item.key),
-				customIngredientList,
-			).then((res) => {
-				if (res.status === 204) {
-					toast.success('재료 등록에 성공하였습니다.');
-					setOpen(false);
-					setTabbarOn(!tabbarOn);
-				} else {
-					toast.error('재료 등록에 실패하였습니다.');
-				}
+
+			console.log(meal);
+			console.log(sendMeal);
+			const totalData: RegistSendData = {
+				type: sendMeal,
+				date: selectedDate,
+				foodRequestList: sendData,
+			};
+
+			console.log(totalData);
+			// const emptyFile2 = new File([], 'empty-image', { type: 'image/jpeg' });
+			// const temp = [emptyFile2];
+			postRegistMealText(totalData).then((response) => {
+				console.log(response);
 			});
 		}
 	};
 
 	useEffect(() => {
 		if (searchKeyword !== '') {
-			getSearchIngredients(searchKeyword)
+			getSearchMeal(searchKeyword)
 				.then((res) => {
 					if (res.data && res.data.length > 0) {
-						setSearchResultList(formatSearchResultList(res.data));
+						setSearchResultList(res.data);
 						return;
 					}
 					setSearchResultList(null);
@@ -109,32 +153,29 @@ function MealSearch(props: IngredientSearchProps) {
 	}, [searchKeyword]);
 
 	useEffect(() => {
-		if (receiptList && receiptList.length !== 0) {
-			console.log('receipt');
-			setSelectedIngredientList([
-				...receiptList.map((item) => {
-					const selectItem = {
-						key: item.ingredientId,
-						text: item.ingredientName,
-					};
-					return selectItem;
-				}),
-			]);
+		if (meal === '아침') {
+			setSendMeal('BREAKFAST');
+		} else if (meal === '점심') {
+			setSendMeal('LUNCH');
+		} else if (meal === '저녁') {
+			setSendMeal('DINNER');
+		} else {
+			setSendMeal('SNACK');
 		}
-	}, [receiptList]);
+	}, [meal]);
 
 	if (menuOpen) {
-		if (selectedMenu === 'camera') return <IngredientRegistOCR setOpen={setMenuOpen} />;
+		if (selectedMenu === 'camera') return <MealCamera />;
 		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;
-		return <MealSearch setOpen={setMenuOpen} />;
+		return <MealSearch meal={meal} setOpen={setMenuOpen} selectedDate={selectedDate} />;
 	}
 
 	return (
-		<div className="ingredient-regist-album-container">
-			<SubHeader isBack title="재료 찾기" handleMove={handleMove} />
+		<div className="meal-regist-album-container">
+			<SubHeader isBack title="식단 찾기" handleMove={handleMove} />
 			<SearchTemplate>
 				{/* 인풋 */}
-				<InputSearch value={searchKeyword} placeholder="재료 이름을 입력하세요" onChangeValue={setSearchKeyword} />
+				<InputSearch value={searchKeyword} placeholder="식단 이름을 입력하세요" onChangeValue={setSearchKeyword} />
 
 				{/* 직접 입력하기 버튼 */}
 				<LargeButton
@@ -145,13 +186,12 @@ function MealSearch(props: IngredientSearchProps) {
 				/>
 
 				{/* 선택된 재료 */}
-				<SelectIngredientList selectedIngredientList={selectedIngredientList} onDelete={handleDelete} />
-
+				<SelectedMealList onDelete={handleDelete} selectedMealList={selectedMealList} />
 				{/* 검색 결과 */}
-				<IngredientSearchResultList
+				<MealSearchResultList
 					searchKeyword={searchKeyword}
 					searchResultList={searchResultList}
-					handleIngredientSelect={handleIngredientSelect}
+					handleMealSelect={handleMealSelect}
 				/>
 
 				{/* Floating 메뉴 */}
@@ -160,12 +200,10 @@ function MealSearch(props: IngredientSearchProps) {
 				{/* 검색/등록 버튼 */}
 				<LargeButton
 					buttonColor={
-						selectedIngredientList && selectedIngredientList.length !== 0
-							? LargeButtonColor.Green
-							: LargeButtonColor.Gray
+						selectedMealList && selectedMealList.length !== 0 ? LargeButtonColor.Green : LargeButtonColor.Gray
 					}
-					value="재료 등록하기"
-					buttonClick={handleSubmitIngredientRegist}
+					value="식단 등록하기"
+					buttonClick={handleSubmitMealRegist}
 				/>
 			</SearchTemplate>
 		</div>
@@ -173,7 +211,3 @@ function MealSearch(props: IngredientSearchProps) {
 }
 
 export default MealSearch;
-
-MealSearch.defaultProps = {
-	receiptList: null,
-};

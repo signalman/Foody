@@ -2,7 +2,6 @@ import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
 const { persistAtom } = recoilPersist();
-
 // 전체영양소 상태를 저장
 const nutrientState = atom({
 	key: 'nutrientState',

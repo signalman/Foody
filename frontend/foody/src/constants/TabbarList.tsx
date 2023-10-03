@@ -37,7 +37,7 @@ const TABBER_MENUS: ITabbarItem[] = [
 	{
 		icon: Receipt,
 		activeIcon: ReceiptActive,
-		menu: '식단 추천',
+		menu: '레시피',
 		url: 'recommend',
 	},
 ];

@@ -88,4 +88,10 @@ export const snackState = atom({
 	effects_UNSTABLE: [persistAtom],
 });
 
+export const userInfoState = atom({
+	key: 'userInfoState',
+	default: null,
+	effects_UNSTABLE: [persistAtom],
+});
+
 export default nutrientState; // 변수를 기본 내보내기로 설정

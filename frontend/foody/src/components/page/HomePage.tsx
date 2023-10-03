@@ -5,9 +5,16 @@ import BannerSlider from 'components/atom/BannerSlider/BannerSlider';
 import CalorieOfDay from 'components/molecule/CalorieOfDay/CalorieOfDay';
 import HomeShortcutButtons from 'components/molecule/HomeShortcutButtons/HomeShortcutButtons';
 import { useSetRecoilState } from 'recoil';
-import nutrientState, { breakfastState, dinnerState, lunchState, snackState } from 'recoil/atoms/nutrientState';
+import nutrientState, {
+	breakfastState,
+	dinnerState,
+	lunchState,
+	snackState,
+	userInfoState,
+} from 'recoil/atoms/nutrientState';
 import { getDaoyofNutrient, getUserMealInfo } from 'utils/api/meal';
 import { NutrientTotal } from 'types/meal';
+import { getUserInfo } from 'utils/api/auth';
 
 const HomePage = memo(() => {
 	const setNutrientData = useSetRecoilState(nutrientState);
@@ -15,6 +22,7 @@ const HomePage = memo(() => {
 	const setLunchState = useSetRecoilState(lunchState);
 	const setDinnerState = useSetRecoilState(dinnerState);
 	const setSnackState = useSetRecoilState(snackState);
+	const setUserInfo = useSetRecoilState(userInfoState);
 
 	useEffect(() => {
 		getDaoyofNutrient().then((response) => {
@@ -40,7 +48,13 @@ const HomePage = memo(() => {
 			setDinnerState(response.data.dinner);
 			setSnackState(response.data.snack);
 		});
-	}, [setBreakfastState, setDinnerState, setLunchState, setNutrientData, setSnackState]);
+
+		getUserInfo().then((res) => {
+			setUserInfo({
+				nickname: res.data.nickname,
+			});
+		});
+	}, [setBreakfastState, setDinnerState, setLunchState, setNutrientData, setSnackState, setUserInfo]);
 
 	return (
 		<HomeTemplate>

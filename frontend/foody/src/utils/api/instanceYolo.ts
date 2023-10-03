@@ -2,15 +2,16 @@ import axios, { AxiosError, AxiosInstance } from 'axios';
 import LocalStorage from 'constants/LocalStorage';
 import toast from 'react-hot-toast';
 
-export const instanceMultiPart: AxiosInstance = axios.create({
+export const instanceYolo: AxiosInstance = axios.create({
 	baseURL: 'https://j9c106.p.ssafy.io/',
+	// baseURL: 'http://127.0.0.1:5000/',
 	headers: {
 		'Content-Type': 'multipart/form-data',
 	},
 });
 
 // Axios 요청시 인터셉트
-instanceMultiPart.interceptors.request.use((req) => {
+instanceYolo.interceptors.request.use((req) => {
 	const accessToken = LocalStorage.getItem('accesstoken');
 	if (accessToken) {
 		req.headers.authorization = `Bearer ${accessToken}`;
@@ -20,7 +21,7 @@ instanceMultiPart.interceptors.request.use((req) => {
 });
 
 // Axios 응답시 인터셉트
-instanceMultiPart.interceptors.response.use(
+instanceYolo.interceptors.response.use(
 	(response) => response,
 	async (error: AxiosError) => {
 		// if (error.response?.status === 401) {
@@ -58,4 +59,4 @@ instanceMultiPart.interceptors.response.use(
 	},
 );
 
-export default instanceMultiPart;
+export default instanceYolo;

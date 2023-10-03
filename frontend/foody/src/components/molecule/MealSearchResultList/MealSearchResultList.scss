@@ -1,0 +1,44 @@
+@use 'styles/base/variable' as var;
+@use 'styles/mixins/flex' as f;
+
+.meal-search-result-list-conatainer {
+	margin-bottom: 20px;
+
+	.meal-search-result-list {
+		@include f.flex(column, start, start, 10px);
+
+		.meal-search-result-item {
+			@include f.flex(row, between, center, 20px);
+			width: 100%;
+            color: var.$black-400;
+            background-color: var.$white;
+            border: 1px solid var.$border-300;
+            border-radius: 10px;
+            padding-left: 20px;
+
+			button {
+				text-align: center;
+				width: 20%;
+				padding: 15px;
+				color: var.$black-400;
+				background-color: var.$white;
+				border: 1px solid var.$border-300;
+				border-radius: 10px;
+				font-size: var.$p1;
+				transition: 0.05s all ease-out;
+
+				&:active {
+					color: var.$white;
+					background-color: var.$primary-green-500;
+				}
+			}
+		}
+	}
+
+	.no-search-meal {
+		width: 100%;
+		text-align: center;
+		padding: 15px;
+		color: var.$black-200;
+	}
+}

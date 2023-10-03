@@ -55,7 +55,7 @@ function RecommendList({ index, title }: RecommendListProps) {
 					{index === 'ingredients' && data.length === 0 ? (
 						<li className="blank-item-container">
 							<span className="blank-desc">
-								가지고 있는 재료를 3개 이상 등록하고
+								가지고 있는 재료를 등록하여
 								<br />
 								만들 수 있는 레시피를 추천 받아보세요!
 							</span>

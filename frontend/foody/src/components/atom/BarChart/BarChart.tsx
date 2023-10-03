@@ -35,7 +35,7 @@ function BarChart({ total, value, previewValue = 0, barcolor }: BarChartProps) {
 		barWidth = totalWidth;
 	}
 	if (previewBarWidth >= totalWidth) {
-		previewBarWidth = totalWidth - 10;
+		previewBarWidth = totalWidth;
 	}
 
 	return (

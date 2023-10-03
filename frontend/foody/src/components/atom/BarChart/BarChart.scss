@@ -13,8 +13,8 @@
 		left: 5px;
 		transform: translateY(-50%);
 		height: calc(100% - 7.5px);
-		margin-top: 3.75px 5px;
 		border-radius: 10px;
+		max-width: calc(100% - 10px);
 	}
 }
 

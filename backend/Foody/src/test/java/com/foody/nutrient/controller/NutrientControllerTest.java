@@ -121,18 +121,18 @@ public class NutrientControllerTest extends ControllerTest {
         securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
         SecurityContextHolder.setContext(securityContext);
 
-        AteFoodNutrientInfoRequest ateFoodNutrientInfoRequest =
-            new AteFoodNutrientInfoRequest( LocalDateTime.now(),MealType.BREAKFAST);
+        String date = "2023-09-20";
+        String type = "LUNCH";
+
 
         NutrientResponse nutrientResponse = new NutrientResponse(1000,50,30,20,10,10,10,10,10,10);
 
-        when(nutrientService.calcMealNutrient(loginInfo.email(), ateFoodNutrientInfoRequest.time(), ateFoodNutrientInfoRequest.mealType())).thenReturn(nutrientResponse);
+        when(nutrientService.calcMealNutrient(loginInfo.email(), date, MealType.valueOf(type))).thenReturn(nutrientResponse);
 
         mockMvc.perform(
             get(baseUrl + "/nutrientInfo")
                 .with(authentication(new TestingAuthenticationToken(loginInfo, null)))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(ateFoodNutrientInfoRequest))
         ).andExpect(status().isOk())
             .andDo(
                 document("nutrient/nutrientInfo",
@@ -140,7 +140,7 @@ public class NutrientControllerTest extends ControllerTest {
                     preprocessResponse(prettyPrint()),
                     requestFields(
                         fieldWithPath("time").description("먹은 날짜"),
-                        fieldWithPath("mealType").description("식사 타입(MealType.BREAKFAST, MealType.LUNCH, MealType.DINNER, MealType.SNACK)")
+                        fieldWithPath("mealType").description("식사 타입(BREAKFAST, LUNCH, DINNER, SNACK)")
                         ),
                     responseFields(
                         fieldWithPath("energy").description("칼로리, Kcal"),

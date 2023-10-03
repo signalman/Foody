@@ -9,6 +9,8 @@ import com.foody.member.entity.Member;
 import com.foody.member.repository.MemberRepository;
 import com.foody.recipe.entity.Recipe;
 import com.foody.recipe.repository.RecipeCustomRepository;
+import com.foody.refrigerators.dto.request.IngredientCSV;
+import com.foody.refrigerators.repository.IngredientJDBCRepository;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -34,6 +36,7 @@ public class DataLoader {
 
     private final RecipeCustomRepository recipeCustomRepository;
     private final FoodSearchRepository foodSearchRepository;
+    private final IngredientJDBCRepository ingredientJDBCRepository;
     private final RedisTemplate redisTemplate;
     private static final String SEARCH_KEY = "search:keywords";
     private final ObjectMapper objectMapper;
@@ -192,6 +195,42 @@ public class DataLoader {
             redisTemplate.opsForValue().set(key, jsonValue);
             redisTemplate.opsForZSet().add(SEARCH_KEY, food.getName(), 0);
         }
+    }
+
+    public List<IngredientCSV> readIngredientsFromCSV(Reader reader) throws IOException {
+        ColumnPositionMappingStrategy<IngredientCSV> strategy = new ColumnPositionMappingStrategy<>();
+        strategy.setType(IngredientCSV.class);
+        String[] memberFieldsToBindTo = {
+            "ingredientId","ingredientName","ingredientType", "ingredientCategoryId", "iconImg"
+        };
+        strategy.setColumnMapping(memberFieldsToBindTo);
+
+        CsvToBean<IngredientCSV> csvToBean = new CsvToBeanBuilder<IngredientCSV>(reader)
+                .withMappingStrategy(strategy)
+                .withSkipLines(1)
+                .withType(IngredientCSV.class)
+                .build();
+
+        return csvToBean.parse();
+
+    }
+
+    @Bean
+    public CommandLineRunner ingredientDataLoad() {
+        return (args) -> {
+            boolean exits = ingredientJDBCRepository.isExistsData();
+            ClassPathResource resource = new ClassPathResource("ingredient/foody_ingredient.csv");
+
+            try (InputStream inputStream = resource.getInputStream();
+            Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+                if(!exits) {
+                    List<IngredientCSV> ingredients = readIngredientsFromCSV(reader);
+                    ingredientJDBCRepository.bulkInsert(ingredients);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
     }
 
 }

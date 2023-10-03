@@ -5,12 +5,12 @@ import com.foody.refrigerators.dto.request.InsertIngredientRequest;
 import com.foody.refrigerators.dto.response.SearchIngredientResponse;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.entity.CategoryType;
+import com.foody.refrigerators.entity.RefrigeratorIngredient;
 import com.foody.security.util.LoginInfo;
 import com.foody.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -187,6 +187,36 @@ public class RefrigeratorsControllerTest extends ControllerTest {
                                 preprocessResponse(prettyPrint()),
                                 pathParameters(
                                         parameterWithName("ingredientId").description("ingredient PK")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    @DisplayName("냉장고의_재료_여러_개를_한꺼번에_삭제한다.")
+    public void deleteIngredientList() throws Exception {
+        LoginInfo loginInfo = new LoginInfo("lkm454545@gmail.com");
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new TestingAuthenticationToken(loginInfo, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        Long[] ingredientIds = {1L, 2L};
+
+        doNothing().when(refrigeratorsService).deleteIngredientList(any(), any());
+
+        mockMvc.perform(
+                        delete(baseUrl + "/ingredients")
+                                .with(authentication(new TestingAuthenticationToken(loginInfo, null)))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(ingredientIds))
+                ).andExpect(status().isNoContent())
+                .andDo(
+                        document("refrigerators/deleteList",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                requestFields(
+                                        fieldWithPath("[]").description("ingredient PK List")
                                 )
                         )
                 );

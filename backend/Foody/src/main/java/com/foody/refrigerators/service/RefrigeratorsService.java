@@ -84,11 +84,11 @@ public class RefrigeratorsService {
     }
 
     public void insertIngredient(String email, List<Long> ingredients) {
+        Member member = memberService.findByEmail(email);
 
         List<RefrigeratorIngredient> insertIngredients = new ArrayList<>();
 
         for (long ingredientId : ingredients) {
-            Member member = memberService.findByEmail(email);
             Ingredient ingredient = findIngredient(ingredientId);
 
             RefrigeratorIngredient refrigeratorIngredient =
@@ -104,13 +104,14 @@ public class RefrigeratorsService {
 
     public void insertCustomIngredient(String email, List<CustomIngredientRequest> customIngredients) {
 
+        Member member = memberService.findByEmail(email);
+
         List<RefrigeratorIngredient> insertIngredients = new ArrayList<>();
 
         List<Ingredient> ingredients = customIngredients.stream().map(customIngredient -> findCustomIngredient(customIngredient)
                 .orElseGet(() -> saveCustomIngredient(customIngredient))).toList();
 
         for (Ingredient ingredient : ingredients) {
-            Member member = memberService.findByEmail(email);
 
             RefrigeratorIngredient refrigeratorIngredient =
                     RefrigeratorIngredient.from(member, ingredient);
@@ -145,6 +146,20 @@ public class RefrigeratorsService {
         RefrigeratorIngredient refrigeratorIngredient = findRefrigeratorIngredient(member, ingredient);
 
         refrigeratorIngredientRepository.delete(refrigeratorIngredient);
+    }
+
+    public void deleteIngredientList(String email, Long[] ingredientIds) {
+        Member member = memberService.findByEmail(email);
+
+        List<RefrigeratorIngredient> ingredients = new ArrayList<>();
+
+        for(Long ingredientId : ingredientIds) {
+            Ingredient ingredient = findIngredient(ingredientId);
+            RefrigeratorIngredient refrigeratorIngredient = findRefrigeratorIngredient(member, ingredient);
+            ingredients.add(refrigeratorIngredient);
+        }
+
+        refrigeratorIngredientRepository.deleteAllInBatch(ingredients);
     }
 
     public List<SearchIngredientResponse> getReceiptIngredient(String imgData) {

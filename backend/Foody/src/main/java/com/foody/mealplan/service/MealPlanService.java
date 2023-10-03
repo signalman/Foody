@@ -168,4 +168,24 @@ public class MealPlanService {
         findMeal.updateImage("");
         findMeal.updateTime(LocalTime.MIN);
     }
+
+    @Transactional
+    public void registMealPlanUsingText(LoginInfo loginInfo, MealPlanRequest mealPlanRequest) {
+        Member member = memberRepository.findByEmail(loginInfo.email()).orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+        LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
+
+        MealPlan mealPlan = mealPlanRepository.findByDateAndMemberId(localDate, member.getId())
+                                              .orElseGet(() -> {
+                                                  MealPlan newMealPlan = new MealPlan(member, localDate);
+                                                  return mealPlanRepository.save(newMealPlan);
+                                              });
+        List<FoodRequest> foodRequests = mealPlanRequest.foodRequestList();
+        Meal meal = getMealByType(mealPlan, mealPlanRequest.type());
+
+        for (FoodRequest foodRequest : foodRequests) {
+            meal.getFoods()
+                .add(Food.fromRequest(foodRequest, meal, ""));
+        }
+        meal.updateTime(LocalTime.now());
+    }
 }

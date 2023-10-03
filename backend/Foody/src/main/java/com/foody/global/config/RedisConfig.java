@@ -1,14 +1,23 @@
 package com.foody.global.config;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.CacheKeyPrefix;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+@EnableRedisRepositories
 @Configuration
 public class RedisConfig {
 
@@ -22,7 +31,7 @@ public class RedisConfig {
     private String password;
 
     @Bean
-    public RedisConnectionFactory redisConnectionFactory(){
+    public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(host);
         redisStandaloneConfiguration.setPort(port);
@@ -40,4 +49,32 @@ public class RedisConfig {
 
         return redisTemplate;
     }
+
+    @Bean
+    public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+                                                                                 .disableCachingNullValues()
+                                                                                 .entryTtl(
+                                                                                     Duration.ofDays(
+                                                                                         1L))
+                                                                                 .computePrefixWith(
+                                                                                     CacheKeyPrefix.simple())
+                                                                                 .serializeKeysWith(
+                                                                                     RedisSerializationContext.SerializationPair.fromSerializer(
+                                                                                         new StringRedisSerializer()))
+                                                                                 .serializeValuesWith(
+                                                                                     RedisSerializationContext.SerializationPair.fromSerializer(
+                                                                                         new StringRedisSerializer()));
+
+        Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
+        redisCacheConfigurationMap.put("UserRecipeStore", redisCacheConfiguration);
+
+        return RedisCacheManager.RedisCacheManagerBuilder
+            .fromConnectionFactory(redisConnectionFactory)
+            .cacheDefaults(redisCacheConfiguration)
+            .withInitialCacheConfigurations(redisCacheConfigurationMap)
+            .build();
+    }
+
 }

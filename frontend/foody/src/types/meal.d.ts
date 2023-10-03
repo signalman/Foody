@@ -42,3 +42,25 @@ export interface NutrientTotal {
 	vitaminA: number;
 	vitaminC: number;
 }
+
+export interface RegistMeal {
+	name: string;
+	nutrientRequest: {
+		energy: number;
+		carbohydrates: number;
+		protein: number;
+		dietaryFiber: number;
+		calcium: number;
+		sodium: number;
+		iron: number;
+		fats: number;
+		vitaminA: number;
+		vitaminC: number;
+	};
+}
+
+export interface RegistSendData {
+	type: string;
+	date: string;
+	foodRequestList: RegistMeal[];
+}

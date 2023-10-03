@@ -5,20 +5,30 @@ import DayofMealTitle from 'components/atom/DayofMealTitle/DayofMealTitle';
 import MealButton from 'components/atom/MealButton/MealButton';
 import { BarColor } from 'constants/color';
 import './DayofMealPart.scss';
-import React from 'react';
+import React, { Dispatch } from 'react';
 
 interface DayofMealPartProps {
 	meal: string;
 	goal: number;
 	value: number;
+	imgsrc: string;
+	setDetailOpen: Dispatch<React.SetStateAction<boolean>>;
+	setSearchOpen: Dispatch<React.SetStateAction<boolean>>;
+	setMeal: Dispatch<React.SetStateAction<string>>;
 }
-function DayofMealPart({ meal, goal, value }: DayofMealPartProps) {
-	const buttontest = () => {
-		console.log(1);
+function DayofMealPart({ setDetailOpen, setSearchOpen, setMeal, meal, goal, value, imgsrc }: DayofMealPartProps) {
+	const selectMove = () => {
+		if (imgsrc) {
+			setDetailOpen(true);
+		} else {
+			setSearchOpen(true);
+		}
+		setMeal(meal);
 	};
+
 	return (
 		<div className="dayofmeal-part">
-			<MealButton buttonClick={buttontest} />
+			<MealButton imgsrc={imgsrc} buttonClick={selectMove} />
 			<div className="dayofmeal-content">
 				<DayofMealTitle meal={meal} value={value} />
 				<BarChart barcolor={BarColor.Null} total={goal} value={value} />

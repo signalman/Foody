@@ -1,6 +1,11 @@
 # 빌드 단계
 FROM node:16 AS build
 
+ARG REACT_APP_SERVER_BASE_URL
+ARG REACT_APP_OAUTH_SERVER_URL
+ARG REACT_APP_OAUTH_DEVELOPE_URL
+ARG REACT_APP_DEVELOP_BASE_URL
+
 WORKDIR /app
 
 # 의존성 설치
@@ -9,6 +14,7 @@ RUN npm install
 
 # 소스 코드 복사 및 빌드
 COPY . ./
+RUN echo "REACT_APP_OAUTH_SERVER_URL: ${REACT_APP_OAUTH_SERVER_URL}"
 RUN npm run build
 
 # 런타임 단계
@@ -23,8 +29,12 @@ COPY ./nginx.conf /etc/nginx/conf.d
 # 빌드 단계에서 생성된 빌드 아티팩트를 Nginx에 복사
 COPY --from=build /app/build /app/build
 
+# 시간대 설정
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Seoul
+
 # Nginx 포트 설정 (생략 가능)
-EXPOSE 3000
+EXPOSE 80
 
 # Nginx 시작
 CMD ["nginx", "-g", "daemon off;"]

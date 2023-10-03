@@ -1,0 +1,13 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.recipe-nutrient-container {
+	h3 {
+		font-weight: var.$fw-600;
+		margin-bottom: 10px;
+	}
+
+	.nutrient-wrap {
+		@include f.flex(column, center, center, 20px);
+	}
+}

@@ -1,0 +1,79 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.recommend-list-skeleton-container {
+	.recommend-list-header {
+		@include f.flex(row, between, center);
+		margin-bottom: 10px;
+		padding: 0 10px;
+
+		.skeleton-title {
+			width: 60%;
+			height: 20px;
+		}
+
+		.skeleton-arrow {
+			width: 20px;
+			height: 20px;
+		}
+
+		button {
+			color: var.$black-300;
+		}
+	}
+
+	.recommend-list-body {
+		.recipe-list {
+			@include f.flex(row, start, center, 14px);
+
+			&.slider-container {
+				padding: 0;
+			}
+
+			&:first-child {
+				padding-left: 10px;
+			}
+			&:last-child {
+				padding-right: 10px;
+			}
+
+			li {
+				max-width: 140px;
+				min-width: 100px;
+
+				.skeleton-image {
+					width: 100px;
+					height: 100px;
+					margin-bottom: 6px;
+				}
+
+				.skeleton-text {
+					width: 80%;
+					height: 12px;
+					background-color: #e0e0e0;
+				}
+			}
+		}
+	}
+
+	.recommend-list-header .skeleton-title,
+	.recommend-list-header .skeleton-arrow,
+	.recommend-list-body .recipe-list li .skeleton-image,
+	.recommend-list-body .recipe-list li .skeleton-text {
+		border-radius: 6px;
+		background-color: #e0e0e0;
+		animation: loading 1.5s infinite ease-in-out;
+	}
+}
+
+@keyframes loading {
+	0% {
+		opacity: 0.6;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.6;
+	}
+}

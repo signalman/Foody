@@ -39,6 +39,7 @@ $black-900: #070707;
 $danger: #ff4f4f;
 $danger-add: #ffb2b2;
 
+$primary-green-100: #e5fff6;
 $primary-green-200: #8dd7be;
 $primary-green-300: #76c7ac;
 $primary-green-400: #48b590;
@@ -52,6 +53,8 @@ $primary-orange-600: #ff8a00;
 $primary-yellow-400: #fff2b7;
 $primary-yellow-500: #ffde1a;
 $primary-yellow-600: #ffd600;
+
+$primary-blue: #0a70ba;
 
 $border-100: #f7f7f7;
 $border-200: #f0f0f0;
@@ -81,6 +84,9 @@ $danger-alpa-40: rgba(255, 79, 79, 0.4);
 $danger-alpa-50: rgba(255, 79, 79, 0.5);
 $danger-alpa-60: rgba(255, 79, 79, 0.6);
 
+$primary-orange-alpa-30: rgba(255, 161, 18, 0.3);
+$primary-yellow-alpa-30: rgba(255, 222, 26, 0.3);
+
 // radius
 
 // margin
@@ -88,4 +94,12 @@ $danger-alpa-60: rgba(255, 79, 79, 0.6);
 // padding
 
 // 레벨
+$has-photo-z-index: 1;
 $tabbar-z-index: 1000;
+$camera-btn-container-z-index: 1000;
+$custom-bottom-sheet-container-z-index: 1100;
+
+$loading-spinner-container-z-index: 2000;
+$receipt-list-conatiner-z-index: 2001;
+
+$react-confirm-alert-overlay-z-index: 9999;

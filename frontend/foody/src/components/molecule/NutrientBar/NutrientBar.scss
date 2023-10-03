@@ -1,0 +1,32 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.nutrient-bar-container {
+	width: 100%;
+}
+
+.nutirent-of-day-title-box {
+	@include f.flex(row, between, center, 0px);
+	padding-bottom: 20px;
+
+	.nutreint-of-day-title {
+		font-size: var.$h3;
+		font-weight: var.$fw-400;
+		color: var.$black-500;
+	}
+
+	.nutrient-of-day-button {
+		font-size: var.$p3;
+		font-weight: var.$fw-400;
+		color: var.$black-300;
+		@include f.flex(row, between, center, 2px);
+	}
+}
+
+.nutrient-main-box {
+	width: 100%;
+	border: 1px solid var.$black-100;
+	border-radius: 10px;
+	padding: 15px;
+	@include f.flex(column, around, center, 10px);
+}

@@ -13,4 +13,11 @@ export enum LayoutTopMargin {
 	mt0 = 'mt-0',
 }
 
+export enum LayoutLeftRightMargin {
+	m30 = 'm30',
+	m20 = 'm20',
+	m10 = 'm10',
+	m0 = 'm0',
+}
+
 export default LayoutBottomMargin;

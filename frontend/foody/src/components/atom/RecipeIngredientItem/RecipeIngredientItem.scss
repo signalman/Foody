@@ -1,0 +1,11 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.recipe-ingredient-item-container {
+	@include f.flex(row, between, center);
+	width: 100%;
+	padding: 14px;
+	border-bottom: 1px solid var.$border-200;
+	font-size: var.$p2;
+	color: var.$black-400;
+}

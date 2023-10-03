@@ -1,0 +1,20 @@
+@use 'styles/base/variable' as var;
+
+.loading-spinner-container {
+	position: absolute;
+	z-index: var.$loading-spinner-container-z-index;
+	width: 100vw;
+	height: calc(100% + 88px);
+	top: -50px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: var.$black-alpa-50;
+
+	.loading-spinner {
+		position: absolute;
+		z-index: inherit;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}

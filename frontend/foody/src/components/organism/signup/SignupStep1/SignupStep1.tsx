@@ -11,25 +11,46 @@ interface SignupStep1Props {
 }
 
 function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
-	const [check, setCheck] = useState(false);
+	const [check, setCheck] = useState<boolean>(false);
+	const nicknameCheck = (value: string) => {
+		const alphanumbericRegex = /^[a-zA-Z0-9]+$/;
+		const isTrue = alphanumbericRegex.test(value);
+
+		if (isTrue === true || value === '') {
+			return true;
+		}
+
+		return false;
+	};
 
 	useEffect(() => {
-		if (nickname.length > 0) {
+		console.log(nickname);
+		console.log(check);
+		if (nickname.length === 0) {
 			setCheck(true);
 		} else {
 			setCheck(false);
 		}
-	}, [nickname]);
+	}, [nickname, check]);
 
 	return (
 		<div className="step1-container">
 			<SignupTitle value="닉네임을 알려주세요" />
-			<UnderlineInput onChangeValue={setNickname} placeholder="닉네임" unit="" value={nickname} />
+			<UnderlineInput
+				maxlength={16}
+				isValid={nicknameCheck}
+				onChangeValue={setNickname}
+				placeholder="닉네임"
+				unit=""
+				value={nickname}
+			/>
+			{!nicknameCheck && nickname.length > 0 && <p>키는 100이상 200이하로 입력해주세요.</p>}
 			<LargeButton
-				buttonClick={nextButton}
+				buttonClick={nickname.length ? nextButton : () => {}}
 				imgsrc=""
 				value="확인"
-				buttonColor={check ? LargeButtonColor.Green : LargeButtonColor.Gray}
+				buttonColor={nickname.length ? LargeButtonColor.Green : LargeButtonColor.Gray}
+				disabled={check}
 			/>
 		</div>
 	);

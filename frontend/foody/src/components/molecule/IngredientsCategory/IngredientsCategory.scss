@@ -1,0 +1,63 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.slider-container {
+	padding: 0 20px;
+	overflow-x: scroll;
+	overflow-y: visible;
+	white-space: nowrap;
+}
+
+.ingredients-category-container {
+	@include f.flex(row, start, center, 4px);
+
+	img {
+		width: 70px;
+	}
+
+	li,
+	button {
+		@include f.flex(column, center, center, 10px);
+		height: 120px;
+	}
+
+	li {
+		background-color: var.$white;
+		border-radius: 10px;
+		transition: all 0.1s ease-in-out;
+
+		&.active {
+			// background-color: var.$border-100;
+			// background-color: var.$primary-green-alpa-10;
+			background-color: var.$primary-green-100;
+
+			svg {
+				// transform: scaleY(1);
+				transform: rotate(0);
+			}
+
+			button {
+				font-weight: bold;
+			}
+		}
+	}
+
+	button {
+		padding: 12px 4px 8px;
+		width: 120px;
+		height: 100%;
+
+		.desc-wrap {
+			@include f.flex(column, between);
+			gap: 4px;
+			height: 100%;
+		}
+
+		svg {
+			// transform: scaleY(-1);
+			transform: rotate(180deg);
+			transition: all 0.3s ease-in-out;
+			color: var.$black-100;
+		}
+	}
+}

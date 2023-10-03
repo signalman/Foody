@@ -16,26 +16,49 @@
 		@include f.flex;
 		border: 1px solid var.$black-100;
 		border-radius: 10px;
+		padding: 20px;
 	}
 
 	.left {
-		@include f.flex(column, center, start);
+		@include f.flex(column, between, start);
 		grid-area: l;
-		padding: 20px;
+
+		.text-wrap {
+			width: 100%;
+			text-align: left;
+
+			h4 {
+				margin-bottom: 6px;
+			}
+		}
+
+		img {
+			width: 80%;
+			align-self: flex-end;
+		}
 
 		.desc {
 			font-size: var.$p2;
 			color: var.$black-200;
+			text-wrap: nowrap;
 		}
 	}
 
-	.right-top {
-		@include f.flex(row);
-		grid-area: rt;
-	}
-
+	.right-top,
 	.right-bottom {
-		@include f.flex(row);
+		img {
+			height: 40px;
+		}
+	}
+	.right-top {
+		@include f.flex(row, around);
+		grid-area: rt;
+		img {
+			height: 45px;
+		}
+	}
+	.right-bottom {
+		@include f.flex(row, around);
 		grid-area: rb;
 	}
 }

@@ -1,0 +1,15 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.meal-information-box {
+	.meal-information-title {
+		font-size: var.$h3;
+		font-weight: var.$fw-400;
+		color: var.$black-500;
+		padding-bottom: 20px;
+	}
+
+	.meal-information {
+		@include f.flex(column, center, center, 20px);
+	}
+}

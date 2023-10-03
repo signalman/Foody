@@ -4,12 +4,13 @@ import { AiOutlinePlus } from 'react-icons/ai';
 
 interface MealButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	buttonClick: () => void;
+	imgsrc: string;
 }
 
-function MealButton({ buttonClick }: MealButtonProps) {
+function MealButton({ buttonClick, imgsrc }: MealButtonProps) {
 	return (
 		<button className="meal-button" type="button" onClick={buttonClick}>
-			<AiOutlinePlus size={24} className="meal-button-icon" />
+			{imgsrc ? <img src={imgsrc} alt="" /> : <AiOutlinePlus size={24} className="meal-button-icon" />}
 		</button>
 	);
 }

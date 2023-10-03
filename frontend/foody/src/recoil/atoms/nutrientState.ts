@@ -1,5 +1,7 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
 
+const { persistAtom } = recoilPersist();
 // 전체영양소 상태를 저장
 const nutrientState = atom({
 	key: 'nutrientState',
@@ -31,6 +33,7 @@ export const breakfastState = atom({
 		vitaminA: 0,
 		vitaminC: 0,
 	},
+	effects_UNSTABLE: [persistAtom],
 });
 
 export const lunchState = atom({
@@ -47,6 +50,7 @@ export const lunchState = atom({
 		vitaminA: 0,
 		vitaminC: 0,
 	},
+	effects_UNSTABLE: [persistAtom],
 });
 
 export const dinnerState = atom({
@@ -63,6 +67,7 @@ export const dinnerState = atom({
 		vitaminA: 0,
 		vitaminC: 0,
 	},
+	effects_UNSTABLE: [persistAtom],
 });
 
 export const snackState = atom({
@@ -79,5 +84,6 @@ export const snackState = atom({
 		vitaminA: 0,
 		vitaminC: 0,
 	},
+	effects_UNSTABLE: [persistAtom],
 });
 export default nutrientState; // 변수를 기본 내보내기로 설정

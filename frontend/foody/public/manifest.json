@@ -1,6 +1,6 @@
 {
   "short_name": "FOODY",
-  "name": "FOODY WebApp",
+  "name": "FOODY",
   "icons": [
     {
       "src": "favicon.ico",
@@ -21,7 +21,7 @@
   "scope": "/",
   "start_url": "/",
   "display": "standalone",
-  "theme_color" : "#1AA274",
+  "theme_color": "#1AA274",
   "background_color": "#ffffff",
-  "description" : "필수 영양소 기반 요리 추천 서비스"
+  "description": "필수 영양소 기반 요리 추천 서비스"
 }

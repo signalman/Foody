@@ -19,7 +19,7 @@ const HomePage = memo(() => {
 	useEffect(() => {
 		getDaoyofNutrient().then((response) => {
 			const responseData: NutrientTotal = response.data;
-			console.log(responseData);
+
 			setNutrientData({
 				calcium: responseData.calcium,
 				carbohydrates: responseData.carbohydrates,
@@ -32,8 +32,6 @@ const HomePage = memo(() => {
 				vitaminA: responseData.vitaminA,
 				vitaminC: responseData.vitaminC,
 			});
-			console.log(setNutrientData);
-			console.log(test);
 		});
 
 		getUserMealInfo().then((response) => {

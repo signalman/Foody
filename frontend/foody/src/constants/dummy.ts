@@ -1,6 +1,7 @@
 import formatDate from 'utils/common/formatDate';
 // import ReceiptListType from 'types/receipt';
 import { CustomIngredientItemType } from 'types/refrigerator';
+import TempImg from 'assets/images/RecommendTempImg.png';
 
 export const DUMMY_INGREDIENTS_ITEM_INFO_LIST = [
 	{
@@ -88,6 +89,14 @@ export const DUMMY_CUSTOM_INGREDIENT_LIST: CustomIngredientItemType[] = [
 		ingredientCategoryId: 2,
 		ingredientName: '사과',
 	},
+];
+
+export const DUMMY_RECOMMEND_LIST1: RecommendItem[] = [
+	{ id: 0, name: '닭가슴살 샐러드드드드드드', url: TempImg },
+	{ id: 1, name: '닭가슴살 샐러드2asdg', url: TempImg },
+	{ id: 2, name: '닭가슴살 샐러드3', url: TempImg },
+	{ id: 3, name: '닭가슴살 샐러드4', url: TempImg },
+	{ id: 4, name: '닭가슴살 샐러드5', url: TempImg },
 ];
 
 export default DUMMY_CUSTOM_INGREDIENT_LIST;

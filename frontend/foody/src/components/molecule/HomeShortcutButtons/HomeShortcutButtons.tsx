@@ -22,7 +22,7 @@ function HomeShortcutButtons() {
 			</button>
 			<button type="button" className="item right-top" onClick={() => handleMovePage('/recommend')}>
 				<img src={mainMealRecommendIcon} alt="" />
-				<h4>식단 추천</h4>
+				<h4>레시피</h4>
 			</button>
 			<button type="button" className="item right-bottom" onClick={() => handleMovePage('/refri')}>
 				<img src={mainRefriIcon} alt="" />

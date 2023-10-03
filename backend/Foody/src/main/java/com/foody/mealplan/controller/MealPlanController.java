@@ -52,9 +52,14 @@ public class MealPlanController {
     public ResponseEntity<String> registMealPlan(
         @AuthenticationPrincipal LoginInfo loginInfo,
         @RequestPart MealPlanRequest mealPlanRequest,
-        @RequestPart MultipartFile mealImage,
-        @RequestPart List<MultipartFile> foodImages
+        @RequestPart(required = false) MultipartFile mealImage,
+        @RequestPart(required = false) List<MultipartFile> foodImages
         ){
+        log.info("mealPlanRequest: {}", mealPlanRequest);
+        log.info("mealImage: {}", mealImage);
+        for (MultipartFile foodImage : foodImages) {
+            log.info("foodImage: {}", foodImage);
+        }
         mealPlanService.registMealPlan(loginInfo, mealPlanRequest, mealImage, foodImages);
         return ResponseEntity.noContent().build();
     }
@@ -67,6 +72,16 @@ public class MealPlanController {
         ){
         mealPlanService.modifyMealPlan(loginInfo, mealPlanRequest, foodImages);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/food/text")
+    public ResponseEntity<String> registFoodUsingText(
+        @AuthenticationPrincipal LoginInfo loginInfo,
+        @RequestPart MealPlanRequest mealPlanRequest
+    ){
+        mealPlanService.registMealPlanUsingText(loginInfo, mealPlanRequest);
+        return ResponseEntity.noContent()
+                             .build();
     }
 
     @DeleteMapping("/{date}/{type}")

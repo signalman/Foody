@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -23,6 +24,7 @@ import java.util.*;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RefrigeratorsService {
 
@@ -62,6 +64,7 @@ public class RefrigeratorsService {
         return ingredientRepository.findIngredientByIngredientNameAndIngredientCategory_Id(ingredient.ingredientName(), ingredient.ingredientCategoryId());
     }
 
+    @Transactional
     public Ingredient saveCustomIngredient(CustomIngredientRequest customIngredient) {
         IngredientCategory ingredientCategory = findIngredientCategory(customIngredient.ingredientCategoryId());
         return ingredientRepository.save(Ingredient.from(customIngredient.ingredientName(), ingredientCategory));
@@ -83,6 +86,7 @@ public class RefrigeratorsService {
         return ingredientRepository.existsByIngredientNameAndIngredientType(keyword, IngredientType.INITIAL);
     }
 
+    @Transactional
     public void insertIngredient(String email, List<Long> ingredients) {
         Member member = memberService.findByEmail(email);
 
@@ -102,6 +106,7 @@ public class RefrigeratorsService {
         refrigeratorIngredientRepository.saveAll(insertIngredients);
     }
 
+    @Transactional
     public void insertCustomIngredient(String email, List<CustomIngredientRequest> customIngredients) {
 
         Member member = memberService.findByEmail(email);
@@ -131,6 +136,7 @@ public class RefrigeratorsService {
         return ingredients.stream().map(ingredient -> new UserRefrigeratorResponse(ingredient)).toList();
     }
 
+    @Transactional
     public void resetRefrigerator(String email) {
         Member member = memberService.findByEmail(email);
 
@@ -139,6 +145,7 @@ public class RefrigeratorsService {
 
     }
 
+    @Transactional
     public void deleteUserIngredient(String email, Long ingredientId) {
         Member member = memberService.findByEmail(email);
         Ingredient ingredient = findIngredient(ingredientId);
@@ -148,6 +155,7 @@ public class RefrigeratorsService {
         refrigeratorIngredientRepository.delete(refrigeratorIngredient);
     }
 
+    @Transactional
     public void deleteIngredientList(String email, Long[] ingredientIds) {
         Member member = memberService.findByEmail(email);
 
@@ -201,18 +209,18 @@ public class RefrigeratorsService {
         List<Map<String, Object>> subResults = (List<Map<String, java.lang.Object>>) result.get("subResults");
         List<Map<String, Object>> items = (List<Map<String, Object>>) subResults.get(0).get("items");
 
-        List<SearchIngredientResponse> list = new ArrayList<>();
+        Set<SearchIngredientResponse> set = new HashSet<>();
 
         for (Map<String, Object> item : items) {
             Map<String, Object> name = (Map<String, Object>) item.get("name");
             String itemName = (String) name.get("text");
 
-            log.debug("상품명 : {}", itemName);
+//            log.debug("상품명 : {}", itemName);
 
             Map<String, Object> categoryResult = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("query", itemName)
-                            .queryParam("display", "4")
+                            .queryParam("display", "2")
                             .build())
                     .retrieve()
                     .bodyToMono(Map.class)
@@ -224,20 +232,21 @@ public class RefrigeratorsService {
                 continue;
             }
 
-            Map<String, Object> itemCategory = itemCategorys.get(0);
+            for(Map<String, Object> itemCategory : itemCategorys) {
+                String itemMappingResult = ((String) itemCategory.get("category4")).isBlank()
+                        ? ((String) itemCategory.get("category3")) : ((String) itemCategory.get("category4"));
 
-            String itemMappingResult = ((String) itemCategory.get("category4")).isBlank()
-                    ? ((String) itemCategory.get("category3")) : ((String) itemCategory.get("category4"));
+                log.debug("네이버 쇼핑 API 호출 결과 : {}", itemMappingResult);
 
-            log.debug("네이버 쇼핑 API 호출 결과 : {}", itemMappingResult);
-
-            log.debug("재료 DB에 존재 여부 : {}", existsIngredient(itemMappingResult));
-            if (existsIngredient(itemMappingResult)) {
-                list.add(new SearchIngredientResponse(searchIngredient(itemMappingResult)));
+                log.debug("재료 DB에 존재 여부 : {}", existsIngredient(itemMappingResult));
+                if (existsIngredient(itemMappingResult)) {
+                    set.add(new SearchIngredientResponse(searchIngredient(itemMappingResult)));
+                    break;
+                }
             }
         }
 
-        return list;
+        return set.stream().toList();
 
     }
 

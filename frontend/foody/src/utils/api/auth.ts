@@ -34,4 +34,10 @@ export const resultMBTI = async (data: number[]) => {
 	const response = await instance.post('/mbti/create', body);
 	return response;
 };
+
+export const getUserInfo = async () => {
+	const response = await instance.get('/member/nickname');
+	return response;
+};
+
 export default login;

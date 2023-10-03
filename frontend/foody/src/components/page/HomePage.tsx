@@ -33,7 +33,6 @@ const HomePage = memo(() => {
 				vitaminC: responseData.vitaminC,
 			});
 			console.log(setNutrientData);
-			console.log(test);
 		});
 
 		getUserMealInfo().then((response) => {

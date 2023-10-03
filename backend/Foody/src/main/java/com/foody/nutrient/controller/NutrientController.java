@@ -61,7 +61,7 @@ public class NutrientController {
     public ResponseEntity<NutrientByTypeResponse> getAllTypeNutrient(@AuthenticationPrincipal LoginInfo loginInfo) {
         log.debug("{} request All Type Nutrient", loginInfo.email());
 
-        NutrientByTypeResponse nutrientByTypeResgponse = nutrientService.getAllNutrient(loginInfo.email());
+        NutrientByTypeResponse nutrientByTypeResponse = nutrientService.getAllNutrient(loginInfo.email());
 
         return ResponseEntity.ok().body(nutrientByTypeResponse);
     }

@@ -5,6 +5,17 @@
 	// height: 18.334px;
 	border: 1px solid var.$black-100;
 	border-radius: 10px;
+	position: relative;
+
+	.preview-bar {
+		position: absolute;
+		top: 50%;
+		left: 5px;
+		transform: translateY(-50%);
+		height: calc(100% - 7.5px);
+		border-radius: 10px;
+		max-width: calc(100% - 10px);
+	}
 }
 
 .bar-content {
@@ -27,4 +38,20 @@
 
 .red {
 	background-color: var.$danger;
+}
+
+.preview-green {
+	background-color: var.$primary-green-alpa-30;
+}
+
+.preview-orange {
+	background-color: var.$primary-orange-alpa-30;
+}
+
+.preview-yellow {
+	background-color: var.$primary-yellow-alpa-30;
+}
+
+.preview-red {
+	background-color: var.$danger-alpa-30;
 }

@@ -16,6 +16,14 @@ export enum BarColor {
 	Null = 'noColor',
 }
 
+export enum PreviewBarColor {
+	Green = 'preview-green',
+	Orange = 'preview-orange',
+	Yellow = 'preview-yellow',
+	Red = 'preview-red',
+	Null = 'preview-noColor',
+}
+
 export enum MealColor {
 	Breakfast = 'yellow',
 	Lunch = 'orange',

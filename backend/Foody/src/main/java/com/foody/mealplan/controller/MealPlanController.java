@@ -74,6 +74,16 @@ public class MealPlanController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/food/text")
+    public ResponseEntity<String> registFoodUsingText(
+        @AuthenticationPrincipal LoginInfo loginInfo,
+        @RequestPart MealPlanRequest mealPlanRequest
+    ){
+        mealPlanService.registMealPlanUsingText(loginInfo, mealPlanRequest);
+        return ResponseEntity.noContent()
+                             .build();
+    }
+
     @DeleteMapping("/{date}/{type}")
     public ResponseEntity<String> deleteMealPlan(
         @AuthenticationPrincipal LoginInfo loginInfo,

@@ -27,11 +27,11 @@ public class Recipe {
     @Column private double energy;
     @Column private double carbohydrates;
     @Column private double protein;
+    @Column private double fats;
     @Column private double dietaryFiber;
     @Column private double calcium;
     @Column private double sodium;
     @Column private double iron;
-    @Column private double fats;
     @Column private double vitaminA;
     @Column private double vitaminC;
 }

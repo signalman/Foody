@@ -28,7 +28,7 @@ class RecipeServiceTest extends ServiceTest {
         memberInfoGenerator();
 
         Member member = memberService.findByEmail(email);
-        long id = 393505;
+        long id = 223584;
         RecipeResponse recipeResponse = recipeService.findById(id, email);
 
         Mbti mbti = member.getMbti();

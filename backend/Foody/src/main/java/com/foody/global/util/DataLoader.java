@@ -97,7 +97,7 @@ public class DataLoader {
         String[] memberFieldsToBindTo = {
             "id", "name", "ingredient", "description", "url", "difficulty", "servers",
             "foodMethod", "foodSituation", "foodIngredients", "foodTypes", "energy", "carbohydrates",
-            "protein", "dietaryFiber", "calcium", "sodium", "iron", "fats", "vitaminA", "vitaminC"
+            "protein", "fats", "dietaryFiber", "calcium", "sodium", "iron", "vitaminA", "vitaminC"
         };
         strategy.setColumnMapping(memberFieldsToBindTo);
 

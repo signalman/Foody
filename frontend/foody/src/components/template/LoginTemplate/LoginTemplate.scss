@@ -22,6 +22,7 @@
 	.btn-group {
 		position: fixed;
 		width: calc(100% - 30px);
+		max-width: 500px;
 		left: 50%;
 		bottom: 10%;
 		transform: translateX(-50%);

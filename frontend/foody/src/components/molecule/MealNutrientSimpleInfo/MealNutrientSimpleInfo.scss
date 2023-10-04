@@ -2,7 +2,7 @@
 @use 'styles/mixins/flex.scss' as f;
 
 .meal-nutrient-simple-info-box {
-	@include f.flex(column, center, center, 30px);
+	@include f.flex(column, center, center, 10px);
 	background-color: var.$primary-green-alpa-60;
 	height: 200px;
 	width: 100%;
@@ -13,10 +13,11 @@
 		@include f.flex(row, between, center, 0px);
 		font-weight: var.$fw-400;
 		font-size: var.$h4;
+		padding-bottom: 5px;
 	}
 
 	.meal-nutrient-simple-info-content {
-		@include f.flex(column, center, center, 10px);
+		@include f.flex(column, center, center, 8px);
 		width: 100%;
 		padding: 0 30px;
 	}

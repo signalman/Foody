@@ -1,9 +1,10 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
+import { NutrientTotal } from 'types/meal';
 
 const { persistAtom } = recoilPersist();
 // 전체영양소 상태를 저장
-const nutrientState = atom({
+const nutrientState = atom<NutrientTotal>({
 	key: 'nutrientState',
 	default: {
 		energy: 0,
@@ -20,7 +21,7 @@ const nutrientState = atom({
 	effects_UNSTABLE: [persistAtom],
 });
 
-export const breakfastState = atom({
+export const breakfastState = atom<NutrientTotal>({
 	key: 'breakfastState',
 	default: {
 		energy: 0,
@@ -37,7 +38,7 @@ export const breakfastState = atom({
 	effects_UNSTABLE: [persistAtom],
 });
 
-export const lunchState = atom({
+export const lunchState = atom<NutrientTotal>({
 	key: 'lunchState',
 	default: {
 		energy: 0,
@@ -54,7 +55,7 @@ export const lunchState = atom({
 	effects_UNSTABLE: [persistAtom],
 });
 
-export const dinnerState = atom({
+export const dinnerState = atom<NutrientTotal>({
 	key: 'dinnerState',
 	default: {
 		energy: 0,
@@ -71,7 +72,7 @@ export const dinnerState = atom({
 	effects_UNSTABLE: [persistAtom],
 });
 
-export const snackState = atom({
+export const snackState = atom<NutrientTotal>({
 	key: 'snackState',
 	default: {
 		energy: 0,

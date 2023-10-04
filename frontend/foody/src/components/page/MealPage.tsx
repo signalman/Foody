@@ -8,7 +8,7 @@ import MealTemplate from 'components/template/MealTemplate/MealTemplate';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { breakfastState, dinnerState, lunchState, snackState } from 'recoil/atoms/nutrientState';
-import getDayofMeal from 'utils/api/meal';
+import getDayofMeal, { recentMeal } from 'utils/api/meal';
 
 const data = {
 	total: {
@@ -48,13 +48,21 @@ function MealPage() {
 	const dinState = useRecoilValue(dinnerState);
 	const snaState = useRecoilValue(snackState);
 
+	const [deleteOk, setDeleteOk] = useState<boolean>(false);
+
+	const [nowmonth, setMonth] = useState<string>('');
+	const [nowday, setDay] = useState<string>('');
+
+	const [bookDate, setBookDate] = useState<string[]>([]);
 	useEffect(() => {
 		const dateObject = new Date(selectedDate);
-
+		// year, month, day 자르기
 		const year = dateObject.getFullYear();
 		const month = String(dateObject.getMonth() + 1).padStart(2, '0');
 		const day = String(dateObject.getDate()).padStart(2, '0');
-
+		setMonth(month);
+		setDay(day);
+		// sendDate 처리
 		const sendDate = `${year}-${month}-${day}`;
 		setGetDate(sendDate);
 
@@ -65,11 +73,16 @@ function MealPage() {
 			setSnack(response.data.snack);
 			setTotal(response.data.total);
 		});
-		console.log(selectedDate);
 
 		setDisplayMonth(selectedDate);
-	}, [selectedDate]);
-	console.log(breakfast);
+		setDeleteOk(false);
+	}, [selectedDate, deleteOk, meal, breakfast.foods.length]);
+
+	useEffect(() => {
+		recentMeal().then((response) => {
+			setBookDate(response.data);
+		});
+	});
 
 	if (searchOpen === true && meal) {
 		return <MealSearch setOpen={setSearchOpen} meal={meal} selectedDate={getDate} />;
@@ -77,16 +90,60 @@ function MealPage() {
 
 	if (detailOpen === true && meal) {
 		if (meal === '아침') {
-			return <DetailMeal selectedDate={getDate} meal={meal} getData={breakfast} requireData={breakState} />;
+			return (
+				<DetailMeal
+					selectedDate={getDate}
+					meal={meal}
+					getData={breakfast}
+					requireData={breakState}
+					setDeleteOk={setDeleteOk}
+					setDetailOpen={setDetailOpen}
+					month={nowmonth}
+					day={nowday}
+				/>
+			);
 		}
 		if (meal === '점심') {
-			return <DetailMeal selectedDate={getDate} meal={meal} getData={lunch} requireData={lunState} />;
+			return (
+				<DetailMeal
+					selectedDate={getDate}
+					meal={meal}
+					getData={lunch}
+					requireData={lunState}
+					setDeleteOk={setDeleteOk}
+					setDetailOpen={setDetailOpen}
+					month={nowmonth}
+					day={nowday}
+				/>
+			);
 		}
 		if (meal === '저녁') {
-			return <DetailMeal selectedDate={getDate} meal={meal} getData={dinner} requireData={dinState} />;
+			return (
+				<DetailMeal
+					selectedDate={getDate}
+					meal={meal}
+					getData={dinner}
+					requireData={dinState}
+					setDeleteOk={setDeleteOk}
+					setDetailOpen={setDetailOpen}
+					month={nowmonth}
+					day={nowday}
+				/>
+			);
 		}
 		if (meal === '간식') {
-			return <DetailMeal selectedDate={getDate} meal={meal} getData={snack} requireData={snaState} />;
+			return (
+				<DetailMeal
+					selectedDate={getDate}
+					meal={meal}
+					getData={snack}
+					requireData={snaState}
+					setDeleteOk={setDeleteOk}
+					setDetailOpen={setDetailOpen}
+					month={nowmonth}
+					day={nowday}
+				/>
+			);
 		}
 	}
 
@@ -97,6 +154,7 @@ function MealPage() {
 				setSelectedDate={setSelectedDate}
 				displayMonth={displayMonth}
 				setDisplayMonth={setDisplayMonth}
+				bookDate={bookDate}
 			/>
 			<MealTable total={total} breakfast={breakfast} lunch={lunch} dinner={dinner} snack={snack} />
 			<NutrientOfDay total={total} />

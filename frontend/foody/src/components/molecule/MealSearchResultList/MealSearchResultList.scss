@@ -6,15 +6,17 @@
 
 	.meal-search-result-list {
 		@include f.flex(column, start, start, 10px);
+		max-height: calc(100vh - 420px);
+		overflow: scroll;
 
 		.meal-search-result-item {
 			@include f.flex(row, between, center, 20px);
 			width: 100%;
-            color: var.$black-400;
-            background-color: var.$white;
-            border: 1px solid var.$border-300;
-            border-radius: 10px;
-            padding-left: 20px;
+			color: var.$black-400;
+			background-color: var.$white;
+			border: 1px solid var.$border-300;
+			border-radius: 10px;
+			padding-left: 20px;
 
 			button {
 				text-align: center;

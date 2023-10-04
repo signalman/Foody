@@ -167,7 +167,8 @@ function MealSearch(props: IngredientSearchProps) {
 		return <RegisterMealSelf setWrite={setWrite} setRegistMealk={setRegistMeal} setSelfName={setSelfName} />;
 	}
 	if (menuOpen) {
-		if (selectedMenu === 'camera') return <MealCamera sendMeal={sendMeal} selectedDate={selectedDate} />;
+		if (selectedMenu === 'camera')
+			return <MealCamera sendMeal={sendMeal} selectedDate={selectedDate} setOpen={setOpen} />;
 		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;
 		return <MealSearch meal={meal} setOpen={setMenuOpen} selectedDate={selectedDate} />;
 	}

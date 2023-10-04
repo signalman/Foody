@@ -97,17 +97,18 @@ public class MealPlanService {
             meal.updateImage(uploadUrl);
         }
 
-        for(int idx = 0; idx < foodRequests.size(); idx++){
+        int size = Math.min(foodRequests.size(), foodImages.size());
 
+        for (int idx = 0; idx < size; idx++) {
             String imageUrl = "";
-            if (foodImages.get(idx) != null) {
-                //빈 스트링으로
-                imageUrl = amazonS3Service.uploadFile(foodImages.get(idx));
+
+            MultipartFile imageFile = foodImages.get(idx);
+            if (imageFile != null && !imageFile.isEmpty()) {
+                imageUrl = amazonS3Service.uploadFile(imageFile);
             }
             meal.getFoods()
                 .add(Food.fromRequest(foodRequests.get(idx), meal, imageUrl));
         }
-
         meal.updateTime(LocalTime.now());
     }
 

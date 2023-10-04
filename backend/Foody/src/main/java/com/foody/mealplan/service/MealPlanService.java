@@ -151,15 +151,16 @@ public class MealPlanService {
         return foods;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void deleteMealPlan(LoginInfo loginInfo, String date, String type, Integer idx) {
+    @Transactional
+    public void deleteMealPlan(LoginInfo loginInfo, String date, String type, int idx) {
         Member member = memberService.findByEmail(loginInfo.email());
         LocalDate localDate = FoodyDateFormatter.toLocalDate(date);
-
         MealPlan mealPlan = findByDateAndMemberId(localDate, member.getId());
         Meal meal = getMealByType(mealPlan, MealType.valueOf(type));
+        log.info("음식들 전: {}", meal.getFoods());
 
         meal.getFoods().remove(idx);
+        log.info("음식들 gn: {}", meal.getFoods());
     }
 
     @Transactional

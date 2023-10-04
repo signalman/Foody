@@ -152,21 +152,14 @@ public class MealPlanService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void deleteMealPlan(LoginInfo loginInfo, String date, String type) {
+    public void deleteMealPlan(LoginInfo loginInfo, String date, String type, Integer idx) {
         Member member = memberService.findByEmail(loginInfo.email());
         LocalDate localDate = FoodyDateFormatter.toLocalDate(date);
-        MealPlan findMealPlan = findByDateAndMemberId(localDate, member.getId());
-        Meal findMeal = getMealByType(findMealPlan, MealType.valueOf(type));
-        List<Food> foodsToRemove = new ArrayList<>(findMeal.getFoods());
-        for (Food food : foodsToRemove) {
-            if(!food.getImageUrl().equals("")){
-                amazonS3Service.deleteFile(food.getImageUrl());
-            }
-            findMeal.getFoods().remove(food);
-            em.remove(food);
-        }
-        findMeal.updateImage("");
-        findMeal.updateTime(LocalTime.MIN);
+
+        MealPlan mealPlan = findByDateAndMemberId(localDate, member.getId());
+        Meal meal = getMealByType(mealPlan, MealType.valueOf(type));
+
+        meal.getFoods().remove(idx);
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import UnderlineInput from 'components/atom/UnderlineInput/UnderlineInput';
 import LargeButtonColor from 'constants/color';
 import BottomButtonLayout from 'components/template/BottomButtonLayout/BottomButtonLayout';
 import React, { useEffect, useState } from 'react';
+import SignupInfoTemplate from 'components/template/SignupInfoTemplate/SignupInfoTemplate';
 
 interface SignupStep1Props {
 	nickname: string;
@@ -35,7 +36,7 @@ function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 	}, [nickname, check]);
 
 	return (
-		<div className="step1-container">
+		<SignupInfoTemplate>
 			<SignupTitle value="닉네임을 알려주세요" />
 			<UnderlineInput
 				maxlength={16}
@@ -55,7 +56,7 @@ function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 					disabled={check}
 				/>
 			</BottomButtonLayout>
-		</div>
+		</SignupInfoTemplate>
 	);
 }
 

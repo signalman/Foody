@@ -1,13 +1,14 @@
 @use 'styles/base/variable.scss' as var;
-@use 'styles/mixins/fles.scss' as f;
+@use 'styles/mixins/flex.scss' as f;
 
 .detail-meal-check-container {
 	@include f.flex(row, between, center);
+	width: 100%;
 	font-size: var.$p4;
 	font-weight: var.$fw-300;
 	color: var.$black-500;
 
 	.detail-meal-check-btn {
-		@include f.flex(row, between, center, 3px);
+		@include f.flex(row, between, start, 2px);
 	}
 }

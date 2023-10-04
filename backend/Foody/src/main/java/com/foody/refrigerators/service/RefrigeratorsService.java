@@ -215,6 +215,11 @@ public class RefrigeratorsService {
             Map<String, Object> name = (Map<String, Object>) item.get("name");
             String itemName = (String) name.get("text");
 
+            if (existsIngredient(itemName)) {
+                set.add(new SearchIngredientResponse(searchIngredient(itemName)));
+                continue;
+            }
+
 //            log.debug("상품명 : {}", itemName);
 
             Map<String, Object> categoryResult = webClient.get()

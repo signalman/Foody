@@ -41,7 +41,7 @@ function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 				maxlength={16}
 				isValid={nicknameCheck}
 				onChangeValue={setNickname}
-				placeholder="영어 또는 숫자를 포함하여 16자 이내"
+				placeholder="닉네임"
 				unit=""
 				value={nickname}
 			/>

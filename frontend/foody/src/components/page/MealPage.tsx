@@ -6,6 +6,8 @@ import MealTable from 'components/organism/meal/MealTable/MealTable';
 import NutrientOfDay from 'components/organism/meal/NutrientOfDay/NutrientOfDay';
 import MealTemplate from 'components/template/MealTemplate/MealTemplate';
 import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { breakfastState, dinnerState, lunchState, snackState } from 'recoil/atoms/nutrientState';
 import getDayofMeal from 'utils/api/meal';
 
 const data = {
@@ -41,6 +43,11 @@ function MealPage() {
 	const [searchOpen, setSearchOpen] = useState<boolean>(false);
 	const [meal, setMeal] = useState<string>('');
 
+	const breakState = useRecoilValue(breakfastState);
+	const lunState = useRecoilValue(lunchState);
+	const dinState = useRecoilValue(dinnerState);
+	const snaState = useRecoilValue(snackState);
+
 	useEffect(() => {
 		const dateObject = new Date(selectedDate);
 
@@ -69,7 +76,18 @@ function MealPage() {
 	}
 
 	if (detailOpen === true && meal) {
-		return <DetailMeal />;
+		if (meal === '아침') {
+			return <DetailMeal selectedDate={getDate} meal={meal} getData={breakfast} requireData={breakState} />;
+		}
+		if (meal === '점심') {
+			return <DetailMeal selectedDate={getDate} meal={meal} getData={lunch} requireData={lunState} />;
+		}
+		if (meal === '저녁') {
+			return <DetailMeal selectedDate={getDate} meal={meal} getData={dinner} requireData={dinState} />;
+		}
+		if (meal === '간식') {
+			return <DetailMeal selectedDate={getDate} meal={meal} getData={snack} requireData={snaState} />;
+		}
 	}
 
 	return (

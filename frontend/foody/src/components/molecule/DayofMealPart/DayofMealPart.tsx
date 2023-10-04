@@ -18,7 +18,7 @@ interface DayofMealPartProps {
 }
 function DayofMealPart({ setDetailOpen, setSearchOpen, setMeal, meal, goal, value, imgsrc }: DayofMealPartProps) {
 	const selectMove = () => {
-		if (imgsrc) {
+		if (value > 0) {
 			setDetailOpen(true);
 		} else {
 			setSearchOpen(true);
@@ -28,7 +28,7 @@ function DayofMealPart({ setDetailOpen, setSearchOpen, setMeal, meal, goal, valu
 
 	return (
 		<div className="dayofmeal-part">
-			<MealButton imgsrc={imgsrc} buttonClick={selectMove} />
+			<MealButton imgsrc={imgsrc} buttonClick={selectMove} value={value} />
 			<div className="dayofmeal-content">
 				<DayofMealTitle meal={meal} value={value} />
 				<BarChart barcolor={BarColor.Null} total={goal} value={value} />

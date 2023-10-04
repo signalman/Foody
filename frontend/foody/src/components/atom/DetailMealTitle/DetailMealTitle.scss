@@ -1,0 +1,14 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.detail-meal-title-container {
+    font-size: var.$p2;
+    font-weight: var.$fw-400;
+    color: var.$black-500;
+    @include f.flex(row, between, center, 15px);
+
+    .detail-meal-title-btn {
+        color: var.$black-300;
+        @include f.flex(row, between, center, 4px);
+    }
+}

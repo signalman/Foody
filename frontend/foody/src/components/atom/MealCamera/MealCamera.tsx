@@ -6,18 +6,19 @@ import tabbarState from 'recoil/atoms/tabbarState';
 import { useRecoilState } from 'recoil';
 import { getMealNutrient, mealCamera, postRegistMeal } from 'utils/api/meal';
 import { RegistMeal, RegistSendData } from 'types/meal';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import toast from 'react-hot-toast';
+import SubHeader from 'components/organism/SubHeader/SubHeader';
 
 interface MealCameraProps {
 	sendMeal: string;
 	selectedDate: string;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
+function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 	const [, setTabbarOn] = useRecoilState(tabbarState);
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const photoRef = useRef<HTMLCanvasElement | null>(null);
 	const [stream, setStream] = useState<MediaStream | null>(null);
-	const [isLoading, setIsLoading] = useState(false);
 
 	// 사진 찍었을 때 사용할 File, photo 정의
 	const [captureImg, setCaptureImg] = useState<File | null>(null);
@@ -52,7 +53,6 @@ function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
 			if (blob) {
 				setCaptureImg(new File([blob], 'capture.jpg', { type: 'image/jpeg' }));
 			}
-			setIsLoading(true);
 		});
 
 		setPhotoImg(photo);
@@ -68,6 +68,10 @@ function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
 			return;
 		}
 		ctx.clearRect(0, 0, photo.width, photo.height);
+	};
+
+	const handleMove = () => {
+		setOpen(false);
 	};
 
 	useEffect(() => {
@@ -113,9 +117,10 @@ function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
 
 	useEffect(() => {
 		if (captureImg) {
-			setIsLoading(false);
 			mealCamera(captureImg).then((response) => {
-				console.log(response);
+				if (response.data.length === 0) {
+					toast.error('음식 사진 인식이 되지 않습니다!');
+				}
 				setTest(response.data);
 			});
 		}
@@ -201,13 +206,14 @@ function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
 				setComplete(false);
 				setTest([]);
 				setSendData([]);
+				setOpen(false);
 			});
 		}
-	}, [captureImg, complete, selectedDate, sendData, sendMeal, subImgArray, test.length]);
+	}, [captureImg, complete, selectedDate, sendData, sendMeal, setOpen, subImgArray, test.length]);
 
 	return (
 		<>
-			{isLoading && <LoadingSpinner />}
+			<SubHeader handleMove={handleMove} isBack title="카메라로 등록하기" />
 			<div className="video-container">
 				<video ref={videoRef} className="video" />
 			</div>

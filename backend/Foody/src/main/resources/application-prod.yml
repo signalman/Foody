@@ -9,9 +9,9 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        show_sql: true
-        format_sql: true
-        generate_statistics: true
+        show_sql: false
+        format_sql: false
+        generate_statistics: false
     defer-datasource-initialization: true
 
   security:

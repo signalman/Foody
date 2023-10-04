@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import './IngredientsList.scss';
 import { IngredientItem } from 'constants/category';
 import classNames from 'classnames';
@@ -10,11 +10,13 @@ import IngredientsListItem from '../IngredientsListItem/IngredientsListItem';
 import IngredientsListItemInfo from '../IngredientsListItemInfo/IngredientsListItemInfo';
 
 function IngredientsList({
+	setAllIngredientsList,
 	changeIngredientList,
 	handleMenuSelect,
 	ingredientsList,
 	type,
 }: {
+	setAllIngredientsList: Dispatch<React.SetStateAction<IngredientItem[] | null>>;
 	changeIngredientList: () => void;
 	handleMenuSelect: (menu: string) => void;
 	ingredientsList: IngredientItem[] | null;
@@ -59,7 +61,11 @@ function IngredientsList({
 					})
 					.catch((err) => {
 						if (err.response.status === 404) {
-							toast.error(`'${item.text}'가 존재하지 않습니다.`);
+							toast.error(`'${item.text}'가 목록에서 삭제됩니다.`);
+							setAllIngredientsList((prev) => {
+								const newList = prev ? prev.filter((i) => item.ingredientId !== i.ingredientId) : prev;
+								return newList;
+							});
 							changeIngredientList();
 						}
 					});

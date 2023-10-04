@@ -43,7 +43,6 @@ function removeItemByName(name: string, array: RegistMeal[]): RegistMeal[] {
 function MealSearch(props: IngredientSearchProps) {
 	const { setOpen, meal, selectedDate } = props;
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
-	setTabbarOn(false);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [searchResultList, setSearchResultList] = useState<string[] | null>(null);
 	const [selectedMealList, setSelectedMealList] = useState<string[] | null>(null);

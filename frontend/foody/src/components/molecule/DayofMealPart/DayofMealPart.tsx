@@ -6,6 +6,8 @@ import MealButton from 'components/atom/MealButton/MealButton';
 import { BarColor } from 'constants/color';
 import './DayofMealPart.scss';
 import React, { Dispatch } from 'react';
+import { useSetRecoilState } from 'recoil';
+import tabbarState from 'recoil/atoms/tabbarState';
 
 interface DayofMealPartProps {
 	meal: string;
@@ -17,6 +19,7 @@ interface DayofMealPartProps {
 	setMeal: Dispatch<React.SetStateAction<string>>;
 }
 function DayofMealPart({ setDetailOpen, setSearchOpen, setMeal, meal, goal, value, imgsrc }: DayofMealPartProps) {
+	const setOnTabbar = useSetRecoilState(tabbarState);
 	const selectMove = () => {
 		if (value > 0) {
 			setDetailOpen(true);
@@ -24,6 +27,7 @@ function DayofMealPart({ setDetailOpen, setSearchOpen, setMeal, meal, goal, valu
 			setSearchOpen(true);
 		}
 		setMeal(meal);
+		setOnTabbar(false);
 	};
 
 	return (

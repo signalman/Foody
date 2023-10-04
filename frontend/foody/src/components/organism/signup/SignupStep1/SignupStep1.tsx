@@ -2,7 +2,9 @@ import LargeButton from 'components/atom/LargeButton/LargeButton';
 import SignupTitle from 'components/atom/SignupTitle/SignupTitle';
 import UnderlineInput from 'components/atom/UnderlineInput/UnderlineInput';
 import LargeButtonColor from 'constants/color';
+import BottomButtonLayout from 'components/template/BottomButtonLayout/BottomButtonLayout';
 import React, { useEffect, useState } from 'react';
+import SignupInfoTemplate from 'components/template/SignupInfoTemplate/SignupInfoTemplate';
 
 interface SignupStep1Props {
 	nickname: string;
@@ -34,7 +36,7 @@ function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 	}, [nickname, check]);
 
 	return (
-		<div className="step1-container">
+		<SignupInfoTemplate>
 			<SignupTitle value="닉네임을 알려주세요" />
 			<UnderlineInput
 				maxlength={16}
@@ -45,14 +47,16 @@ function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 				value={nickname}
 			/>
 			{!nicknameCheck && nickname.length > 0 && <p>영어 또는 숫자를 포함하여 16자 이내로 입력해 주세요.</p>}
-			<LargeButton
-				buttonClick={nickname.length ? nextButton : () => {}}
-				imgsrc=""
-				value="확인"
-				buttonColor={nickname.length ? LargeButtonColor.Green : LargeButtonColor.Gray}
-				disabled={check}
-			/>
-		</div>
+			<BottomButtonLayout>
+				<LargeButton
+					buttonClick={nickname.length ? nextButton : () => {}}
+					imgsrc=""
+					value="확인"
+					buttonColor={nickname.length ? LargeButtonColor.Green : LargeButtonColor.Gray}
+					disabled={check}
+				/>
+			</BottomButtonLayout>
+		</SignupInfoTemplate>
 	);
 }
 

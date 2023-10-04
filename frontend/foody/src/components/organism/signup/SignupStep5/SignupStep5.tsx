@@ -1,5 +1,7 @@
 import LargeButton from 'components/atom/LargeButton/LargeButton';
 import SignupTitle from 'components/atom/SignupTitle/SignupTitle';
+import BottomButtonLayout from 'components/template/BottomButtonLayout/BottomButtonLayout';
+import SignupInfoTemplate from 'components/template/SignupInfoTemplate/SignupInfoTemplate';
 import LargeButtonColor from 'constants/color';
 import React, { useState } from 'react';
 
@@ -30,7 +32,7 @@ function SignupStep5({ move, setMove, nextButton }: SignupStep5Props) {
 	};
 
 	return (
-		<div className="step5-container">
+		<SignupInfoTemplate>
 			<SignupTitle value="하루 활동량을 알려주세요" />
 			<LargeButton
 				imgsrc=""
@@ -50,13 +52,15 @@ function SignupStep5({ move, setMove, nextButton }: SignupStep5Props) {
 				value="잘 움직이지 않아요"
 				buttonColor={buttonData === 3 ? LargeButtonColor.Green : LargeButtonColor.Gray}
 			/>
-			<LargeButton
-				buttonClick={handleButton}
-				imgsrc=""
-				value="다음"
-				buttonColor={buttonData ? LargeButtonColor.Green : LargeButtonColor.Gray}
-			/>
-		</div>
+			<BottomButtonLayout>
+				<LargeButton
+					buttonClick={handleButton}
+					imgsrc=""
+					value="다음"
+					buttonColor={buttonData ? LargeButtonColor.Green : LargeButtonColor.Gray}
+				/>
+			</BottomButtonLayout>
+		</SignupInfoTemplate>
 	);
 }
 

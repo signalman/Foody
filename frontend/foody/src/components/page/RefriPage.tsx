@@ -7,12 +7,13 @@ import IngredientsCategory from 'components/molecule/IngredientsCategory/Ingredi
 import IngredientsList from 'components/atom/IngredientsList/IngredientsList';
 import FloatingMenu from 'components/molecule/FloatingMenu/FloatingMenu';
 import IngredientRegistOCR from 'components/organism/IngredientRegistOCR/IngredientRegistOCR';
-import IngredientRegistAlbum from 'components/organism/IngredientRegistAlbum/IngredientRegistAlbum';
+// import IngredientRegistAlbum from 'components/organism/IngredientRegistAlbum/IngredientRegistAlbum';
 import IngredientSearch from 'components/organism/IngredientSearch/IngredientSearch';
 import { getAllIngredientList } from 'utils/api/ingredient';
 import { formatIngredientsList } from 'utils/common/ingredient';
 import { useRecoilState } from 'recoil';
 import tabbarState from 'recoil/atoms/tabbarState';
+import toast from 'react-hot-toast';
 
 function RefriPage() {
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
@@ -88,7 +89,12 @@ function RefriPage() {
 
 	if (menuOpen) {
 		if (selectedMenu === 'camera') return <IngredientRegistOCR setOpen={setMenuOpen} />;
-		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;
+		// if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;
+		if (selectedMenu === 'album') {
+			toast('준비 중인 서비스입니다!', {
+				icon: '📢',
+			});
+		}
 		return <IngredientSearch setOpen={setMenuOpen} />;
 	}
 
@@ -102,6 +108,7 @@ function RefriPage() {
 
 			{/* 재료 목록 */}
 			<IngredientsList
+				setAllIngredientsList={setAllIngredientsList}
 				changeIngredientList={changeAllIngredientList}
 				handleMenuSelect={handleMenuSelect}
 				ingredientsList={ingredientsList}

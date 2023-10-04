@@ -15,7 +15,7 @@ interface SignupStep1Props {
 function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 	const [check, setCheck] = useState<boolean>(false);
 	const nicknameCheck = (value: string) => {
-		const alphanumbericRegex = /^[a-zA-Z0-9]+$/;
+		const alphanumbericRegex = /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]+$/;
 		const isTrue = alphanumbericRegex.test(value);
 
 		if (isTrue === true || value === '') {

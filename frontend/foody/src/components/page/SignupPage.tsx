@@ -69,10 +69,6 @@ function SignupPage() {
 				/>
 			)}
 			{index === 5 && <SignupStep5 nextButton={handleSignup} move={activityLevel} setMove={setActivityLevel} />}
-			<span>
-				닉네임 : {nickname} 성별 : {gender} 나이 : {age} 키 : {height} 몸무게 : {weight} 활동량 : {activityLevel}
-				인덱스 : {index}
-			</span>
 		</SignupTemplate>
 	);
 }

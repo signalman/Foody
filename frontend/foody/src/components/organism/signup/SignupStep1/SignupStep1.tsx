@@ -44,7 +44,7 @@ function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 				unit=""
 				value={nickname}
 			/>
-			{!nicknameCheck && nickname.length > 0 && <p>키는 100이상 200이하로 입력해주세요.</p>}
+			{!nicknameCheck && nickname.length > 0 && <p>영어 또는 숫자를 포함하여 16자 이내로 입력해 주세요.</p>}
 			<LargeButton
 				buttonClick={nickname.length ? nextButton : () => {}}
 				imgsrc=""

@@ -45,7 +45,6 @@ function HomeCalorieState() {
 			const sendDate = `${year}-${month}-${day}`;
 			getDayofMeal(sendDate).then((response) => {
 				let currentData = response.data.total.energy;
-				currentData = 2000;
 				if (currentData >= nutrient) {
 					currentData = nutrient;
 				}

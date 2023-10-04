@@ -43,22 +43,7 @@ function MealSearch(props: IngredientSearchProps) {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
 	const [sendMeal, setSendMeal] = useState<string>('');
-	const [registMeal, setRegistMeal] = useState<RegistMeal>({
-		name: '',
-		nutrientRequest: {
-			energy: 0,
-			carbohydrates: 0,
-			protein: 0,
-			dietaryFiber: 0,
-			calcium: 0,
-			sodium: 0,
-			iron: 0,
-			fats: 0,
-			vitaminA: 0,
-			vitaminC: 0,
-		},
-	});
-
+	const [registMeal, setRegistMeal] = useState<RegistMeal | null>(null);
 	const [sendData, setSendData] = useState<RegistMeal[]>([]);
 
 	const handleMenuSelect = (menu: string) => {
@@ -114,7 +99,9 @@ function MealSearch(props: IngredientSearchProps) {
 		}
 	};
 	useEffect(() => {
-		setSendData((prev) => [...prev, registMeal]);
+		if (registMeal !== null) {
+			setSendData((prev) => [...prev, registMeal]);
+		}
 	}, [registMeal]);
 
 	const handleSubmitMealRegist = () => {
@@ -165,7 +152,7 @@ function MealSearch(props: IngredientSearchProps) {
 	}, [meal]);
 
 	if (menuOpen) {
-		if (selectedMenu === 'camera') return <MealCamera />;
+		if (selectedMenu === 'camera') return <MealCamera sendMeal={sendMeal} selectedDate={selectedDate} />;
 		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;
 		return <MealSearch meal={meal} setOpen={setMenuOpen} selectedDate={selectedDate} />;
 	}

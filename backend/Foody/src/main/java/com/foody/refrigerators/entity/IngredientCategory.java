@@ -18,7 +18,7 @@ public class IngredientCategory{
     @Column(nullable = false)
     CategoryType categoryType;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     String ingredientCategoryIconImg;
 
 }

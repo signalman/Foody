@@ -2,6 +2,7 @@ import LargeButton from 'components/atom/LargeButton/LargeButton';
 import SignupTitle from 'components/atom/SignupTitle/SignupTitle';
 import UnderlineInput from 'components/atom/UnderlineInput/UnderlineInput';
 import LargeButtonColor from 'constants/color';
+import BottomButtonLayout from 'components/template/BottomButtonLayout/BottomButtonLayout';
 import React, { useEffect, useState } from 'react';
 
 interface SignupStep1Props {
@@ -45,13 +46,15 @@ function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 				value={nickname}
 			/>
 			{!nicknameCheck && nickname.length > 0 && <p>영어 또는 숫자를 포함하여 16자 이내로 입력해 주세요.</p>}
-			<LargeButton
-				buttonClick={nickname.length ? nextButton : () => {}}
-				imgsrc=""
-				value="확인"
-				buttonColor={nickname.length ? LargeButtonColor.Green : LargeButtonColor.Gray}
-				disabled={check}
-			/>
+			<BottomButtonLayout>
+				<LargeButton
+					buttonClick={nickname.length ? nextButton : () => {}}
+					imgsrc=""
+					value="확인"
+					buttonColor={nickname.length ? LargeButtonColor.Green : LargeButtonColor.Gray}
+					disabled={check}
+				/>
+			</BottomButtonLayout>
 		</div>
 	);
 }

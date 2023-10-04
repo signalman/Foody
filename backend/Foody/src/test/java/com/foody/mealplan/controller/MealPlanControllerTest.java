@@ -78,9 +78,9 @@ public class MealPlanControllerTest extends ControllerTest {
 
         NutrientResponse nutrientResponse = new NutrientResponse(20.1, 2.1, 3.3, 4.5, 2.3, 0.0, 2.1,
             2.1, 0.0, 0.0);
-        FoodResponse foodResponse1 = new FoodResponse("김치찌개", nutrientResponse);
-        FoodResponse foodResponse2 = new FoodResponse("공기밥", nutrientResponse);
-        FoodResponse foodResponse3 = new FoodResponse("동그랑땡", nutrientResponse);
+        FoodResponse foodResponse1 = new FoodResponse(null, "김치찌개", nutrientResponse);
+        FoodResponse foodResponse2 = new FoodResponse(null, "공기밥", nutrientResponse);
+        FoodResponse foodResponse3 = new FoodResponse(null, "동그랑땡", nutrientResponse);
 
         MealResponse breakFastResponse = new MealResponse(nutrientResponse,
             Arrays.asList(foodResponse1, foodResponse2, foodResponse3), "eernfiasdf-jfe.jpg",
@@ -255,7 +255,7 @@ public class MealPlanControllerTest extends ControllerTest {
 
         MockMultipartFile multipartFile = new MockMultipartFile("mealImage", new byte[13]);
 
-        doNothing().when(mealPlanService).registMealPlan(loginInfo, mealPlanRequest, multipartFile);
+        doNothing().when(mealPlanService).registMealPlan(loginInfo, mealPlanRequest, multipartFile, null);
         MockMultipartFile mockMultipartFile = new MockMultipartFile("mealPlanRequest", "",
             "application/json", objectMapper.writeValueAsBytes(mealPlanRequest));
         mockMvc.perform(

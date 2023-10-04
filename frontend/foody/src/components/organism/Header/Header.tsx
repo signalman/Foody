@@ -4,6 +4,7 @@ import logoImg from 'assets/icons/headerLogo.png';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { GoBell } from 'react-icons/go';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function Header() {
 	const [newNoti, setNewNoti] = useState(false);
@@ -14,7 +15,9 @@ function Header() {
 
 	// TODOS: 알림이 있으면 새로운 알림이 있다고 알려주기
 	const handleNotice = () => {
-		alert('알림');
+		toast('준비 중인 서비스입니다!', {
+			icon: '📢',
+		});
 		setNewNoti(!newNoti);
 	};
 

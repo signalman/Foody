@@ -44,11 +44,11 @@ function SignupStep4({ height, weight, setHeight, setWeight, nextButton }: Signu
 		let isTrue1 = false;
 		let isTrue2 = false;
 
-		if (intHeight >= 80 && intHeight <= 200) {
+		if (intHeight >= 50 && intHeight <= 230) {
 			isTrue1 = true;
 		}
 
-		if (intWeight >= 80 && intWeight <= 200) {
+		if (intWeight >= 10 && intWeight <= 150) {
 			isTrue2 = true;
 		}
 
@@ -70,16 +70,16 @@ function SignupStep4({ height, weight, setHeight, setWeight, nextButton }: Signu
 				unit=""
 				value={height}
 			/>
-			{/* {!heightCheck && height.length > 0 && <p>키는 100이상 200이하로 입력해주세요.</p>} */}
+			{!heightCheck && height.length > 0 && <p>키는 50이상 230이하로 입력해주세요.</p>}
 			<UnderlineInput
 				maxlength={3}
 				isValid={weightCheck}
 				onChangeValue={setWeight}
-				placeholder="체중"
+				placeholder="몸무게"
 				unit=""
 				value={weight}
 			/>
-			{/* {!weightCheck && weight.length > 0 && <p>몸무게는 40이상 200이하로 입력해주세요.</p>} */}
+			{!weightCheck && weight.length > 0 && <p>몸무게는 10이상 150이하로 입력해주세요.</p>}
 			<LargeButton
 				buttonClick={handleNextStep() ? nextButton : () => {}}
 				imgsrc=""

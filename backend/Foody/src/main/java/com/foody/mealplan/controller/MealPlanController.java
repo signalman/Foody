@@ -84,16 +84,27 @@ public class MealPlanController {
                              .build();
     }
 
-    @DeleteMapping("/{date}/{type}")
+    @DeleteMapping("/{date}/{type}/{idx}")
     public ResponseEntity<String> deleteMealPlan(
         @AuthenticationPrincipal LoginInfo loginInfo,
         @PathVariable String date,
-        @PathVariable String type){
+        @PathVariable String type
+    ){
         mealPlanService.deleteMealPlan(loginInfo, date, type);
         return ResponseEntity.noContent()
                              .build();
     }
 
+    @DeleteMapping("/food/{idx}")
+    public  ResponseEntity<String> deleteMealPlan(
+        @AuthenticationPrincipal LoginInfo loginInfo,
+        @RequestPart MealPlanRequest mealPlanRequest,
+        @PathVariable Integer idx
+    ){
+        mealPlanService.deleteMealPlanFood(loginInfo, mealPlanRequest, idx);
+        return ResponseEntity.noContent()
+                             .build();
 
+    }
 
 }

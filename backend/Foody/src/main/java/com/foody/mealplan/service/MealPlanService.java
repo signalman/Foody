@@ -188,4 +188,15 @@ public class MealPlanService {
         }
         meal.updateTime(LocalTime.now());
     }
+
+    @Transactional
+    public void deleteMealPlanFood(LoginInfo loginInfo, MealPlanRequest mealPlanRequest, int idx) {
+        Member member = memberService.findByEmail(loginInfo.email());
+        LocalDate localDate = FoodyDateFormatter.toLocalDate(mealPlanRequest.date());
+
+        MealPlan mealPlan = findByDateAndMemberId(localDate, member.getId());
+        Meal meal = getMealByType(mealPlan, mealPlanRequest.type());
+
+        meal.getFoods().remove(idx);
+    }
 }

@@ -7,7 +7,6 @@ import SearchTemplate from 'components/template/SearchTemplate/SearchTemplate';
 import { HiPencil } from 'react-icons/hi';
 import LargeButton from 'components/atom/LargeButton/LargeButton';
 import LargeButtonColor from 'constants/color';
-import { CustomIngredientItemType } from 'types/refrigerator';
 import toast from 'react-hot-toast';
 import FloatingMenu from 'components/molecule/FloatingMenu/FloatingMenu';
 import IngredientRegistAlbum from 'components/organism/IngredientRegistAlbum/IngredientRegistAlbum';
@@ -17,6 +16,7 @@ import SelectedMealList from 'components/molecule/SelectedMealList/SelectedMealL
 import { RegistMeal, RegistSendData } from 'types/meal';
 import MealCamera from 'components/atom/MealCamera/MealCamera';
 import SubHeader from '../../SubHeader/SubHeader';
+import RegisterMealSelf from '../RegisterMealSelf/RegisterMealSelf';
 
 interface IngredientSearchProps {
 	setOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -32,6 +32,14 @@ function removeItemFromArray(item: string, array: string[]): string[] {
 	return array;
 }
 
+function removeItemByName(name: string, array: RegistMeal[]): RegistMeal[] {
+	const index = array.findIndex((item) => item.name === name);
+	if (index !== -1) {
+		array.splice(index, 1);
+	}
+	return array;
+}
+
 function MealSearch(props: IngredientSearchProps) {
 	const { setOpen, meal, selectedDate } = props;
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
@@ -39,12 +47,16 @@ function MealSearch(props: IngredientSearchProps) {
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [searchResultList, setSearchResultList] = useState<string[] | null>(null);
 	const [selectedMealList, setSelectedMealList] = useState<string[] | null>(null);
-	const [customIngredientList, setCustomIngredientList] = useState<CustomIngredientItemType[] | []>([]);
+
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
 	const [sendMeal, setSendMeal] = useState<string>('');
 	const [registMeal, setRegistMeal] = useState<RegistMeal | null>(null);
 	const [sendData, setSendData] = useState<RegistMeal[]>([]);
+
+	// 직접 입력 부분 데이터
+	const [write, setWrite] = useState<boolean>(false);
+	const [selfName, setSelfName] = useState<string>('');
 
 	const handleMenuSelect = (menu: string) => {
 		setMenuOpen(!menuOpen);
@@ -60,13 +72,7 @@ function MealSearch(props: IngredientSearchProps) {
 	const handleWrite = () => {
 		console.log('handleWrite');
 		toast.success('재료 직접 등록');
-		setCustomIngredientList([
-			...customIngredientList,
-			{
-				ingredientCategoryId: 2,
-				ingredientName: '닭고기',
-			},
-		]);
+		setWrite(true);
 	};
 
 	const handleMealSelect = (data: string) => {
@@ -96,6 +102,7 @@ function MealSearch(props: IngredientSearchProps) {
 	const handleDelete = (data: string) => {
 		if (selectedMealList) {
 			setSelectedMealList(removeItemFromArray(data, selectedMealList));
+			setSendData(removeItemByName(data, sendData));
 		}
 	};
 	useEffect(() => {
@@ -126,6 +133,12 @@ function MealSearch(props: IngredientSearchProps) {
 	};
 
 	useEffect(() => {
+		if (selfName !== '') {
+			setSelectedMealList((prevList) => [...(prevList || []), selfName]);
+		}
+	}, [selfName]);
+
+	useEffect(() => {
 		if (searchKeyword !== '') {
 			getSearchMeal(searchKeyword)
 				.then((res) => {
@@ -151,6 +164,9 @@ function MealSearch(props: IngredientSearchProps) {
 		}
 	}, [meal]);
 
+	if (write === true) {
+		return <RegisterMealSelf setWrite={setWrite} setRegistMealk={setRegistMeal} setSelfName={setSelfName} />;
+	}
 	if (menuOpen) {
 		if (selectedMenu === 'camera') return <MealCamera sendMeal={sendMeal} selectedDate={selectedDate} />;
 		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;

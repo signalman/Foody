@@ -1,6 +1,8 @@
 import LargeButton from 'components/atom/LargeButton/LargeButton';
 import SignupTitle from 'components/atom/SignupTitle/SignupTitle';
 import UnderlineInput from 'components/atom/UnderlineInput/UnderlineInput';
+import BottomButtonLayout from 'components/template/BottomButtonLayout/BottomButtonLayout';
+import SignupInfoTemplate from 'components/template/SignupInfoTemplate/SignupInfoTemplate';
 import LargeButtonColor from 'constants/color';
 import React from 'react';
 
@@ -60,7 +62,7 @@ function SignupStep4({ height, weight, setHeight, setWeight, nextButton }: Signu
 	};
 
 	return (
-		<div className="step3-container">
+		<SignupInfoTemplate>
 			<SignupTitle value="키와 체중을 알려주세요" />
 			<UnderlineInput
 				maxlength={3}
@@ -80,13 +82,15 @@ function SignupStep4({ height, weight, setHeight, setWeight, nextButton }: Signu
 				value={weight}
 			/>
 			{!weightCheck && weight.length > 0 && <p>몸무게는 10이상 150이하로 입력해주세요.</p>}
-			<LargeButton
-				buttonClick={handleNextStep() ? nextButton : () => {}}
-				imgsrc=""
-				value="확인"
-				buttonColor={handleNextStep() ? LargeButtonColor.Green : LargeButtonColor.Gray}
-			/>
-		</div>
+			<BottomButtonLayout>
+				<LargeButton
+					buttonClick={handleNextStep() ? nextButton : () => {}}
+					imgsrc=""
+					value="확인"
+					buttonColor={handleNextStep() ? LargeButtonColor.Green : LargeButtonColor.Gray}
+				/>
+			</BottomButtonLayout>
+		</SignupInfoTemplate>
 	);
 }
 

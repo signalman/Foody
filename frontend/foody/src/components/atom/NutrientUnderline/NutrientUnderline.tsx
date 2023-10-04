@@ -1,5 +1,6 @@
 import React from 'react';
 import './NutrientUnderline.scss';
+import classNames from 'classnames';
 
 interface NutrientUnderlineProps {
 	title: string;
@@ -15,7 +16,7 @@ function NutrientUnderline({ title, value, unit, iswhite }: NutrientUnderlinePro
 	return (
 		<div className={changebox}>
 			<p className={changetitle}>{title}</p>
-			<div className={changevalue}>
+			<div className={classNames('nutrient-underline-content', changevalue)}>
 				<p>{value}</p>
 				<p>{unit}</p>
 			</div>

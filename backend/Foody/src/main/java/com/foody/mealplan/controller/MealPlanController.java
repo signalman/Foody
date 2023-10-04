@@ -88,9 +88,10 @@ public class MealPlanController {
     public ResponseEntity<String> deleteMealPlan(
         @AuthenticationPrincipal LoginInfo loginInfo,
         @PathVariable String date,
-        @PathVariable String type
+        @PathVariable String type,
+        @PathVariable Integer idx
     ){
-        mealPlanService.deleteMealPlan(loginInfo, date, type);
+        mealPlanService.deleteMealPlan(loginInfo, date, type, idx);
         return ResponseEntity.noContent()
                              .build();
     }

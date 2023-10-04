@@ -44,7 +44,9 @@ instance.interceptors.response.use(
 			if (refreshToken) {
 				try {
 					// Refresh Token을 사용하여 새로운 Access Token을 요청
-					const refreshResponse = await axios.post('http://localhost/api/v1/member/refresh', { refreshToken });
+					// const baseURL = process.env.REACT_APP_DEVELOP_BASE_URL;
+					const baseURL = process.env.REACT_APP_SERVER_BASE_URL;
+					const refreshResponse = await axios.post(`${baseURL}/member/refresh`, { refreshToken });
 					if (refreshResponse.status === 200) {
 						// 새로운 Access Token을 받았을 경우, 저장하고 이전 요청을 재시도
 						const newAccessToken = refreshResponse.data.accessToken;
@@ -63,7 +65,7 @@ instance.interceptors.response.use(
 			}
 
 			// Refresh Token이 없거나 요청이 실패한 경우 로그인 페이지로 리다이렉트
-			// window.location.href = '/login';
+			window.location.href = '/login';
 			LocalStorage.removeItem('accesstoken');
 		}
 

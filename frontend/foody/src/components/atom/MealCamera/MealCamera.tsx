@@ -23,7 +23,7 @@ function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
 	const [captureImg, setCaptureImg] = useState<File | null>(null);
 	const [subImg, setSubImg] = useState<File | null>(null);
 	const [photoImg, setPhotoImg] = useState<HTMLCanvasElement | null>(null);
-	const [croppedImages, setCroppedImages] = useState<string[]>([]);
+	// const [croppedImages, setCroppedImages] = useState<string[]>([]);
 
 	// 사진 찍었을 때 음식 데이터 영양소 값 가져오기
 	// const [registMeal, setRegistMeal] = useState<RegistMeal | null>(null);
@@ -142,7 +142,7 @@ function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
 							// croppedImgFile을 API로 전송하거나 사용할 작업 수행
 							// console.log(croppedImgFile);
 							URL.createObjectURL(blob);
-							setCroppedImages((prevImages) => [...prevImages, URL.createObjectURL(blob)]);
+							// setCroppedImages((prevImages) => [...prevImages, URL.createObjectURL(blob)]);
 						}
 					}, 'image/jpeg');
 
@@ -219,12 +219,15 @@ function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
 					<BiCamera size={25} />
 				</button>
 			</div>
-			<div className="cropped-images-container">
-				{/* 크롭된 이미지의 URL 목록을 매핑하고 이미지를 표시합니다. */}
-				{croppedImages.map((imageUrl) => (
-					<img key={imageUrl} src={imageUrl} alt="" className="cropped-image" />
-				))}
-			</div>
+			{/* <div className="cropped-images-container"> */}
+			{/* 크롭된 이미지의 URL 목록을 매핑하고 이미지를 표시합니다. */}
+			{/* {croppedImages.map((imageUrl) => (
+					<div>
+						<img key={imageUrl} src={imageUrl} alt="" className="cropped-image" />
+						<p>{imageUrl}</p>
+					</div>
+				))} */}
+			{/* </div> */}
 		</>
 	);
 }

@@ -8,6 +8,7 @@ import SignupTemplate from 'components/template/SignupTemplate/SignupTemplate';
 import useMovePage from 'hooks/useMovePage';
 import React, { useState } from 'react';
 import { getSignupInformation } from 'utils/api/auth';
+import SubHeader from 'components/organism/SubHeader/SubHeader';
 
 function SignupPage() {
 	const { movePage } = useMovePage();
@@ -36,6 +37,19 @@ function SignupPage() {
 		setBar(updateBar);
 	};
 
+	const backButton = () => {
+		const nextIdx = index - 1;
+		const updateBar = [...bar];
+
+		if (nextIdx === 0) {
+			movePage('/login', null);
+		}
+
+		setIndex(nextIdx);
+		updateBar[nextIdx] = false;
+		setBar(updateBar);
+	};
+
 	const handleSignup = () => {
 		const information = {
 			nickname,
@@ -55,6 +69,7 @@ function SignupPage() {
 
 	return (
 		<SignupTemplate>
+			<SubHeader isBack title="" handleMove={backButton} />
 			<ProgressBar ProgressCheck={bar} />
 			{index === 1 && <SignupStep1 nextButton={nextButton} setNickname={setNickname} nickname={nickname} />}
 			{index === 2 && <SignupStep2 nextButton={nextButton} selectGender={gender} setSelectGender={setGender} />}

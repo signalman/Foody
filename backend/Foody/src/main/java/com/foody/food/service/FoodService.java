@@ -42,7 +42,7 @@ public class FoodService {
                              .orElseThrow(() -> new FoodException(ErrorCode.FOOD_NOT_FOUND));
     }
     public FoodSearch findFoodSearchByName(String name){
-        return foodSearchRepository.findByName(name)
+        return foodSearchRepository.findFirstByName(name)
                                        .orElseThrow(() -> new FoodException(ErrorCode.FOOD_NOT_FOUND));
     }
     public Set<String> getFoodSuggestions(String prefix, int limit) {

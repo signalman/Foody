@@ -7,6 +7,7 @@
 	border: none;
 	padding-bottom: 8px;
 	font-weight: var.$fw-400;
+	margin: 5px 0px;
 }
 
 .white {
@@ -15,8 +16,8 @@
 }
 
 .black {
-	color: var.$black-500;
-	border-bottom: 1px solid var.$black-500;
+	color: var.$black-400;
+	border-bottom: 1px solid var.$black-100;
 }
 
 .white-title {
@@ -28,12 +29,23 @@
 	font-size: var.$p4;
 }
 
+.black-value {
+	@include f.flex(row, between, center, 3px);
+	font-size: var.$p2;
+	
+}
+
 .black-title {
 	font-size: var.$p2;
 	color: var.$black-300;
+	font-weight: var.$fw-600;
 }
 
 .nutrient-underline-value {
 	@include f.flex(row, between, center, 3px);
 	font-size: var.$p1;
+}
+
+.nutrient-underline-content {
+	@include f.flex(row, between, start, 3px);
 }

@@ -70,4 +70,9 @@ export const postRegistMealText = async (data: RegistSendData) => {
 	const response = await instanceMeal.post('/mealplan/food/text', formData);
 	return response;
 };
+
+export const deleteMealInfo = async (date: string, index: number, meal: string) => {
+	const response = await instance.delete(`/mealplan/${date}/${meal}/${index}`);
+	return response;
+};
 export default getDayofMeal;

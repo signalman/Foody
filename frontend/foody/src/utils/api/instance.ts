@@ -32,7 +32,7 @@ instance.interceptors.response.use(
 			if (refreshToken) {
 				try {
 					// Refresh Token을 사용하여 새로운 Access Token을 요청
-					const refreshResponse = await axios.post('/api/refresh-token', { refreshToken });
+					const refreshResponse = await axios.post('/member/refresh', { refreshToken });
 					if (refreshResponse.status === 200) {
 						// 새로운 Access Token을 받았을 경우, 저장하고 이전 요청을 재시도
 						const newAccessToken = refreshResponse.data.access_token;

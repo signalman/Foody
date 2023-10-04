@@ -22,6 +22,11 @@ export interface RefricategoryItem {
 	img: string;
 }
 
+export type AllCategoryItem = RefricategoryItem & {
+	ingredientCategoryId: number;
+	type: number;
+};
+
 export interface IngredientItem {
 	key: number;
 	text: string;
@@ -114,6 +119,81 @@ export const DRAWER_CATEGORY_LIST = [
 		ingredientCategoryId: 12,
 		text: '소스/조미료',
 		img: category13,
+	},
+];
+
+export const ALL_CATEGORY_LIST: AllCategoryItem[] = [
+	{
+		ingredientCategoryId: 1,
+		text: '과일/채소',
+		img: category2,
+		type: 0,
+	},
+	{
+		ingredientCategoryId: 2,
+		text: '축산물',
+		img: category3,
+		type: 0,
+	},
+	{
+		ingredientCategoryId: 3,
+		text: '수산물/건어물',
+		img: category5,
+		type: 0,
+	},
+	{
+		ingredientCategoryId: 4,
+		text: '음료',
+		img: category4,
+		type: 0,
+	},
+	{
+		ingredientCategoryId: 5,
+		text: '간편조리식품',
+		img: category7,
+		type: 0,
+	},
+	{
+		ingredientCategoryId: 6,
+		text: '치즈/유가공품',
+		img: category8,
+		type: 0,
+	},
+	{
+		ingredientCategoryId: 7,
+		text: '반찬',
+		img: category6,
+		type: 0,
+	},
+	{
+		ingredientCategoryId: 8,
+		text: '쌀/잡곡',
+		img: category9,
+		type: 1,
+	},
+	{
+		ingredientCategoryId: 9,
+		text: '건강식품',
+		img: category10,
+		type: 1,
+	},
+	{
+		ingredientCategoryId: 10,
+		text: '면/통조림',
+		img: category11,
+		type: 1,
+	},
+	{
+		ingredientCategoryId: 11,
+		text: '과자/떡/베이커리',
+		img: category12,
+		type: 1,
+	},
+	{
+		ingredientCategoryId: 12,
+		text: '소스/조미료',
+		img: category13,
+		type: 1,
 	},
 ];
 

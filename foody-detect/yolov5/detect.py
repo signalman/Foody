@@ -329,7 +329,7 @@ def translate_to_korean(names: str) -> str:
         "cucumber kimchi": "오이김치",
         "cup rice": "쌀밥",
         "dried pollack soup": "북어국",
-        "el": "잉어",
+        "el": "장어구이",
         "fried rice": "볶음밥",
         "green onion Kimchi": "파김치",
         "grilled mackerel": "고등어구이",

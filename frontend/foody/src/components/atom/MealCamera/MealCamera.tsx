@@ -4,12 +4,16 @@ import './MealCamera.scss';
 import { BiCamera } from 'react-icons/bi';
 import tabbarState from 'recoil/atoms/tabbarState';
 import { useRecoilState } from 'recoil';
-import { getMealNutrient, mealCamera } from 'utils/api/meal';
+import { getMealNutrient, mealCamera, postRegistMeal } from 'utils/api/meal';
+import { RegistMeal, RegistSendData } from 'types/meal';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
-function MealCamera() {
+interface MealCameraProps {
+	sendMeal: string;
+	selectedDate: string;
+}
+function MealCamera({ sendMeal, selectedDate }: MealCameraProps) {
 	const [, setTabbarOn] = useRecoilState(tabbarState);
-	setTabbarOn(false);
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const photoRef = useRef<HTMLCanvasElement | null>(null);
 	const [stream, setStream] = useState<MediaStream | null>(null);
@@ -17,8 +21,17 @@ function MealCamera() {
 
 	// 사진 찍었을 때 사용할 File, photo 정의
 	const [captureImg, setCaptureImg] = useState<File | null>(null);
+	const [subImg, setSubImg] = useState<File | null>(null);
 	const [photoImg, setPhotoImg] = useState<HTMLCanvasElement | null>(null);
 	const [croppedImages, setCroppedImages] = useState<string[]>([]);
+
+	// 사진 찍었을 때 음식 데이터 영양소 값 가져오기
+	// const [registMeal, setRegistMeal] = useState<RegistMeal | null>(null);
+	const [sendData, setSendData] = useState<RegistMeal[]>([]);
+	const [subImgArray, setSubImgArray] = useState<File[] | []>([]);
+	const [test, setTest] = useState<{ name: string; x1: number; y1: number; x2: number; y2: number }[] | []>([]);
+
+	const [complete, setComplete] = useState<boolean>(false);
 
 	const takePhoto = () => {
 		const video = videoRef.current;
@@ -35,51 +48,15 @@ function MealCamera() {
 		ctx.drawImage(video, 0, 0, width, height);
 
 		photo.toBlob((blob) => {
-			console.log(blob);
+			// console.log(blob);
 			if (blob) {
-				setCaptureImg(new File([blob], 'image', { type: 'image/jpeg' }));
+				setCaptureImg(new File([blob], 'capture.jpg', { type: 'image/jpeg' }));
 			}
 			setIsLoading(true);
 		});
 
 		setPhotoImg(photo);
 	};
-
-	useEffect(() => {
-		console.log(captureImg);
-		if (captureImg) {
-			setIsLoading(false);
-			mealCamera(captureImg).then((response) => {
-				console.log(response);
-				response.data.forEach((item: { name: string; x1: number; y1: number; x2: number; y2: number }) => {
-					const { name, x1, y1, x2, y2 } = item; // API 응답에서 좌표 추출
-
-					getMealNutrient(name).then((response2) => {
-						console.log(response2);
-					});
-
-					const croppedCanvas = document.createElement('canvas');
-					croppedCanvas.width = x2 - x1;
-					croppedCanvas.height = y2 - y1;
-					const croppedCtx = croppedCanvas.getContext('2d');
-
-					if (!croppedCtx || !photoImg) return;
-					croppedCtx.drawImage(photoImg, x1, y1, x2 - x1, y2 - y1, 0, 0, x2 - x1, y2 - y1);
-
-					croppedCanvas.toBlob((blob) => {
-						if (blob) {
-							const croppedImgFile = new File([blob], 'cropped_image', { type: 'image/jpeg' });
-
-							// croppedImgFile을 API로 전송하거나 사용할 작업 수행
-							console.log(croppedImgFile);
-							URL.createObjectURL(blob);
-							setCroppedImages((prevImages) => [...prevImages, URL.createObjectURL(blob)]);
-						}
-					}, 'image/jpeg');
-				});
-			});
-		}
-	}, [captureImg, photoImg]);
 
 	const closePhoto = () => {
 		const photo = photoRef.current;
@@ -94,6 +71,8 @@ function MealCamera() {
 	};
 
 	useEffect(() => {
+		setTabbarOn(false);
+
 		const getVideo = async () => {
 			const constraints = {
 				video: {
@@ -131,6 +110,100 @@ function MealCamera() {
 			closePhoto();
 		};
 	}, [setTabbarOn, stream, videoRef]);
+
+	useEffect(() => {
+		if (captureImg) {
+			setIsLoading(false);
+			mealCamera(captureImg).then((response) => {
+				console.log(response);
+				setTest(response.data);
+			});
+		}
+	}, [captureImg, photoImg]);
+
+	useEffect(() => {
+		if (test && test.length > 0) {
+			const fetchData = async () => {
+				test.forEach((item) => {
+					const { name, x1, y1, x2, y2 } = item;
+
+					const croppedCanvas = document.createElement('canvas');
+					croppedCanvas.width = x2 - x1;
+					croppedCanvas.height = y2 - y1;
+					const croppedCtx = croppedCanvas.getContext('2d');
+
+					if (!croppedCtx || !photoImg) return;
+					croppedCtx.drawImage(photoImg, x1, y1, x2 - x1, y2 - y1, 0, 0, x2 - x1, y2 - y1);
+
+					croppedCanvas.toBlob((blob) => {
+						if (blob) {
+							setSubImg(new File([blob], 'cropped_image.jpg', { type: 'image/jpeg' }));
+
+							// croppedImgFile을 API로 전송하거나 사용할 작업 수행
+							// console.log(croppedImgFile);
+							URL.createObjectURL(blob);
+							setCroppedImages((prevImages) => [...prevImages, URL.createObjectURL(blob)]);
+						}
+					}, 'image/jpeg');
+
+					getMealNutrient(name).then((nutrientResponse) => {
+						console.log(nutrientResponse);
+						setSendData((prev) => [
+							...prev,
+							{
+								name: nutrientResponse.data.name,
+								nutrientRequest: {
+									energy: nutrientResponse.data.energy,
+									carbohydrates: nutrientResponse.data.carbohydrates,
+									protein: nutrientResponse.data.protein,
+									dietaryFiber: nutrientResponse.data.dietaryFiber,
+									calcium: nutrientResponse.data.calcium,
+									sodium: nutrientResponse.data.sodium,
+									iron: nutrientResponse.data.iron,
+									fats: nutrientResponse.data.fats,
+									vitaminA: nutrientResponse.data.vitaminA,
+									vitaminC: nutrientResponse.data.vitaminC,
+								},
+							},
+						]);
+					});
+				});
+			};
+
+			fetchData();
+		}
+	}, [photoImg, test]);
+
+	useEffect(() => {
+		if (subImg !== null) {
+			setSubImgArray((prev) => {
+				console.log('subImg', [...prev, subImg]);
+				return [...prev, subImg];
+			});
+		}
+	}, [subImg]);
+
+	useEffect(() => {
+		if (test.length !== 0 && test.length === sendData.length) {
+			const totalData: RegistSendData = {
+				type: sendMeal,
+				date: selectedDate,
+				foodRequestList: sendData,
+			};
+
+			console.log('요청!!!!!!!!!!!!!!!!!!!!');
+			console.log('totalData', totalData);
+			console.log('captureImg', captureImg);
+			console.log('subImgArray', subImgArray);
+
+			postRegistMeal(totalData, captureImg, subImgArray).then((response) => {
+				console.log('postRegistMeal!!!!!', response);
+				setComplete(false);
+				setTest([]);
+				setSendData([]);
+			});
+		}
+	}, [captureImg, complete, selectedDate, sendData, sendMeal, subImgArray, test.length]);
 
 	return (
 		<>

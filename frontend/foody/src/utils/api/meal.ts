@@ -43,7 +43,7 @@ export const mealCamera = async (data: File) => {
 	return response;
 };
 
-export const postRegistMeal = async (data: RegistSendData, img: File | null, subimgs: File[] | null) => {
+export const postRegistMeal = async (data: RegistSendData, img: File | null, subimgs: File[] | []) => {
 	const formData = new FormData();
 	const json = JSON.stringify(data);
 	const jsonBlob = new Blob([json], { type: 'application/json' });
@@ -54,7 +54,7 @@ export const postRegistMeal = async (data: RegistSendData, img: File | null, sub
 
 	if (subimgs !== null) {
 		subimgs.forEach((file) => {
-			formData.append(`foodImages`, file, file.name); // 각 파일에 고유한 이름 지정
+			formData.append(`foodImages`, file); // 각 파일에 고유한 이름 지정
 		});
 	}
 	const response = await instanceMeal.post('/mealplan/food', formData);

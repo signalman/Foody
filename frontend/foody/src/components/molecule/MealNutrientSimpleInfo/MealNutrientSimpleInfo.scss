@@ -17,5 +17,7 @@
 
 	.meal-nutrient-simple-info-content {
 		@include f.flex(column, center, center, 10px);
+		width: 100%;
+		padding: 0 30px;
 	}
 }

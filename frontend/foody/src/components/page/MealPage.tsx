@@ -76,7 +76,7 @@ function MealPage() {
 
 		setDisplayMonth(selectedDate);
 		setDeleteOk(false);
-	}, [selectedDate, deleteOk, meal, breakfast.foods.length]);
+	}, [selectedDate, deleteOk, meal, breakfast.foods.length, setSearchOpen, setDetailOpen]);
 
 	useEffect(() => {
 		recentMeal().then((response) => {

@@ -20,6 +20,18 @@ instance.interceptors.request.use((req) => {
 	return req;
 });
 
+function getCookie(name: string): string | null {
+	const value = `; ${document.cookie}`;
+	const parts = value.split(`; ${name}=`);
+	if (parts.length === 2) {
+		const lastPart = parts.pop();
+		if (lastPart) {
+			return lastPart.split(';').shift() || null;
+		}
+	}
+	return null;
+}
+
 // Axios 응답시 인터셉트
 instance.interceptors.response.use(
 	(response) => response,
@@ -28,14 +40,14 @@ instance.interceptors.response.use(
 		if (error.response?.status === 500) {
 			toast.error('세션이 만료되었습니다. 다시 로그인 해주세요.');
 			// JWT 만료 오류 처리
-			const refreshToken = LocalStorage.getItem('refreshtoken');
+			const refreshToken = getCookie('refreshtoken');
 			if (refreshToken) {
 				try {
 					// Refresh Token을 사용하여 새로운 Access Token을 요청
-					const refreshResponse = await axios.post('/member/refresh', { refreshToken });
+					const refreshResponse = await axios.post('http://localhost/api/v1/member/refresh', { refreshToken });
 					if (refreshResponse.status === 200) {
 						// 새로운 Access Token을 받았을 경우, 저장하고 이전 요청을 재시도
-						const newAccessToken = refreshResponse.data.access_token;
+						const newAccessToken = refreshResponse.data.accessToken;
 						LocalStorage.setItem('accesstoken', newAccessToken);
 
 						// 재시도하기 위해 이전 요청을 복제
@@ -51,7 +63,7 @@ instance.interceptors.response.use(
 			}
 
 			// Refresh Token이 없거나 요청이 실패한 경우 로그인 페이지로 리다이렉트
-			window.location.href = '/login';
+			// window.location.href = '/login';
 			LocalStorage.removeItem('accesstoken');
 		}
 

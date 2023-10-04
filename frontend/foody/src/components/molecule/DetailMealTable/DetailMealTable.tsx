@@ -13,30 +13,30 @@ interface DetailMealTableProbs {
 	foods: GetMealFoodData[];
 	meal: string;
 	selectedDate: string;
+	setDeleteOk: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function DetailMealTable({ foods, meal, selectedDate }: DetailMealTableProbs) {
+function DetailMealTable({ foods, meal, selectedDate, setDeleteOk }: DetailMealTableProbs) {
 	const deleteMeal = (num: number) => {
+		let time = 'BREAKFAST';
+
 		if (meal === '아침') {
-			deleteMealInfo(selectedDate, num, 'BREAKFAST').then((response) => {
-				return response;
-			});
+			time = 'BREAKFAST';
 		}
 		if (meal === '점심') {
-			deleteMealInfo(selectedDate, num, 'LUNCH').then((response) => {
-				return response;
-			});
+			time = 'LUNCH';
 		}
 		if (meal === '저녁') {
-			deleteMealInfo(selectedDate, num, 'DINNER').then((response) => {
-				return response;
-			});
+			time = 'DINNER';
 		}
 		if (meal === '간식') {
-			deleteMealInfo(selectedDate, num, 'SNACK').then((response) => {
-				return response;
-			});
+			time = 'SNACK';
 		}
+
+		deleteMealInfo(selectedDate, num, time).then((response) => {
+			setDeleteOk(true);
+			console.log('response', response);
+		});
 	};
 
 	return (

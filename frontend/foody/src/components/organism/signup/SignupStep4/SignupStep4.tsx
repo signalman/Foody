@@ -66,7 +66,7 @@ function SignupStep4({ height, weight, setHeight, setWeight, nextButton }: Signu
 				maxlength={3}
 				isValid={heightCheck}
 				onChangeValue={setHeight}
-				placeholder="50 이상 230 이하의 숫자"
+				placeholder="키"
 				unit=""
 				value={height}
 			/>
@@ -75,7 +75,7 @@ function SignupStep4({ height, weight, setHeight, setWeight, nextButton }: Signu
 				maxlength={3}
 				isValid={weightCheck}
 				onChangeValue={setWeight}
-				placeholder="10 이상 150 이하의 숫자"
+				placeholder="몸무게"
 				unit=""
 				value={weight}
 			/>

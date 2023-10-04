@@ -1,30 +1,8 @@
 export interface Meal {
-	total: {
-		calcium: number;
-		carbohydrates: number;
-		dietaryFiber: number;
-		energy: number;
-		fats: number;
-		iron: number;
-		protein: number;
-		sodium: number;
-		vitaminA: number;
-		vitaminC: number;
-	};
+	total: NutrientTotal;
 	foods?: {
 		name: string;
-		nutrient: {
-			energy: number;
-			carbohydrates: number;
-			protein: number;
-			dietaryFiber: number;
-			calcium: number;
-			sodium: number;
-			iron: number;
-			fats: number;
-			vitaminA: number;
-			vitaminC: number;
-		};
+		nutrient: NutrientTotal;
 	}[];
 	imgUrl: string;
 	time: string;
@@ -45,22 +23,24 @@ export interface NutrientTotal {
 
 export interface RegistMeal {
 	name: string;
-	nutrientRequest: {
-		energy: number;
-		carbohydrates: number;
-		protein: number;
-		dietaryFiber: number;
-		calcium: number;
-		sodium: number;
-		iron: number;
-		fats: number;
-		vitaminA: number;
-		vitaminC: number;
-	};
+	nutrientRequest: NutrientTotal;
 }
 
 export interface RegistSendData {
 	type: string;
 	date: string;
 	foodRequestList: RegistMeal[];
+}
+
+export interface GetMealData {
+	total: NutrientTotal;
+	foods: getMealFoodData[];
+	imgUrl: string;
+	time: string;
+}
+
+export interface GetMealFoodData {
+	foodImage: string;
+	name: string;
+	nutrient: NutrientTotal;
 }

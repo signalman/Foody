@@ -7,7 +7,12 @@
 	border-radius: 30px;
 	background-color: var.$border-200;
 	@include f.flex(row, center, center, 0px);
-
+	img {
+		width: 75px;
+		height: 75px;
+		border-radius: 30px;
+		background-color: var.$border-200;
+	}
 	.meal-button-icon {
 		background-color: var.$border-200;
         color : var.$white;

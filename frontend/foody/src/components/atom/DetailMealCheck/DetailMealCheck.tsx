@@ -1,5 +1,6 @@
 import React from 'react';
 import { RiDeleteBinFill } from 'react-icons/ri';
+import './DetailMealCheck.scss';
 
 interface DetailMealCheckProps {
 	onDelete: () => void;

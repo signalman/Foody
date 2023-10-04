@@ -22,8 +22,7 @@ function DetailMeal({ selectedDate, meal, getData, requireData }: DetailMealProp
 				mealTotal={requireData.energy}
 				mealValue={getData.total.energy}
 			/>
-			<p>hello</p>
-			<DetailMealTable foods={getData.foods} />
+			<DetailMealTable foods={getData.foods} meal={meal} selectedDate={selectedDate} />
 		</div>
 	);
 }

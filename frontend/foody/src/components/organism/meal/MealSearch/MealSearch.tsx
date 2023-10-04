@@ -125,8 +125,8 @@ function MealSearch(props: IngredientSearchProps) {
 			console.log(totalData);
 			// const emptyFile2 = new File([], 'empty-image', { type: 'image/jpeg' });
 			// const temp = [emptyFile2];
-			postRegistMealText(totalData).then((response) => {
-				console.log(response);
+			postRegistMealText(totalData).then(() => {
+				setOpen(false);
 			});
 		}
 	};

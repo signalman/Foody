@@ -6,6 +6,8 @@
 
 	.ingredient-search-result-list {
 		@include f.flex(column, start, start, 10px);
+		max-height: calc(100vh - 420px);
+		overflow: scroll;
 
 		.ingredient-search-result-item {
 			width: 100%;

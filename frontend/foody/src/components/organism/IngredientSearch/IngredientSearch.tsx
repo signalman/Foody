@@ -12,6 +12,7 @@ import formatSearchResultList from 'utils/common/ingredient';
 import { CustomIngredientItemType, IngredientSearchItem } from 'types/refrigerator';
 import toast from 'react-hot-toast';
 import { ReqReceiptItem } from 'types/receipt';
+import CustomIngredientInsertOpen from 'components/molecule/CustomIngredientInsert/CustomIngredientInsert';
 import SubHeader from '../SubHeader/SubHeader';
 import SelectIngredientList from '../../molecule/SelectIngredientList/SelectIngredientList';
 import IngredientSearchResultList from '../../molecule/IngredientSearchResultList/IngredientSearchResultList';
@@ -24,6 +25,7 @@ interface IngredientSearchProps {
 function IngredientSearch(props: IngredientSearchProps) {
 	const { setOpen, receiptList } = props;
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
+	const [isCustomIngredientInsertOpen, setIsCustomIngredientInsertOpen] = useState(false);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [searchResultList, setSearchResultList] = useState<IngredientSearchItem[] | null>(null);
 	const [selectedIngredientList, setSelectedIngredientList] = useState<IngredientSearchItem[] | null>(null);
@@ -35,15 +37,7 @@ function IngredientSearch(props: IngredientSearchProps) {
 	};
 
 	const handleWrite = () => {
-		console.log('handleWrite');
-		toast.success('재료 직접 등록');
-		setCustomIngredientList([
-			...customIngredientList,
-			{
-				ingredientCategoryId: 2,
-				ingredientName: '닭고기',
-			},
-		]);
+		setIsCustomIngredientInsertOpen(true);
 	};
 
 	const handleIngredientSelect = (idx: number) => {
@@ -66,8 +60,6 @@ function IngredientSearch(props: IngredientSearchProps) {
 
 	const handleSubmitIngredientRegist = () => {
 		if (selectedIngredientList && selectedIngredientList.length !== 0) {
-			console.log('등록');
-			console.log(customIngredientList);
 			createIngredientList(
 				selectedIngredientList.map((item) => item.key),
 				customIngredientList,
@@ -99,7 +91,6 @@ function IngredientSearch(props: IngredientSearchProps) {
 
 	useEffect(() => {
 		if (receiptList && receiptList.length !== 0) {
-			console.log('receipt');
 			setSelectedIngredientList([
 				...receiptList.map((item) => {
 					const selectItem = {
@@ -111,6 +102,31 @@ function IngredientSearch(props: IngredientSearchProps) {
 			]);
 		}
 	}, [receiptList]);
+
+	useEffect(() => {
+		if (customIngredientList.length !== 0) {
+			const ingredientsList: number[] = !selectedIngredientList ? [] : selectedIngredientList.map((item) => item.key);
+			createIngredientList(ingredientsList, customIngredientList).then((res) => {
+				if (res.status === 204) {
+					toast.success('재료 등록에 성공하였습니다.');
+					setOpen(false);
+					setTabbarOn(true);
+				} else {
+					toast.error('재료 등록에 실패하였습니다.');
+				}
+			});
+		}
+	}, [customIngredientList, selectedIngredientList, setOpen, setTabbarOn, tabbarOn]);
+
+	if (isCustomIngredientInsertOpen) {
+		return (
+			<CustomIngredientInsertOpen
+				setIsCustomIngredientInsertOpen={setIsCustomIngredientInsertOpen}
+				setCustomIngredientList={setCustomIngredientList}
+				// handleSubmitIngredientRegist={handleSubmitIngredientRegist}
+			/>
+		);
+	}
 
 	return (
 		<div className="ingredient-regist-album-container">

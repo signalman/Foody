@@ -25,7 +25,9 @@ function FloatingMenuItem({
 				onClick={() => {
 					console.log(item);
 					onMenuSelect(item);
-					setTabbarOn(!tabbarOn);
+					if (item !== 'album') {
+						setTabbarOn(!tabbarOn);
+					}
 				}}
 			>
 				{renderIcon(FloatingMenuListIcons[item], 25)}

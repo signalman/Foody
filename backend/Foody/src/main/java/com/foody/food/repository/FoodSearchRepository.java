@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FoodSearchRepository extends JpaRepository<FoodSearch, Long>, FoodSearchJDBCRepository {
 
-    Optional<FoodSearch> findByName(String name);
+    Optional<FoodSearch> findFirstByName(String name);
 }

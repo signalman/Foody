@@ -8,7 +8,7 @@ import MealTemplate from 'components/template/MealTemplate/MealTemplate';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { breakfastState, dinnerState, lunchState, snackState } from 'recoil/atoms/nutrientState';
-import getDayofMeal from 'utils/api/meal';
+import getDayofMeal, { recentMeal } from 'utils/api/meal';
 
 const data = {
 	total: {
@@ -53,6 +53,7 @@ function MealPage() {
 	const [nowmonth, setMonth] = useState<string>('');
 	const [nowday, setDay] = useState<string>('');
 
+	const [bookDate, setBookDate] = useState<string[]>([]);
 	useEffect(() => {
 		const dateObject = new Date(selectedDate);
 		// year, month, day 자르기
@@ -76,6 +77,12 @@ function MealPage() {
 		setDisplayMonth(selectedDate);
 		setDeleteOk(false);
 	}, [selectedDate, deleteOk, meal, breakfast.foods.length]);
+
+	useEffect(() => {
+		recentMeal().then((response) => {
+			setBookDate(response.data);
+		});
+	});
 
 	if (searchOpen === true && meal) {
 		return <MealSearch setOpen={setSearchOpen} meal={meal} selectedDate={getDate} />;
@@ -147,6 +154,7 @@ function MealPage() {
 				setSelectedDate={setSelectedDate}
 				displayMonth={displayMonth}
 				setDisplayMonth={setDisplayMonth}
+				bookDate={bookDate}
 			/>
 			<MealTable total={total} breakfast={breakfast} lunch={lunch} dinner={dinner} snack={snack} />
 			<NutrientOfDay total={total} />

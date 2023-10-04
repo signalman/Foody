@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { subWeeks, addWeeks, startOfWeek, endOfWeek, isWithinInterval } from 'date-fns';
 import { DayPicker, RowProps, Row } from 'react-day-picker';
 import { ko } from 'date-fns/locale';
@@ -6,8 +6,7 @@ import 'react-day-picker/dist/style.css';
 import './MealCalendar.scss';
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 
-const isDays = [new Date(2023, 8, 23)];
-const isDaysStyle = { backgroundColor: '#1aa274', color: '#ffffff' };
+const isDaysStyle = { backgroundColor: '#ffde1a', color: '#ffffff' };
 
 function PresentWeek({ dates, displayMonth }: RowProps, selectedDate: Date) {
 	const isCurrentMonth = displayMonth.getMonth() + 1;
@@ -31,8 +30,14 @@ interface MealCalendarProps {
 	displayMonth: Date;
 	setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 	setDisplayMonth: React.Dispatch<React.SetStateAction<Date>>;
+	bookDate: string[];
 }
-function MealCalendar({ selectedDate, setSelectedDate, displayMonth, setDisplayMonth }: MealCalendarProps) {
+function MealCalendar({ selectedDate, setSelectedDate, displayMonth, setDisplayMonth, bookDate }: MealCalendarProps) {
+	const [isDays, setIsDays] = useState<Date[]>([]);
+
+	useEffect(() => {
+		setIsDays(bookDate.map((book) => new Date(book)));
+	}, [bookDate]);
 	const handleDayClick = (date: any) => {
 		setSelectedDate(date);
 	};
@@ -48,7 +53,6 @@ function MealCalendar({ selectedDate, setSelectedDate, displayMonth, setDisplayM
 
 	const handleMonthChange = (newMonth: Date) => {
 		setDisplayMonth(newMonth);
-		console.log(displayMonth);
 		setSelectedDate(newMonth);
 	};
 

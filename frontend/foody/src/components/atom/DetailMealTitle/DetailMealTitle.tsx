@@ -3,6 +3,8 @@ import { HiOutlineChevronRight } from 'react-icons/hi';
 import './DetailMealTitle.scss';
 import { NutrientTotal } from 'types/meal';
 import MealDetailNutrient from 'components/organism/meal/MealDetailNutrient/MealDetailNutrient';
+import { useRecoilState } from 'recoil';
+import tabbarState from 'recoil/atoms/tabbarState';
 
 interface DetailMealTitleProps {
 	foodName: string;
@@ -10,10 +12,12 @@ interface DetailMealTitleProps {
 	nutrient: NutrientTotal;
 }
 function DetailMealTitle({ foodName, foodEnergy, nutrient }: DetailMealTitleProps) {
+	const [, setTabbarOn] = useRecoilState(tabbarState);
 	const [open, setOpen] = useState<boolean>(false);
 
 	const openMealInfo = () => {
 		setOpen(true);
+		setTabbarOn(false);
 	};
 
 	return (

@@ -13,3 +13,9 @@ export interface ReqReceiptItem {
 	ingredientId: number;
 	ingredientName: string;
 }
+
+export interface BookmarkItemType {
+	id: number; // 레시피 ID
+	name: string; // 레시피 이름
+	ingredients: string[]; // 레시피 재료 목록
+}

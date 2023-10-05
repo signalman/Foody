@@ -9,7 +9,7 @@
 	top: 0;
 	left: -60vw;
 	z-index: var.$my-menu-z-index;
-	transition: 1s;
+	transition: 0.5s;
 
 	&.open {
 		left: 0;

@@ -59,6 +59,12 @@ function MealSearch(props: IngredientSearchProps) {
 	const [selfName, setSelfName] = useState<string>('');
 
 	const handleMenuSelect = (menu: string) => {
+		if (menu === 'album') {
+			toast('준비 중인 서비스입니다!', {
+				icon: '📢',
+			});
+			return;
+		}
 		setMenuOpen(!menuOpen);
 		setSelectedMenu(menu);
 		setTabbarOn(!tabbarOn);
@@ -74,7 +80,7 @@ function MealSearch(props: IngredientSearchProps) {
 
 	const handleWrite = () => {
 		console.log('handleWrite');
-		toast.success('재료 직접 등록');
+		// toast.success('재료 직접 등록');
 		setWrite(true);
 	};
 
@@ -97,6 +103,7 @@ function MealSearch(props: IngredientSearchProps) {
 					vitaminC: response.data.vitaminC,
 				},
 			});
+			toast.success(`${data}가 추가되었습니다.`);
 		});
 
 		setSelectedMealList((prevList) => [...(prevList || []), data]);
@@ -128,6 +135,7 @@ function MealSearch(props: IngredientSearchProps) {
 
 			postRegistMealText(totalData).then(() => {
 				setOpen(false);
+				toast.success('식단이 등록되었습니다.');
 			});
 		}
 	};

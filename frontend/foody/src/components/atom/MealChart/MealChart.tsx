@@ -14,7 +14,7 @@ function MealChart({ meal, value, total }: MealChartProps) {
 	const [remaincheck, setRemainCheck] = useState<boolean>(false);
 	const [remain, setRemain] = useState<number>(total - value);
 	const [reverseRemain, setReverseRemain] = useState<number>(0);
-
+	console.log(remain, total, value);
 	const Data = {
 		labels: [{ meal }],
 		datasets: [
@@ -40,8 +40,9 @@ function MealChart({ meal, value, total }: MealChartProps) {
 
 	useEffect(() => {
 		if (remain < 0) {
+			const number = Math.floor(remain);
 			setRemainCheck(true);
-			setReverseRemain(-remain);
+			setReverseRemain(-number);
 			setRemain(0);
 		}
 	}, [remain]);

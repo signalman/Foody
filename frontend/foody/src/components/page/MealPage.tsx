@@ -6,8 +6,9 @@ import MealTable from 'components/organism/meal/MealTable/MealTable';
 import NutrientOfDay from 'components/organism/meal/NutrientOfDay/NutrientOfDay';
 import MealTemplate from 'components/template/MealTemplate/MealTemplate';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { breakfastState, dinnerState, lunchState, snackState } from 'recoil/atoms/nutrientState';
+import tabbarState from 'recoil/atoms/tabbarState';
 import getDayofMeal, { recentMeal } from 'utils/api/meal';
 
 const data = {
@@ -29,8 +30,7 @@ const data = {
 };
 
 function MealPage() {
-	const [start, setStart] = useState<boolean>(true);
-
+	const [, setTabbarOn] = useRecoilState(tabbarState);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [displayMonth, setDisplayMonth] = useState(new Date());
 	const [breakfast, setBreakfast] = useState(data);
@@ -76,18 +76,14 @@ function MealPage() {
 			setTotal(response.data.total);
 		});
 
+		recentMeal().then((response) => {
+			setBookDate(response.data);
+		});
+
 		setDisplayMonth(selectedDate);
 		setDeleteOk(false);
-	}, [selectedDate, deleteOk, meal, breakfast.foods.length, setSearchOpen, setDetailOpen]);
-
-	useEffect(() => {
-		if (start === true) {
-			recentMeal().then((response) => {
-				setBookDate(response.data);
-			});
-			setStart(false);
-		}
-	}, [start]);
+		setTabbarOn(true);
+	}, [selectedDate, deleteOk, meal, breakfast.foods.length, searchOpen, detailOpen, setTabbarOn]);
 
 	if (searchOpen === true && meal) {
 		return <MealSearch setOpen={setSearchOpen} meal={meal} selectedDate={getDate} />;

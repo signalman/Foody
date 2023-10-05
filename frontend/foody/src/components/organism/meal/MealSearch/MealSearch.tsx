@@ -95,7 +95,6 @@ function MealSearch(props: IngredientSearchProps) {
 		});
 
 		setSelectedMealList((prevList) => [...(prevList || []), data]);
-		console.log(selectedMealList);
 	};
 
 	const handleDelete = (data: string) => {
@@ -122,9 +121,6 @@ function MealSearch(props: IngredientSearchProps) {
 				foodRequestList: sendData,
 			};
 
-			console.log(totalData);
-			// const emptyFile2 = new File([], 'empty-image', { type: 'image/jpeg' });
-			// const temp = [emptyFile2];
 			postRegistMealText(totalData).then(() => {
 				setOpen(false);
 			});
@@ -173,6 +169,9 @@ function MealSearch(props: IngredientSearchProps) {
 		return <MealSearch meal={meal} setOpen={setMenuOpen} selectedDate={selectedDate} />;
 	}
 
+	if (tabbarOn === true) {
+		setTabbarOn(false);
+	}
 	return (
 		<div className="meal-regist-album-container">
 			<SubHeader isBack title="식단 찾기" handleMove={handleMove} />

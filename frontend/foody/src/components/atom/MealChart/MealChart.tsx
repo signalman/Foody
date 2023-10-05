@@ -12,9 +12,9 @@ interface MealChartProps {
 }
 function MealChart({ meal, value, total }: MealChartProps) {
 	const [remaincheck, setRemainCheck] = useState<boolean>(false);
-	const [remain, setRemain] = useState<number>(total - value);
+	const [remain, setRemain] = useState<number>(Math.floor(total - value));
 	const [reverseRemain, setReverseRemain] = useState<number>(0);
-	console.log(remain, total, value);
+
 	const Data = {
 		labels: [{ meal }],
 		datasets: [

@@ -19,3 +19,18 @@ export interface BookmarkItemType {
 	name: string; // 레시피 이름
 	ingredients: string[]; // 레시피 재료 목록
 }
+
+export interface DatasetsType {
+	data: number[];
+	backgroundColor: string[];
+	borderColor: string[];
+	borderWidth: number;
+	circumference: number;
+	rotation: number;
+	cutout: string;
+}
+
+export interface DonutChartDataType {
+	labels: string[];
+	datasets: DatasetsType[];
+}

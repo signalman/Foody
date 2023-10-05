@@ -3,6 +3,7 @@ import './BookmarkItem.scss';
 import { BookmarkItemType } from 'types/receipt';
 import { getRecipeDetail } from 'utils/api/recipe';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 import Bookmark from '../../atom/Bookmark/Bookmark';
 
 function BookmarkItem({ item, handleChange }: { item: BookmarkItemType; handleChange: () => void }) {
@@ -20,7 +21,7 @@ function BookmarkItem({ item, handleChange }: { item: BookmarkItemType; handleCh
 	return (
 		<li className="bookmark-item-container">
 			{data && (
-				<div className="contents-wrap">
+				<Link className="contents-wrap" to={`/recipe/${data.id}`}>
 					<div className="img-wrap">
 						<img src={data.url} alt="" />
 					</div>
@@ -52,7 +53,7 @@ function BookmarkItem({ item, handleChange }: { item: BookmarkItemType; handleCh
 							<span>{data.difficulty}</span>
 						</div>
 					</div>
-				</div>
+				</Link>
 			)}
 		</li>
 	);

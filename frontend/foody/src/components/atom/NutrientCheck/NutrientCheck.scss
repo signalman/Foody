@@ -2,7 +2,7 @@
 @use 'styles/mixins/flex.scss' as f;
 
 .small-box {
-	width: 65px;
+	width: 80px;
 	@include f.flex(row, around, center, 0px);
 	flex-wrap: nowrap;
 

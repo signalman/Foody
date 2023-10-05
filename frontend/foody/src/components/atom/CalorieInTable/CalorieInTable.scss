@@ -2,14 +2,12 @@
 @use 'styles/mixins/flex.scss' as f;
 
 .meal-box {
-	@include f.flex(row, between, center);
-	width: 100px;
+	@include f.flex(row, between, center, 10px);
 	font-size: var.$p4;
 	font-weight: var.$fw-200;
 
 	.meal-check {
-		width: 30px;
-		@include f.flex(row, between, center);
+		@include f.flex(row, between, center, 10px);
 
 		.meal-color {
 			width: 8px;
@@ -23,8 +21,7 @@
 	}
 
 	.meal-info {
-		@include f.flex(row, between, center);
-		width: 55px;
+		@include f.flex(row, between, center, 10px);
 
 		.meal-value {
 			font-size: var.$p2;

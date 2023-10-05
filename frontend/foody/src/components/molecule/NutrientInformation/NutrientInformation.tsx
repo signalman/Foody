@@ -3,6 +3,7 @@ import NutrientInfo from 'components/atom/NutrientCheck/NutrientCheck';
 import { BarColor } from 'constants/color';
 import './NutrientInformation.scss';
 import React from 'react';
+import PreviewBarChart from 'components/atom/PreviewBarChart/PreviewBarChart';
 
 interface NutrientInformationProps {
 	nutrient: string;
@@ -16,8 +17,24 @@ function NutrientInformation({ nutrient, totalNutrient, valueNutrient, previewVa
 		<div className="nutrient-little-box">
 			<p className="nutrient-name">{nutrient}</p>
 			<div className="nutrient">
-				<BarChart barcolor={BarColor.Null} total={totalNutrient} value={valueNutrient} previewValue={previewValue} />
-				<NutrientInfo total={totalNutrient} value={parseFloat((valueNutrient + previewValue).toFixed(0))} />
+				{previewValue !== 0 ? (
+					<PreviewBarChart
+						barcolor={BarColor.Null}
+						total={totalNutrient}
+						value={valueNutrient}
+						previewValue={previewValue}
+					/>
+				) : (
+					<BarChart barcolor={BarColor.Null} total={totalNutrient} value={valueNutrient} previewValue={previewValue} />
+				)}
+				<NutrientInfo
+					total={totalNutrient}
+					value={
+						previewValue !== 0
+							? parseFloat(previewValue.toFixed(0))
+							: parseFloat((valueNutrient + previewValue).toFixed(0))
+					}
+				/>
 			</div>
 		</div>
 	);

@@ -3,13 +3,13 @@
 
 .carlorie-check-table {
 	@include f.flex(column, center, center, 20px);
-	width: 130px;
-	height: 150px;
 	border-radius: 10px;
 	border: 1px solid var.$black-100;
+	margin: 0 30px;
+	padding: 10px 30px;
 
 	.meal-calorie {
-		@include f.flex(column, center, center, 10px);
+		@include f.flex(column, center, normal, 10px);
 	}
 
 	.total-calorie {

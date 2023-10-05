@@ -1,0 +1,33 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.regist-today-meal-div {
+	margin: 20px 0px;
+	@include f.flex(row, center, center);
+	.regist-today-meal-p {
+		color: var.$black-600;
+		font-weight: var.$fw-600;
+		font-size: var.$h3;
+	}
+}
+
+.select-today-meal-container {
+	width: 100%;
+	background-color: var.$white;
+	@include f.flex(column, center, center, 20px);
+
+	.select-today-meal-sub {
+		width: 100%;
+		@include f.flex(row, between, center);
+
+		.select-today-meal-btn {
+			border: 1px solid var.$black-200;
+			border-radius: 10px;
+			width: 45%;
+			height: 40px;
+			color: var.$primary-green-500;
+			font-size: var.$p2;
+			font-weight: var.$fw-600;
+		}
+	}
+}

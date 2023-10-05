@@ -28,7 +28,7 @@
     - 사용자의 식사를 AI 기술을 활용하여 사진으로 음식과 영양소를 분석
     - 일일 섭취 권장 영양소 대비 부족한 영양소에 대한 정보 제공
     - 사용자 취향과 부족 영양소에 대한 지표를 기준으로 식사 추천
-    - 소유하고 있는 냉장고 재료오 부족 영양소에 기반한 추천
+    - 소유하고 있는 냉장고 재료와 부족 영양소에 기반한 추천
     - 유사한 다른 유저, 선호도를 종합한 추천하기 위한 다양한 알고리즘
     - OCR 기술을 통해 구매한 음식 재료에 대해 냉장고 현황 현실화
 
@@ -46,7 +46,55 @@
 
 **4. 컨벤션**
 
+- git commit 컨벤션
+```jsx
+// 작업 종류
+init: 프로젝트 셋팅
+feat: 새로운 기능 추가할 경우
+fix: 버그를 고친 경우
+docs: 문서를 수정한 경우(ex. Swagger, README)
+style: 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
+refactor: 코드 리팩토링
+test: 테스트 코드, 리팩토링 테스트 코드 추가
+chore: 빌드 업무 수정, 패키지 매니저 수정(ex. dependency 추가)
+merge: 충돌 시 merge할 경우
 
+// 예시
+feat: 로그인 API 구현
+```
+
+- git branch 전략
+```jsx
+# Branch명
+master : 운영 서버로 배포하기 위한 branch
+develop : 안정되고 배포 가능한 branch
+FE/develop : frontend develop
+BE/develop : backend develop
+{포지션}/feat/{기능}#{이슈 번호} : 기능 개발을 위한 branch
+{포지션}/refactor/{기능}#{이슈 번호} : 리팩토링 branch
+{포지션}/hotfix : dev 브랜치에서 발생한 버그를 수정하는 branch
+
+// 예시
+BE/feat/user#1
+
+
+# Pull Request명
+브랜치명
+# Pull Request 내용
+템플릿
+```
+
+- jira 컨벤션
+```jsx
+- 담당자, 스토리 포인트 지정 필수
+- 팀원끼리 스토리 포인트 밸런스 맞추기
+- 스토리 포인트 하나 당 4 넘지 않도록 할당
+```
+
+**5. 요구사항 명세서**
+<img src="https://github.com/kkyu-min/AlgoRhythmAndBlues/assets/81220782/a31eb431-dc86-469f-ad0f-e9fb08417071">
+
+[자세히 보기](./exec/requirements/requirements.md)
 
 ## 기술 특이점
 
@@ -111,4 +159,5 @@
 
 
 3. ERD
-    <img src="https://github.com/kkyu-min/AlgoRhythmAndBlues/assets/81220782/c9177de4-1357-48ae-8d87-e7cc9cb8d88f">
+
+<img src="https://github.com/kkyu-min/AlgoRhythmAndBlues/assets/81220782/c9177de4-1357-48ae-8d87-e7cc9cb8d88f">

@@ -113,6 +113,7 @@ function MealSearch(props: IngredientSearchProps) {
 		if (selectedMealList) {
 			setSelectedMealList(removeItemFromArray(data, selectedMealList));
 			setSendData(removeItemByName(data, sendData));
+			toast.success(`${data}가 취소되었습니다.`);
 		}
 	};
 	useEffect(() => {

@@ -29,6 +29,8 @@ const data = {
 };
 
 function MealPage() {
+	const [start, setStart] = useState<boolean>(true);
+
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [displayMonth, setDisplayMonth] = useState(new Date());
 	const [breakfast, setBreakfast] = useState(data);
@@ -79,10 +81,13 @@ function MealPage() {
 	}, [selectedDate, deleteOk, meal, breakfast.foods.length, setSearchOpen, setDetailOpen]);
 
 	useEffect(() => {
-		recentMeal().then((response) => {
-			setBookDate(response.data);
-		});
-	});
+		if (start === true) {
+			recentMeal().then((response) => {
+				setBookDate(response.data);
+			});
+			setStart(false);
+		}
+	}, [start]);
 
 	if (searchOpen === true && meal) {
 		return <MealSearch setOpen={setSearchOpen} meal={meal} selectedDate={getDate} />;

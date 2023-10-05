@@ -440,7 +440,7 @@ async def test():
     return all_users_data[0]
 
 
-@router.post("/nutrient")
+@router.post("/nutrient/old")
 def get_combined_recommendations_without_ingredients_v4(data: CombineUserInput, top_k: int = 10):
     # 영양소 추천 점수 계산 (과다 섭취에 대한 패널티 적용)
     def calculate_scores_vectorized(df, user_deficiency):
@@ -580,7 +580,6 @@ async def cluster_based_recommendation(user_data: UserData, top_k: int = 10) -> 
     all_users_data = await database.fetch_all(query)
     user_data_df = pd.DataFrame(all_users_data)
 
-
     n_samples = len(all_users_data)  # Use the length of all_users_data instead of clusterInput.user_data
     n_clusters = top_k // 2
 
@@ -591,7 +590,8 @@ async def cluster_based_recommendation(user_data: UserData, top_k: int = 10) -> 
     # 2. Scale the data and perform clustering
     scaler = StandardScaler()
     user_data_scaled = scaler.fit_transform(user_data_df)
-    kmeans = KMeans(n_clusters=5, random_state=42)
+    # kmeans = KMeans(n_clusters=5, random_state=42)
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
     clusters = kmeans.fit_predict(user_data_scaled)
 
     # 3. Generate mock preferences for users
@@ -641,3 +641,43 @@ async def cluster_based_recommendation(user_data: UserData, top_k: int = 10) -> 
     recommendations = get_recommendations_based_on_preference(user_preference, top_k=top_k)
 
     return [rec["recipe_id"] for rec in recommendations]
+
+
+@router.post("/nutrient")
+def get_combined_recommendations_without_ingredients_v5(data: CombineUserInput, top_k: int = 10):
+    # 영양소 추천 점수 계산 (유클리디안 거리 최소화)
+    def calculate_euclidean_distance_scores(df, user_deficiency):
+        user_vector = np.array(list(user_deficiency.dict().values()))
+        recipe_vectors = df.values
+        # Calculate Euclidean distance
+        distances = np.linalg.norm(recipe_vectors - user_vector, axis=1)
+        # Convert distance to scores (smaller distance should result in higher score)
+        scores = -distances
+        return scores
+
+    # 영양소 기반 점수 계산
+    recipe_data_encoded['recommendation_score'] = calculate_euclidean_distance_scores(
+        recipe_data_encoded[data.user_deficiency.dict().keys()], data.user_deficiency)
+
+    # 사용자 선호도 정보를 encoded_columns 순서에 맞게 재배열
+    rearranged_preference = [data.user_preference.dict()[col] for col in preference_columns]
+
+    # 선호도 정보 기반으로 점수 계산
+    preference_vector = np.array(rearranged_preference)
+    preference_scores = cosine_similarity(preference_vector.reshape(1, -1),
+                                          recipe_data_encoded[encoded_columns].values)
+    recipe_data_encoded['preference_score'] = preference_scores.flatten()
+
+    # 최종 점수는 영양소 추천 점수와 선호도 점수의 합으로 결정
+    recipe_data_encoded['final_score'] = recipe_data_encoded['recommendation_score'] + recipe_data_encoded[
+        'preference_score']
+    final_top_indices = recipe_data_encoded['final_score'].argsort()[-top_k:][::-1]
+
+    # 상위 레시피와 그 점수 추출
+    top_recipes = [{"recipe_id": int(recipe_data_encoded.iloc[index]['recipe_id']),
+                    "final_score": recipe_data_encoded.iloc[index]['final_score']} for index in final_top_indices]
+
+    # 상위 레시피 추출 (recipe_id만 포함하도록 수정, 서버 통신용)
+    top_recipes = [int(recipe_data_encoded.iloc[index]['recipe_id']) for index in final_top_indices]
+
+    return top_recipes

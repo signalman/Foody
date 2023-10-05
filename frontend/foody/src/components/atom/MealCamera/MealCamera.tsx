@@ -3,11 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import './MealCamera.scss';
 import { BiCamera } from 'react-icons/bi';
 import tabbarState from 'recoil/atoms/tabbarState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { getMealNutrient, mealCamera, postRegistMeal } from 'utils/api/meal';
 import { RegistMeal, RegistSendData } from 'types/meal';
 import toast from 'react-hot-toast';
 import SubHeader from 'components/organism/SubHeader/SubHeader';
+import { isChangeMealNutrientState } from 'recoil/atoms/nutrientState';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 interface MealCameraProps {
@@ -17,6 +18,7 @@ interface MealCameraProps {
 }
 function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 	const [, setTabbarOn] = useRecoilState(tabbarState);
+	const setIsChangeMealNutrient = useSetRecoilState(isChangeMealNutrientState);
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const photoRef = useRef<HTMLCanvasElement | null>(null);
 	const [stream, setStream] = useState<MediaStream | null>(null);
@@ -207,9 +209,21 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 				setTabbarOn(true);
 				setOpen(false);
 				toast.success('식단이 등록되었습니다.');
+				setIsChangeMealNutrient((prev: boolean) => setIsChangeMealNutrient(!prev));
 			});
 		}
-	}, [captureImg, complete, selectedDate, sendData, sendMeal, setOpen, setTabbarOn, subImgArray, test.length]);
+	}, [
+		captureImg,
+		complete,
+		selectedDate,
+		sendData,
+		sendMeal,
+		setIsChangeMealNutrient,
+		setOpen,
+		setTabbarOn,
+		subImgArray,
+		test.length,
+	]);
 
 	return (
 		<>

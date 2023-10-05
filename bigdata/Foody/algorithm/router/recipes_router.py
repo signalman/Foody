@@ -24,6 +24,7 @@ router = APIRouter()
 recipe_data = pd.read_csv('data/recipe_information_reprocessed.csv')
 recipe_data_cleaned = recipe_data.dropna(subset=['ingredients_concat'])
 recipe_data_jaccard = pd.read_csv('data/recipe_jaccard.csv')
+recipe_data_jaccard_list = pd.read_csv('data/recipe_jaccard_list.csv')
 
 # 재료 유사성 점수 계산
 vectorizer = TfidfVectorizer()
@@ -400,6 +401,79 @@ def get_combined_recommendations_v4(data: CombinedInput, top_k: int = 10):
                                         :math.ceil(additional_needed / 2)]
         additional_nutrient_indices = [idx for idx in nutrient_top_indices if idx not in combined_indices][
                                       :math.floor(additional_needed / 2)]
+
+        top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_ingredient_indices])
+        top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_nutrient_indices])
+
+    return top_recipes[:top_k]
+
+
+@router.post("/nutrients/recommend/1")
+def get_combined_recommendations_v5(data: CombinedInput, top_k: int = 10):
+    # Convert the ingredients string into a set
+    user_ingredients_set = set(data.ingredients.split())
+
+    # Calculate Jaccard Similarity for each recipe in the dataframe
+    jaccard_scores = []
+    for index, row in recipe_data_jaccard.iterrows():
+
+        recipe_ingredients = eval(row['ingredient_set'])
+        if len(recipe_ingredients) >= 5:  # Only consider recipes with at least 5 ingredients
+            score = jaccard_similarity(user_ingredients_set, recipe_ingredients)
+            jaccard_scores.append((index, score))
+
+    # Sort based on Jaccard Similarity
+    ingredient_top_indices = [index for index, score in sorted(jaccard_scores, key=lambda x: x[1], reverse=True)]
+
+    # 영양소 추천 점수 계산
+    recipe_data['recommendation_score'] = calculate_scores_vectorized(recipe_data, data.user_deficiency)
+    nutrient_top_indices = recipe_data['recommendation_score'].argsort()[-1000:][::-1]
+
+    # 두 인덱스의 교집합 계산
+    combined_indices = list(set(ingredient_top_indices[:1000]) & set(nutrient_top_indices))
+    combined_indices.sort(key=lambda x: recipe_data.iloc[x]['recommendation_score'], reverse=True)
+
+    # 교집합에서 레시피 추출
+    top_recipes = [int(recipe_data.iloc[index]['recipe_id']) for index in combined_indices[:top_k]]
+
+    # 교집합의 크기가 top_k보다 작을 경우 추가적인 레시피 추출
+    if len(top_recipes) < top_k:
+        additional_needed = top_k - len(top_recipes)
+        additional_ingredient_indices = [idx for idx in ingredient_top_indices if idx not in combined_indices][:math.ceil(additional_needed / 2)]
+        additional_nutrient_indices = [idx for idx in nutrient_top_indices if idx not in combined_indices][:math.floor(additional_needed / 2)]
+
+        top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_ingredient_indices])
+        top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_nutrient_indices])
+
+    return top_recipes[:top_k]
+
+
+@router.post("/nutrients/recommend/2")
+def get_combined_recommendations_v6(data: CombinedInput, top_k: int = 10):
+
+    user_ingredients_set = set(data.ingredients.split())
+
+    jaccard_scores = [(index, jaccard_similarity(user_ingredients_set, set(row['ingredient_list'])))
+                      for index, row in recipe_data_jaccard_list.iterrows() if len(row['ingredient_list']) >= 5]
+
+    ingredient_top_indices = [index for index, score in sorted(jaccard_scores, key=lambda x: x[1], reverse=True)]
+
+    # 영양소 추천 점수 계산
+    recipe_data['recommendation_score'] = calculate_scores_vectorized(recipe_data, data.user_deficiency)
+    nutrient_top_indices = recipe_data['recommendation_score'].argsort()[-1000:][::-1]
+
+    # 두 인덱스의 교집합 계산
+    combined_indices = list(set(ingredient_top_indices[:1000]) & set(nutrient_top_indices))
+    combined_indices.sort(key=lambda x: recipe_data.iloc[x]['recommendation_score'], reverse=True)
+
+    # 교집합에서 레시피 추출
+    top_recipes = [int(recipe_data.iloc[index]['recipe_id']) for index in combined_indices[:top_k]]
+
+    # 교집합의 크기가 top_k보다 작을 경우 추가적인 레시피 추출
+    if len(top_recipes) < top_k:
+        additional_needed = top_k - len(top_recipes)
+        additional_ingredient_indices = [idx for idx in ingredient_top_indices if idx not in combined_indices][:math.ceil(additional_needed / 2)]
+        additional_nutrient_indices = [idx for idx in nutrient_top_indices if idx not in combined_indices][:math.floor(additional_needed / 2)]
 
         top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_ingredient_indices])
         top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_nutrient_indices])

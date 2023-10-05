@@ -25,6 +25,10 @@ function FoodMBTI() {
 
 	return (
 		<FoodMBTITemplate>
+			<div className="desc-wrap">
+				<h2>선호하는 메뉴를 골라주세요!</h2>
+				<p>선호도에 따라 레시피를 추천해 드려요</p>
+			</div>
 			<ImgCount total={arr.length} value={idx + 1} />
 			<FoodMBTIImage images={arr} idx={idx} />
 			<FoodMBTIList imageValue={resultImages} setIdx={setIdx} idx={idx} />

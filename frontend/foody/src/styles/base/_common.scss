@@ -145,6 +145,10 @@ h4 {
 	}
 }
 
+body.no-scroll {
+	overflow: hidden;
+}
+
 [data-rsbs-backdrop] {
 	cursor: default !important;
 }

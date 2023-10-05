@@ -1,0 +1,64 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.home-shortcut-buttons-template {
+	width: 100%;
+	height: 150px;
+	display: grid;
+	gap: 20px;
+	grid-template-rows: repeat(2, 1fr);
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-areas:
+		'l rt'
+		'l rb';
+
+	.item {
+		@include f.flex;
+		border: 1px solid var.$black-100;
+		border-radius: 10px;
+		padding: 20px;
+	}
+
+	.left {
+		@include f.flex(column, between, start);
+		grid-area: l;
+
+		.text-wrap {
+			width: 100%;
+			text-align: left;
+
+			h4 {
+				margin-bottom: 6px;
+			}
+		}
+
+		img {
+			width: 80%;
+			align-self: flex-end;
+		}
+
+		.desc {
+			font-size: var.$p2;
+			color: var.$black-200;
+			text-wrap: nowrap;
+		}
+	}
+
+	.right-top,
+	.right-bottom {
+		img {
+			height: 40px;
+		}
+	}
+	.right-top {
+		@include f.flex(row, around);
+		grid-area: rt;
+		img {
+			height: 45px;
+		}
+	}
+	.right-bottom {
+		@include f.flex(row, around);
+		grid-area: rb;
+	}
+}

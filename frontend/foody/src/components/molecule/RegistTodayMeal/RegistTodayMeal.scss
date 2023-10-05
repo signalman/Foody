@@ -1,0 +1,7 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.regist-today-meal-tabbar-container {
+	transition: all 2s ease;
+	opacity: 0;
+}

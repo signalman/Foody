@@ -1,0 +1,30 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex' as f;
+
+.ingredients-list-item-container {
+	@include f.flex;
+	height: 100%;
+	background-color: var.$white;
+	border-radius: 10px;
+
+	button {
+		width: 100%;
+		min-height: 95px;
+		height: 100%;
+		padding: 14px;
+		@include f.flex(column, center, center, 10px);
+
+		svg {
+			color: var.$border-200;
+		}
+
+		img {
+			max-width: 50px;
+			width: 10vw;
+			margin-bottom: 4px;
+		}
+		p {
+			font-size: var.$p3;
+		}
+	}
+}

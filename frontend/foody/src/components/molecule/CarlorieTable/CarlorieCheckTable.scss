@@ -1,0 +1,30 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.carlorie-check-table {
+	@include f.flex(column, center, center, 20px);
+	border-radius: 10px;
+	border: 1px solid var.$black-100;
+	margin: 0 30px;
+	padding: 10px 30px;
+
+	.meal-calorie {
+		@include f.flex(column, center, normal, 10px);
+	}
+
+	.total-calorie {
+		@include f.flex(row, center, center, 5px);
+
+		.total {
+			font-size: var.$p1;
+			font-weight: var.$fw-400;
+			color: var.$black-500;
+		}
+
+		.get-meal {
+			font-size: var.$p3;
+			font-weight: var.$fw-200;
+			color: var.$black-300;
+		}
+	}
+}

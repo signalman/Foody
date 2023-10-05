@@ -1,0 +1,22 @@
+.receipt-list-conatiner {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 50%;
+	left: 0;
+	z-index: var.$receipt-list-conatiner-z-index;
+	transform: translateY(-50%);
+	background-color: var.$danger-alpa-40;
+}
+
+.receipt-list {
+	.bounding-box {
+		fill: var.$primary-green-alpa-40;
+	}
+
+	svg {
+		width: 100%;
+		height: 100%;
+		background-color: var.$black-alpa-20;
+	}
+}

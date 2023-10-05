@@ -1,0 +1,32 @@
+@use 'styles/base/variable.scss' as var;
+
+.button-value {
+	color: var.$white;
+	font-size: var.$p1;
+	font-weight: var.$fw-500;
+	height: 50px;
+	width: 100%;
+	border-radius: 10px;
+
+	svg {
+		margin-right: 4px;
+	}
+}
+
+.img-size {
+	width: 15px;
+	height: 15px;
+	margin-right: 10px;
+}
+
+.green {
+	background-color: var.$primary-green-500;
+}
+
+.lightgreen {
+	background-color: var.$primary-green-300;
+}
+
+.gray {
+	background-color: var.$black-100;
+}

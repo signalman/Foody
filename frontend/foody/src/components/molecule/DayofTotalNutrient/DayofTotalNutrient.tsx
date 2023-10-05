@@ -28,7 +28,7 @@ function DayofTotalNutrient({ open, setOpen, mealNutrient, mealMinerals, mealVit
 				<ContentsLayout marginTop={LayoutTopMargin.mt20} marginBottom={LayoutBottomMargin.mb30}>
 					<NutrientBar isempty mealNutrient={mealMinerals} title="다량 무기질" />
 				</ContentsLayout>
-				<ContentsLayout marginTop={LayoutTopMargin.mt20} marginBottom={LayoutBottomMargin.mbTabbar}>
+				<ContentsLayout marginTop={LayoutTopMargin.mt20} marginBottom={LayoutBottomMargin.mb0}>
 					<NutrientBar isempty mealNutrient={mealVitamin} title="비타민" />
 				</ContentsLayout>
 			</div>

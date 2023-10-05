@@ -1,0 +1,13 @@
+== 레시피 API
+
+=== 레시피 상세 조회
+
+==== HTTP Request
+include::{snippets}/recipe/id/path-parameters.adoc[]
+include::{snippets}/recipe/id/http-request.adoc[]
+include::{snippets}/recipe/id/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/recipe/id/http-response.adoc[]
+include::{snippets}/recipe/id/response-body.adoc[]
+include::{snippets}/recipe/id/response-fields.adoc[]

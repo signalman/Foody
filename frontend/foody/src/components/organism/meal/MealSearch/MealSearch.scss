@@ -1,0 +1,19 @@
+@use 'styles/base/variable' as var;
+
+.meal-regist-album-container {
+	height: 100vh;
+
+	h3 {
+		font-weight: var.$fw-600;
+		color: var.$primary-green-500;
+		margin-bottom: 10px;
+	}
+
+	.layout {
+		height: calc(100% - 160px);
+
+		.floating-layout {
+			bottom: 0;
+		}
+	}
+}

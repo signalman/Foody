@@ -1,0 +1,63 @@
+@use 'styles/base/variable' as var;
+
+.ingredients-list-container {
+	position: relative;
+	border-radius: 30px;
+	height: calc(100vh - 275px);
+	margin-left: 5px;
+
+	&.refrigerator-door::before {
+		content: '';
+		position: absolute;
+		width: 40px;
+		height: calc(100% - 70px);
+		top: 20px;
+		left: -34px;
+		background-image: url('../../../assets/images/refrigerator-door.svg');
+	}
+
+	&.drawer-leg::before,
+	&.drawer-leg::after {
+		content: '';
+		position: absolute;
+		width: 15px;
+		height: 20px;
+		border-radius: 10px;
+		background-color: var.$drawer;
+	}
+	&.drawer-leg::before {
+		top: -10px;
+		left: 0;
+	}
+	&.drawer-leg::after {
+		top: -10px;
+		right: 0;
+	}
+
+	.ingredients-list-wrap {
+		height: calc(100vh - 265px);
+		padding: 12px;
+		padding-bottom: 180px;
+		overflow-y: scroll;
+		border-width: 15px;
+		border-style: solid;
+
+		&.refrigerator {
+			border-color: var.$refrigerator;
+			border-radius: 40px;
+			background-color: var.$refrigerator-inner;
+		}
+		&.drawer {
+			border-color: var.$drawer;
+			background-color: var.$drawer-inner;
+		}
+
+		.ingredients-list {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			justify-content: center;
+			align-items: start;
+			gap: 10px;
+		}
+	}
+}

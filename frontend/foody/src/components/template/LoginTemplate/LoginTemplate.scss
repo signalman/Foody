@@ -1,0 +1,30 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.login-template-container {
+	height: 100vh;
+	position: relative;
+
+	.main-div {
+		height: 100%;
+		@include f.flex(column, center, center, 0);
+		padding-bottom: 50%;
+	}
+
+	.main-logo {
+		width: 80%;
+
+		img {
+			width: 100%;
+		}
+	}
+
+	.btn-group {
+		position: fixed;
+		width: calc(100% - 30px);
+		max-width: 500px;
+		left: 50%;
+		bottom: 10%;
+		transform: translateX(-50%);
+	}
+}

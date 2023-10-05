@@ -1,0 +1,19 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.floating-layout {
+	position: absolute;
+	bottom: 100px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.floating-bg {
+	width: 40%;
+	border-radius: 50px;
+	background-color: var.$white;
+	box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.floating-wrap {
+}

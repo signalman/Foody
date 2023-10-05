@@ -1,0 +1,11 @@
+@use 'styles/base/variable.scss' as var;
+
+.banner-slider-container {
+	background-color: transparent;
+	border-radius: 10px;
+
+	img {
+		width: 100%;
+		height: auto;
+	}
+}

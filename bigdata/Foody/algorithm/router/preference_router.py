@@ -580,6 +580,14 @@ async def cluster_based_recommendation(user_data: UserData, top_k: int = 10) -> 
     all_users_data = await database.fetch_all(query)
     user_data_df = pd.DataFrame(all_users_data)
 
+
+    n_samples = len(all_users_data)  # Use the length of all_users_data instead of clusterInput.user_data
+    n_clusters = top_k // 2
+
+    # Check and adjust the number of clusters based on the number of samples
+    if n_samples <= n_clusters:
+        n_clusters = n_samples - 1
+
     # 2. Scale the data and perform clustering
     scaler = StandardScaler()
     user_data_scaled = scaler.fit_transform(user_data_df)

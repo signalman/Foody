@@ -15,9 +15,6 @@ function PreviewBarChart({ total, value, previewValue = 0, barcolor }: PreviewBa
 
 	let barWidth: number = (value / total) * totalWidth; // n%
 	let previewBarWidth: number = (previewValue / total) * totalWidth;
-	// const checkBarWidth: number = ; // n%
-	// const checkBar: number = (value + previewValue) / totalWidth; // 0.0n
-	// let previewBarWidth: number = (previewValue / total) * totalWidth;
 
 	let checkColor = barcolor; // 기본 색상은 barcolor 그대로 사용
 	let previewColor: PreviewBarColor = PreviewBarColor.Null;
@@ -39,7 +36,7 @@ function PreviewBarChart({ total, value, previewValue = 0, barcolor }: PreviewBa
 
 	return (
 		<div className="bar-box">
-			<div className={classNames('bar-content', checkColor)} style={{ width: `${barWidth}%` }} />
+			<div className={classNames('bar-content', checkColor)} style={{ width: `calc(${barWidth}% - 10px)` }} />
 			<div className={classNames('preview-bar', previewColor)} style={{ width: `${previewBarWidth}%` }} />
 		</div>
 	);

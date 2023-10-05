@@ -9,8 +9,10 @@ import com.foody.nutrient.dto.response.NutrientResponse;
 import com.foody.nutrient.service.NutrientService;
 import com.foody.recipe.dto.response.RecipeListResponse;
 import com.foody.recipe.service.RecipeService;
+import com.foody.recommend.dto.resquest.CombineInfoForHybrid;
 import com.foody.recommend.dto.resquest.CombineInfoForPreference;
 import com.foody.recommend.dto.resquest.CombineInfoForRefrigerator;
+import com.foody.recommend.dto.resquest.MemberInfoInput;
 import com.foody.recommend.exception.RecommendException;
 import com.foody.refrigerators.dto.response.UserRefrigeratorResponse;
 import com.foody.refrigerators.service.RefrigeratorsService;
@@ -102,13 +104,15 @@ public class RecommendService {
         Mbti mbti = member.getMbti();
 
         MbtiResponse mbtiResponse = new MbtiResponse(mbti);
+        MemberInfoInput memberInfoInput = new MemberInfoInput(member);
+        CombineInfoForHybrid combineInfoForHybrid = new CombineInfoForHybrid(mbtiResponse, memberInfoInput);
 
-        List<Long> hybridRecommendItemIds = preferenceSendToServer(mbtiResponse);
+        List<Long> hybridRecommendItemIds = preferenceSendToServer(combineInfoForHybrid);
 
         return recipeService.findRecipeListByRecommend(hybridRecommendItemIds);
     }
 
-    public List<Long> preferenceSendToServer(MbtiResponse mbti) {
+    public List<Long> preferenceSendToServer(CombineInfoForHybrid mbti) {
 
         WebClient webClient = WebClient.builder()
                                        .build();

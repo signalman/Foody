@@ -123,10 +123,10 @@ class BookmarkFacadeTest extends ServiceTest {
         System.out.println(mbti.getLowCook());
         System.out.println(mbti.getHighCook());
         assertThat(mbti).satisfies(
-            pre -> assertThat(pre.getHighCook()).isEqualTo(3),
-            pre -> assertThat(pre.getConvenienceFood()).isEqualTo(3),
-            pre -> assertThat(pre.getProcessedFood()).isEqualTo(3),
-            pre -> assertThat(pre.getDessert()).isEqualTo(3)
+            pre -> assertThat(pre.getHighCook()).isEqualTo(5),
+            pre -> assertThat(pre.getConvenienceFood()).isEqualTo(5),
+            pre -> assertThat(pre.getProcessedFood()).isEqualTo(5),
+            pre -> assertThat(pre.getDessert()).isEqualTo(5)
         );
 
 
@@ -151,7 +151,7 @@ class BookmarkFacadeTest extends ServiceTest {
 
         mbti = member.getMbti();
         assertThat(mbti).satisfies(
-            pre -> assertThat(pre.getEtcCook()).isEqualTo(3),
+            pre -> assertThat(pre.getEtcCook()).isEqualTo(5),
             pre -> assertThat(pre.getEtcFood()).isEqualTo(0)
         );
 

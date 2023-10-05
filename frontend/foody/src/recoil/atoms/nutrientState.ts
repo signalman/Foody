@@ -95,4 +95,10 @@ export const userInfoState = atom({
 	effects_UNSTABLE: [persistAtom],
 });
 
+export const isChangeMealNutrientState = atom({
+	key: 'isChangeMealNutrient',
+	default: false,
+	effects_UNSTABLE: [persistAtom],
+});
+
 export default nutrientState; // 변수를 기본 내보내기로 설정

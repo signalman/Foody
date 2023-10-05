@@ -14,18 +14,24 @@ interface FoodMBTIListProps {
 function FoodMBTIList({ imageValue, idx, setIdx }: FoodMBTIListProps) {
 	const [images, setImages] = useState<number[]>([]);
 
+	const handleIndex = () => {
+		let index = idx + 1;
+		if (index >= 28) index = 28;
+		setIdx(index);
+	};
+
 	const weary = () => {
-		setIdx(idx + 1);
+		handleIndex();
 		setImages((prevImages) => [...prevImages, 0]);
 	};
 
 	const normal = () => {
-		setIdx(idx + 1);
+		handleIndex();
 		setImages((prevImages) => [...prevImages, 1]);
 	};
 
 	const love = () => {
-		setIdx(idx + 1);
+		handleIndex();
 		setImages((prevImages) => [...prevImages, 2]);
 	};
 

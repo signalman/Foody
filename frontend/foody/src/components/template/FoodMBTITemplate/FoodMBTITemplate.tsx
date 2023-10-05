@@ -8,10 +8,11 @@ import './FoodMBTITemplate.scss';
 
 function FoodMBTITemplate({ children }: { children: ReactNode[] }) {
 	return (
-		<Layout marginTop={LayoutTopMargin.mt10} marginBottom={LayoutBottomMargin.mbTabbar} padding={LayoutPadding.p20}>
+		<Layout marginTop={LayoutTopMargin.mt10} marginBottom={LayoutBottomMargin.mb0} padding={LayoutPadding.p20}>
 			<div className="food-MBTI-count">{children[0]}</div>
-			<ContentsLayout>{children[1]}</ContentsLayout>
+			<ContentsLayout marginBottom={LayoutBottomMargin.mb10}>{children[1]}</ContentsLayout>
 			<ContentsLayout>{children[2]}</ContentsLayout>
+			<ContentsLayout marginBottom={LayoutBottomMargin.mb0}>{children[3]}</ContentsLayout>
 		</Layout>
 	);
 }

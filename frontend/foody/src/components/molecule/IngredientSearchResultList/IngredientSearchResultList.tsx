@@ -14,7 +14,7 @@ function IngredientSearchResultList({
 	return (
 		<div className="ingredient-search-result-list-conatainer">
 			<h3>검색된 재료</h3>
-			<ul className="ingredient-search-result-list">
+			<ul className="ingredient-search-result-list no-scrollbar">
 				{searchResultList && searchResultList.length !== 0 ? (
 					<>
 						{searchResultList.map((item, idx) => (

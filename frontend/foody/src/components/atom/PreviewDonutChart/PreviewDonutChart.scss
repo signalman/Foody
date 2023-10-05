@@ -8,7 +8,7 @@
 }
 
 .text-box {
-	@include f.flex(column, center, center, 8px);
+	@include f.flex(column, center, center, 0);
 	position: absolute;
 	top: 50%;
 	left: 50%;

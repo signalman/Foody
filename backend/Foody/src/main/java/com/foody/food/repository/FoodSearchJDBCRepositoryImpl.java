@@ -28,7 +28,7 @@ public class FoodSearchJDBCRepositoryImpl implements FoodSearchJDBCRepository {
 
     public boolean isExistsData(){
         String sql = "SELECT count(*) FROM food_search WHERE id = ?";
-        int count = jdbcTemplate.queryForObject(sql, new Object[]{8200}, Integer.class);
+        int count = jdbcTemplate.queryForObject(sql, new Object[]{7683}, Integer.class);
         return count > 0;
     }
 

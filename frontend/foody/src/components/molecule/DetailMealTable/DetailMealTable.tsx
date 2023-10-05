@@ -8,6 +8,7 @@ import Layout from 'components/template/Layout/Layout';
 import LayoutBottomMargin, { LayoutTopMargin } from 'constants/Margin';
 import LayoutPadding from 'constants/Padding';
 import { deleteMealInfo } from 'utils/api/meal';
+import toast from 'react-hot-toast';
 
 interface DetailMealTableProbs {
 	foods: GetMealFoodData[];
@@ -36,6 +37,7 @@ function DetailMealTable({ foods, meal, selectedDate, setDeleteOk }: DetailMealT
 		deleteMealInfo(selectedDate, num, time).then((response) => {
 			setDeleteOk(true);
 			console.log('response', response);
+			toast.success('식단이 삭제 되었습니다.');
 		});
 	};
 

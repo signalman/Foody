@@ -35,7 +35,7 @@ function PreviewDonutChart({ Data, options, totalCarolie, percentage }: PreviewD
 			<Doughnut data={Data} options={options} />
 			<div className="text-box carolie-text">
 				<p className="carolie-title">채워지는 열량</p>
-				<h3 className="carolie-value">{totalCarolie}Kcal</h3>
+				<h3 className="carolie-value">{totalCarolie.toFixed(0)}Kcal</h3>
 				<h1 className="carlorie-percentage">{percentage}%</h1>
 			</div>
 		</div>

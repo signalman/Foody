@@ -1,10 +1,10 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import HomeTemplate from 'components/template/HomeTemplate/HomeTemplate';
 import GreetingText from 'components/atom/GreetingText/GreetingText';
 import BannerSlider from 'components/atom/BannerSlider/BannerSlider';
 import CalorieOfDay from 'components/molecule/CalorieOfDay/CalorieOfDay';
 import HomeShortcutButtons from 'components/molecule/HomeShortcutButtons/HomeShortcutButtons';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import nutrientState, {
 	breakfastState,
 	dinnerState,
@@ -15,8 +15,10 @@ import nutrientState, {
 import { getDaoyofNutrient, getUserMealInfo } from 'utils/api/meal';
 import { NutrientTotal } from 'types/meal';
 import { getUserInfo } from 'utils/api/auth';
+import tabbarState from 'recoil/atoms/tabbarState';
 
 const HomePage = memo(() => {
+	const tabberOn = useRecoilValue(tabbarState);
 	const setNutrientData = useSetRecoilState(nutrientState);
 	const setBreakfastState = useSetRecoilState(breakfastState);
 	const setLunchState = useSetRecoilState(lunchState);
@@ -24,7 +26,7 @@ const HomePage = memo(() => {
 	const setSnackState = useSetRecoilState(snackState);
 	const setUserInfo = useSetRecoilState(userInfoState);
 
-	useEffect(() => {
+	const getData = useCallback(() => {
 		getDaoyofNutrient().then((response) => {
 			const responseData: NutrientTotal = response.data;
 
@@ -55,6 +57,19 @@ const HomePage = memo(() => {
 			});
 		});
 	}, [setBreakfastState, setDinnerState, setLunchState, setNutrientData, setSnackState, setUserInfo]);
+
+	useEffect(() => {
+		getData();
+	}, [
+		getData,
+		setBreakfastState,
+		setDinnerState,
+		setLunchState,
+		setNutrientData,
+		setSnackState,
+		setUserInfo,
+		tabberOn,
+	]);
 
 	return (
 		<HomeTemplate>

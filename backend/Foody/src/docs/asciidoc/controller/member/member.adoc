@@ -1,0 +1,61 @@
+=== 회원 추가 정보 입력
+
+==== HTTP Request
+include::{snippets}/member/join/http-request.adoc[]
+include::{snippets}/member/join/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/member/join/http-response.adoc[]
+include::{snippets}/member/join/response-body.adoc[]
+
+
+=== 닉네임 반환
+
+==== HTTP Request
+include::{snippets}/member/nickname/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/member/nickname/http-response.adoc[]
+include::{snippets}/member/nickname/response-body.adoc[]
+
+=== 닉네임 중복 검사
+
+==== HTTP Request
+include::{snippets}/member/check/http-request.adoc[]
+include::{snippets}/member/check/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/member/check/http-response.adoc[]
+include::{snippets}/member/check/response-body.adoc[]
+
+=== 회원 정보 수정
+
+==== HTTP Request
+include::{snippets}/member/info/http-request.adoc[]
+include::{snippets}/member/info/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/member/info/http-response.adoc[]
+include::{snippets}/member/info/response-body.adoc[]
+
+
+=== 로그아웃
+
+==== HTTP Request
+include::{snippets}/member/logout/http-request.adoc[]
+include::{snippets}/member/logout/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/member/logout/http-response.adoc[]
+include::{snippets}/member/logout/response-body.adoc[]
+
+
+=== accessToken 재발급
+
+==== HTTP Request
+include::{snippets}/member/refresh/http-request.adoc[]
+include::{snippets}/member/refresh/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/member/refresh/http-response.adoc[]
+include::{snippets}/member/refresh/response-body.adoc[]

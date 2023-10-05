@@ -1,17 +1,18 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: 1234
+    url: jdbc:mysql://localhost:3306/foody?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
-        show_sql: true
-        format_sql: true
-        generate_statistics: true
+        show_sql: false
+        format_sql: false
+        generate_statistics: false
+    defer-datasource-initialization: true
 
   security:
     oauth2:
@@ -23,3 +24,33 @@ spring:
             scope:
               - email
               - profile
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600 # 데이터 유지 시간
+      cache-null-values: false # NUll 캐싱 여부
+      host: redis
+      port: 6379
+      password: ${REDIS_PASSWORD}
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:ingredient/foody_ingredient_category.sql
+
+jwt:
+  token:
+    secret: ${JWT_SECRET_KEY}
+
+logging:
+  level:
+    org.springframework.security: debug
+    org.springframework.web: debug
+server:
+  port: 8082
+  tomcat:
+    default-locale: ko_KR
+
+recommend:
+  server:
+    url: ${DATA_URL}

@@ -1,0 +1,27 @@
+== 식단 API
+
+=== 식단 날짜 여부 조회
+
+==== HTTP Request
+include::{snippets}/mealplan/getLast20DaysRecords/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/mealplan/getLast20DaysRecords/http-response.adoc[]
+
+
+=== 날짜별 식단 조회
+==== HTTP Request
+include::{snippets}/mealplan/getMealPlanByDate/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/mealplan/getMealPlanByDate/http-response.adoc[]
+
+
+=== 해당 (날짜, 끼니)에 음식 추가
+==== HTTP Request
+include::{snippets}/mealplan/registMealPlan/http-request.adoc[]
+include::{snippets}/mealplan/registMealPlan/request-part-mealPlanRequest-fields.adoc[]
+include::{snippets}/mealplan/registMealPlan/request-parts.adoc[]
+
+==== HTTP Response
+include::{snippets}/mealplan/registMealPlan/http-response.adoc[]

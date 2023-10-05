@@ -1,0 +1,33 @@
+@use 'styles/base/variable.scss' as var;
+@use 'styles/mixins/flex.scss' as f;
+
+.bookmark-list-container {
+	h2 {
+		margin-bottom: 10px;
+	}
+
+	.list-wrap {
+		ul {
+			width: 100%;
+			@include f.flex(column, center, center, 10px);
+
+			.no-list {
+				text-align: center;
+
+				p {
+					font-size: var.$p2;
+					color: var.$black-200;
+					margin: 20% 0 30px;
+				}
+
+				a {
+					@include f.flex;
+					width: fit-content;
+					margin: 0 auto;
+					font-size: var.$p3;
+					color: var.$black-400;
+				}
+			}
+		}
+	}
+}

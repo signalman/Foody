@@ -65,7 +65,7 @@ public class NutrientService {
                 calcium = 700;
                 sodium = 1200;
                 iron = 9;
-                fats = 10.1;
+                fats = 10.1 * 5;
             }else if(age>=9 && age<=11){
                 energy = 2000;
                 protein = 50;
@@ -75,7 +75,7 @@ public class NutrientService {
                 calcium = 800;
                 sodium = 1500;
                 iron = 11;
-                fats = 10.8;
+                fats = 10.8 * 4.9;
             }else if(age>=12 && age<=14){
                 energy = 2500;
                 protein = 60;
@@ -85,7 +85,7 @@ public class NutrientService {
                 calcium =1000;
                 sodium = 1500;
                 iron = 14;
-                fats = 13.5;
+                fats = 13.5 * 4.3;
             }else if(age>=15 && age<=18){
                 energy = 2700;
                 protein = 65;
@@ -95,7 +95,7 @@ public class NutrientService {
                 calcium = 900;
                 sodium = 1500;
                 iron = 14;
-                fats = 15.7;
+                fats = 15.7 * 4.5;
             }else if(age>=19 && age<=29){
                 energy = 2600;
                 protein = 65;
@@ -105,7 +105,7 @@ public class NutrientService {
                 calcium = 800;
                 sodium = 1500;
                 iron = 10;
-                fats = 14.6;
+                fats = 14.6 * 4.5;
             }else if(age>=30 && age<=49){
                 energy = 2500;
                 protein = 65;
@@ -115,7 +115,7 @@ public class NutrientService {
                 calcium = 800;
                 sodium = 1500;
                 iron = 10;
-                fats = 12.9;
+                fats = 12.9 * 4.3;
             }else if(age>=50 && age<=64){
                 energy = 2200;
                 protein = 60;
@@ -125,7 +125,7 @@ public class NutrientService {
                 calcium = 750;
                 sodium = 1500;
                 iron = 10;
-                fats = 10.4;
+                fats = 10.4 * 5;
             }else if(age>=65 && age<=74){
                 energy = 2000;
                 protein = 60;
@@ -135,7 +135,7 @@ public class NutrientService {
                 calcium = 700;
                 sodium = 1300;
                 iron = 9;
-                fats = 8.2;
+                fats = 8.2 * 6;
             }else{
                 energy = 1900;
                 protein = 60;
@@ -145,7 +145,7 @@ public class NutrientService {
                 calcium = 700;
                 sodium = 1100;
                 iron = 9;
-                fats = 5.9;
+                fats = 5.9 * 7.7;
             }
         }
         else { // 여자
@@ -158,7 +158,7 @@ public class NutrientService {
                 calcium = 700;
                 sodium = 1200;
                 iron = 9;
-                fats = 7.8;
+                fats = 7.8 * 5.5;
             }else if(age>=9 && age<=11){
                 energy = 1800;
                 protein = 45;
@@ -168,7 +168,7 @@ public class NutrientService {
                 calcium = 800;
                 sodium = 1500;
                 iron = 10;
-                fats = 10.1;
+                fats = 10.1 * 4.5;
             }else if(age>=12 && age<=14){
                 energy = 2000;
                 protein = 55;
@@ -178,7 +178,7 @@ public class NutrientService {
                 calcium = 900;
                 sodium = 1500;
                 iron = 16;
-                fats = 10.2;
+                fats = 10.2 * 5;
             }else if(age>=15 && age<=18){
                 energy = 2000;
                 protein = 55;
@@ -188,7 +188,7 @@ public class NutrientService {
                 calcium = 800;
                 sodium = 1500;
                 iron = 14;
-                fats = 11.1;
+                fats = 11.1 * 5;
             }else if(age>=19 && age<=29){
                 energy = 2000;
                 protein = 55;
@@ -198,7 +198,7 @@ public class NutrientService {
                 calcium = 700;
                 sodium = 1500;
                 iron = 14;
-                fats = 11.2;
+                fats = 11.2 * 5.2;
             }else if(age>=30 && age<=49){
                 energy = 1900;
                 protein = 50;
@@ -208,7 +208,7 @@ public class NutrientService {
                 calcium = 700;
                 sodium = 1200;
                 iron = 14;
-                fats = 9.7;
+                fats = 9.7 * 4.6;
             }else if(age>=50 && age<=64){
                 energy = 1700;
                 protein = 50;
@@ -218,7 +218,7 @@ public class NutrientService {
                 calcium = 800;
                 sodium = 1500;
                 iron = 8;
-                fats = 8.2;
+                fats = 8.2 * 5.25;
             }else if(age>=65 && age<=74){
                 energy = 1600;
                 protein = 50;
@@ -228,7 +228,7 @@ public class NutrientService {
                 calcium = 800;
                 sodium = 1300;
                 iron = 8;
-                fats = 5.5;
+                fats = 5.5 * 7;
             }else{
                 energy = 1500;
                 protein = 50;
@@ -238,11 +238,11 @@ public class NutrientService {
                 calcium = 800;
                 sodium = 1100;
                 iron = 7;
-                fats = 3.4;
+                fats = 3.4 * 10;
             }
         }
 
-        Nutrient nutrient = new Nutrient(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron,fats, vitaminA, vitaminC);
+        Nutrient nutrient = new Nutrient(energy, carbohydrates, protein, dietaryFiber, calcium, sodium, iron, fats, vitaminA, vitaminC);
         member.createNutrient(nutrient);
 
         nutrientRepository.save(nutrient);

@@ -1,23 +1,32 @@
 package com.foody.refrigerators.entity;
 
-import com.foody.global.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Ingredient extends BaseEntity {
+@NoArgsConstructor
+public class Ingredient {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
     @Column(nullable = false)
     String ingredientName;
     @Column
     String iconImg;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "ingredient_category_id")
     IngredientCategory ingredientCategory;
+    @Enumerated
+    IngredientType ingredientType;
+
+    public static Ingredient from(String ingredientName, IngredientCategory ingredientCategory) {
+        return Ingredient.builder()
+                .ingredientName(ingredientName)
+                .ingredientCategory(ingredientCategory)
+                .iconImg(ingredientCategory.getIngredientCategoryIconImg())
+                .ingredientType(IngredientType.CUSTOM).build();
+    }
 }

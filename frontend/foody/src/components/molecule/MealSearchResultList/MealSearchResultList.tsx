@@ -11,7 +11,7 @@ function MealSearchResultList({ searchKeyword, searchResultList, handleMealSelec
 	return (
 		<div className="meal-search-result-list-conatainer">
 			<h3>검색된 식단</h3>
-			<ul className="meal-search-result-list">
+			<ul className="meal-search-result-list no-scrollbar">
 				{searchResultList && searchResultList.length !== 0 ? (
 					<>
 						{searchResultList.map((item) => (

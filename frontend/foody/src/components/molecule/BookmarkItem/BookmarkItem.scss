@@ -6,12 +6,12 @@
 	width: 100%;
 	border: 1px solid var.$border-300;
 	border-radius: 4px;
-	padding: 10px;
 
 	.contents-wrap {
 		@include f.flex(row, start, normal);
 		gap: 10px;
 		width: 100%;
+		padding: 10px;
 
 		.img-wrap {
 			width: 100px;

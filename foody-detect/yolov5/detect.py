@@ -52,6 +52,69 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.torch_utils import select_device, smart_inference_mode
 
 
+def translate_to_korean(names: str) -> str:
+    translations = {
+        "Braised lotus roots": "연근조림",
+        "Dongchimi": "동치미",
+        "Japchae": "잡채",
+        "young radish Kimchi": "열무김치",
+        "radish kimchi": "깍두기",
+        "radish Kimchi": "깍두기",
+        "Radish Kimchi": "열무김치",
+        "Kimchi stew": "김치찌개",
+        "Kimchi": "배추김치",
+        "Korean ribs": "갈비구이_돼지고기",
+        "Korean style raw beef": "육회",
+        "Seasoned bean sprouts": "콩나물무침",
+        "Udon": "우동",
+        "Baek Kimchi": "백김치",
+        "banquet noodles": "잔치국수",
+        "bean sprout soup": "콩나물국",
+        "beef-bone soup": "설렁탕",
+        "bellflower greens": "도라지생채",
+        "bibimbap": "비빔밥",
+        "boiled fish paste soup": "어묵탕",
+        "budaejjigae": "부대찌개",
+        "bulgogi": "소불고기",
+        "chonggak Kimchi": "총각김치",
+        "cucumber kimchi": "오이김치",
+        "grilled mackerel": "고등어구이",
+        "cup rice": "쌀밥",
+        "dried pollack soup": "북어국",
+        "el": "장어구이",
+        "fried rice": "볶음밥",
+        "green onion Kimchi": "파김치",
+        "janjorim": "장조림_소고기",
+        "jeyuk bokkeum": "제육볶음",
+        "memil soba": "메밀소바",
+        "miso soup": "미소된장국",
+        "mixed rice": "볶음밥",
+        "nabak Kimchi": "나박김치",
+        "naengMyeon": "냉면_물냉면",
+        "pickled sesame leaf": "들깻잎장아찌",
+        "pig hocks": "족발",
+        "pork belly": "삼겹살",
+        "rice ball": "주먹밥",
+        "rice roll": "김밥",
+        "rice": "쌀밥",
+        "seasoned bean sprouts": "콩나물무침",
+        "seasoned bellflower root": "도라지생채",
+        "seasoned bracken": "고사리나물무침",
+        "seasoned zucchini": "애호박볶음",
+        "seaweed soup": "미역국",
+        "seaweed": "김",
+        "shellfish soup": "조개국",
+        "spicy yuke jang": "육개장",
+        "spinach greens": "시금치",
+        "stewed mackerel": "고등어조림",
+        "stir-fried anchovies": "멸치볶음",
+    }
+
+    for eng, kor in translations.items():
+        names = names.replace(eng, kor)
+
+    return names
+
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model path or triton URL
@@ -301,65 +364,3 @@ if __name__ == '__main__':
     opt = parse_opt()
     main(opt)
 
-def translate_to_korean(names: str) -> str:
-    translations = {
-        "Braised lotus roots": "연근조림",
-        "Dongchimi": "동치미",
-        "Japchae": "잡채",
-        "young radish Kimchi": "열무김치",
-        "radish kimchi": "깍두기",
-        "radish Kimchi": "깍두기",
-        "Radish Kimchi": "열무김치",
-        "Kimchi stew": "김치찌개",
-        "Kimchi": "배추김치",
-        "Korean ribs": "갈비구이_돼지고기",
-        "Korean style raw beef": "육회",
-        "Seasoned bean sprouts": "콩나물무침",
-        "Udon": "우동",
-        "Baek Kimchi": "백김치",
-        "banquet noodles": "잔치국수",
-        "bean sprout soup": "콩나물국",
-        "beef-bone soup": "설렁탕",
-        "bellflower greens": "도라지생채",
-        "bibimbap": "비빔밥",
-        "boiled fish paste soup": "어묵탕",
-        "budaejjigae": "부대찌개",
-        "bulgogi": "소불고기",
-        "chonggak Kimchi": "총각김치",
-        "cucumber kimchi": "오이김치",
-        "grilled mackerel": "고등어구이",
-        "cup rice": "쌀밥",
-        "dried pollack soup": "북어국",
-        "el": "장어구이",
-        "fried rice": "볶음밥",
-        "green onion Kimchi": "파김치",
-        "janjorim": "장조림_소고기",
-        "jeyuk bokkeum": "제육볶음",
-        "memil soba": "메밀소바",
-        "miso soup": "미소된장국",
-        "mixed rice": "볶음밥",
-        "nabak Kimchi": "나박김치",
-        "naengMyeon": "냉면_물냉면",
-        "pickled sesame leaf": "들깻잎장아찌",
-        "pig hocks": "족발",
-        "pork belly": "삼겹살",
-        "rice ball": "주먹밥",
-        "rice roll": "김밥",
-        "rice": "쌀밥",
-        "seasoned bean sprouts": "콩나물무침",
-        "seasoned bellflower root": "도라지생채",
-        "seasoned bracken": "고사리나물무침",
-        "seasoned zucchini": "애호박볶음",
-        "seaweed soup": "미역국",
-        "seaweed": "김",
-        "shellfish soup": "조개국",
-        "spicy yuke jang": "육개장",
-        "spinach greens": "시금치",
-        "stewed mackerel": "고등어조림",
-        "stir-fried anchovies": "멸치볶음",
-    }
-
-    for eng, kor in translations.items():
-        names = names.replace(eng, kor)
-
-    return names

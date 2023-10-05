@@ -97,17 +97,18 @@ public class MealPlanService {
             meal.updateImage(uploadUrl);
         }
 
-        for(int idx = 0; idx < foodRequests.size(); idx++){
+        int size = Math.min(foodRequests.size(), foodImages.size());
 
+        for (int idx = 0; idx < size; idx++) {
             String imageUrl = "";
-            if (foodImages.get(idx) != null) {
-                //빈 스트링으로
-                imageUrl = amazonS3Service.uploadFile(foodImages.get(idx));
+
+            MultipartFile imageFile = foodImages.get(idx);
+            if (imageFile != null && !imageFile.isEmpty()) {
+                imageUrl = amazonS3Service.uploadFile(imageFile);
             }
             meal.getFoods()
                 .add(Food.fromRequest(foodRequests.get(idx), meal, imageUrl));
         }
-
         meal.updateTime(LocalTime.now());
     }
 
@@ -160,7 +161,21 @@ public class MealPlanService {
         log.info("음식들 전: {}", meal.getFoods());
 
         meal.getFoods().remove(idx);
-        log.info("음식들 gn: {}", meal.getFoods());
+        if (meal.getFoods().isEmpty()) {
+            // 나머지 아침, 점심, 저녁, 간식에 대해서도 비어있다면
+            boolean allMealsEmpty = true;
+            for (MealType mealType : MealType.values()) {
+                Meal otherMeal = getMealByType(mealPlan, mealType);
+                if (!otherMeal.getFoods().isEmpty()) {
+                    allMealsEmpty = false;
+                    break;
+                }
+            }
+            if (allMealsEmpty) {
+                mealPlanRepository.delete(mealPlan);
+            }
+        }
+        log.info("음식들 후: {}", meal.getFoods());
     }
 
     @Transactional

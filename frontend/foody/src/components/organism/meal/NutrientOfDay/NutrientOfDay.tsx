@@ -4,12 +4,16 @@ import NutrientBar from 'components/molecule/NutrientBar/NutrientBar';
 import { HiOutlineChevronRight } from 'react-icons/hi';
 import DayofTotalNutrient from 'components/molecule/DayofTotalNutrient/DayofTotalNutrient';
 import { NutrientTotal } from 'types/meal';
+import { useRecoilState } from 'recoil';
+import tabbarState from 'recoil/atoms/tabbarState';
 
 interface MealTotal {
 	total: NutrientTotal;
 }
 
 function NutrientOfDay({ total }: MealTotal) {
+	const [, setTabbarOn] = useRecoilState(tabbarState);
+
 	const mealNutrient = {
 		탄수화물: total.carbohydrates,
 		단백질: total.protein,
@@ -32,6 +36,7 @@ function NutrientOfDay({ total }: MealTotal) {
 
 	const openMore = () => {
 		setOpen(true);
+		setTabbarOn(false);
 		console.log(open);
 	};
 

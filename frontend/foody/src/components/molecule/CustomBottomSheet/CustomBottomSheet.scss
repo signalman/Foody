@@ -10,8 +10,12 @@
 	width: 100%;
 	height: 90%;
 	margin: 0 auto;
-	padding: 0 20px 75px;
+	padding: 0 20px 20px;
 	overflow: auto;
 	background-color: var.$white;
 	font-size: var.$p2;
+
+	.meal-regist-album-container .layout .floating-layout.floating-bg {
+		width: 50%;
+	}
 }

@@ -378,13 +378,51 @@ def calculate_scores_vectorized(df, user_deficiency):
 # 냉장고와 유사한 재료 사용 api 개선
 @router.post("/nutrients/recommend")
 def get_combined_recommendations_v4(data: CombinedInput, top_k: int = 10):
+    # # 재료 유사성 점수 계산
+    # ingredients_vector = vectorizer.transform([data.ingredients])
+    # cosine_similarities = cosine_similarity(ingredients_vector, tfidf_matrix).flatten()
+    # ingredient_top_indices = cosine_similarities.argsort()[-1000:][::-1]
+    #
+    # # 영양소 추천 점수 계산
+    # recipe_data['recommendation_score'] = calculate_scores_vectorized(recipe_data, data.user_deficiency)
+    # nutrient_top_indices = recipe_data['recommendation_score'].argsort()[-1000:][::-1]
+    #
+    # # 두 인덱스의 교집합 계산
+    # combined_indices = list(set(ingredient_top_indices) & set(nutrient_top_indices))
+    # combined_indices.sort(key=lambda x: recipe_data.iloc[x]['recommendation_score'], reverse=True)
+    #
+    # # 교집합에서 레시피 추출
+    # top_recipes = [int(recipe_data.iloc[index]['recipe_id']) for index in combined_indices[:top_k]]
+    #
+    # # 교집합의 크기가 top_k보다 작을 경우 추가적인 레시피 추출
+    # if len(top_recipes) < top_k:
+    #     additional_needed = top_k - len(top_recipes)
+    #     additional_ingredient_indices = [idx for idx in ingredient_top_indices if idx not in combined_indices][
+    #                                     :math.ceil(additional_needed / 2)]
+    #     additional_nutrient_indices = [idx for idx in nutrient_top_indices if idx not in combined_indices][
+    #                                   :math.floor(additional_needed / 2)]
+    #
+    #     top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_ingredient_indices])
+    #     top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_nutrient_indices])
+    #
+    # return top_recipes[:top_k]
+
     # 재료 유사성 점수 계산
     ingredients_vector = vectorizer.transform([data.ingredients])
     cosine_similarities = cosine_similarity(ingredients_vector, tfidf_matrix).flatten()
     ingredient_top_indices = cosine_similarities.argsort()[-1000:][::-1]
 
-    # 영양소 추천 점수 계산
-    recipe_data['recommendation_score'] = calculate_scores_vectorized(recipe_data, data.user_deficiency)
+    def calculate_euclidean_distance_scores(df, user_deficiency):
+        user_vector = np.array(list(user_deficiency.dict().values()))
+        recipe_vectors = df.values
+        # Calculate Euclidean distance
+        distances = np.linalg.norm(recipe_vectors - user_vector, axis=1)
+        # Convert distance to scores (smaller distance should result in higher score)
+        scores = -distances
+        return scores
+
+    # 영양소 추천 점수 계산 (Using Euclidean distance)
+    recipe_data['recommendation_score'] = calculate_euclidean_distance_scores(recipe_data[['energy', 'carbohydrates', 'protein', 'fats', 'dietaryFiber', 'calcium', 'sodium', 'iron', 'vitaminA', 'vitaminC']], data.user_deficiency)
     nutrient_top_indices = recipe_data['recommendation_score'].argsort()[-1000:][::-1]
 
     # 두 인덱스의 교집합 계산
@@ -397,10 +435,8 @@ def get_combined_recommendations_v4(data: CombinedInput, top_k: int = 10):
     # 교집합의 크기가 top_k보다 작을 경우 추가적인 레시피 추출
     if len(top_recipes) < top_k:
         additional_needed = top_k - len(top_recipes)
-        additional_ingredient_indices = [idx for idx in ingredient_top_indices if idx not in combined_indices][
-                                        :math.ceil(additional_needed / 2)]
-        additional_nutrient_indices = [idx for idx in nutrient_top_indices if idx not in combined_indices][
-                                      :math.floor(additional_needed / 2)]
+        additional_ingredient_indices = [idx for idx in ingredient_top_indices if idx not in combined_indices][:math.ceil(additional_needed / 2)]
+        additional_nutrient_indices = [idx for idx in nutrient_top_indices if idx not in combined_indices][:math.floor(additional_needed / 2)]
 
         top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_ingredient_indices])
         top_recipes.extend([int(recipe_data.iloc[index]['recipe_id']) for index in additional_nutrient_indices])

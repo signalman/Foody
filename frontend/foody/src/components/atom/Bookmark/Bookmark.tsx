@@ -5,16 +5,18 @@ import { setBookmark } from 'utils/api/recipe';
 interface BookmarkProps {
 	isBookmarked: boolean;
 	id: number;
+	handleChange?: () => void;
 	size?: number;
 	color?: string;
 }
 
-function Bookmark({ isBookmarked, id, size, color }: BookmarkProps) {
+function Bookmark({ isBookmarked, id, handleChange, size, color }: BookmarkProps) {
 	const [isMarked, setIsMarked] = useState<boolean>(isBookmarked);
 
 	const handleBookmark = () => {
 		setBookmark(id).then(() => {
 			setIsMarked(!isMarked);
+			if (handleChange) handleChange();
 		});
 	};
 
@@ -30,4 +32,5 @@ export default Bookmark;
 Bookmark.defaultProps = {
 	size: 20,
 	color: '#ffde1a',
+	handleChange: () => {},
 };

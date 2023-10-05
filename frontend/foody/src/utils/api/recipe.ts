@@ -16,4 +16,9 @@ export const setBookmark = async (id: number) => {
 	return response;
 };
 
+export const getBookmarkList = async () => {
+	const response = await instance.get('/bookmark/mypage');
+	return response;
+};
+
 export default getSearchRecipe;

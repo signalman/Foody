@@ -1,18 +1,26 @@
 package com.foody.member.service;
 
 import com.foody.global.exception.ErrorCode;
+import com.foody.member.dto.request.MemberInfoModifyRequest;
+import com.foody.member.dto.request.MemberJoinRequest;
+import com.foody.member.dto.request.RefreshTokenRequest;
+import com.foody.member.dto.response.NicknameResponse;
+import com.foody.member.dto.response.RefreshTokenResponse;
+import com.foody.nutrient.service.NutrientService;
 import com.foody.security.util.JwtProvider;
 import com.foody.member.dto.request.MemberSignupRequest;
 import com.foody.member.dto.response.TokenResponse;
 import com.foody.member.entity.Member;
 import com.foody.member.exception.MemberException;
 import com.foody.member.repository.MemberRepository;
+import com.foody.security.util.LoginInfo;
 import java.io.IOException;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -24,7 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final NutrientService nutrientService;
     private final JwtProvider jwtProvider;
+    private final RedisTemplate<String, String> redisTemplate;
+
     @Value("${jwt.token.secret}")
     private String secretKey;
 
@@ -46,13 +57,19 @@ public class MemberService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                               .orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+    }
+
     @Transactional
     public TokenResponse loginMember(HttpServletResponse response, Authentication authentication, OAuth2User oAuth2User)
         throws IOException {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String email = (String) attributes.get("email");
 
-        log.info("{} member request login",email);
+        log.info("=========={} member request login==========",email);
 
         // 가입된 이메일 없음 -> findByEmail에서 처리
         Member member = findByEmail(email);
@@ -73,14 +90,12 @@ public class MemberService {
         String email = (String) attributes.get("email");
         String profileImg = (String) attributes.get("picture");
 
-        log.info("{} signup request", email);
-        log.info("{} ",profileImg);
+        log.info("=========={} signup request==========", email);
         // 이메일 중복검사
         isEmailDuplicated(email);
         MemberSignupRequest memberSignupRequest = new MemberSignupRequest(email, profileImg);
 
         Member member = Member.signupMember(memberSignupRequest);
-
         memberRepository.save(member);
 
         String accessToken = jwtProvider.createAccessToken(member.getId(), email, secretKey, false);
@@ -92,11 +107,44 @@ public class MemberService {
         return tokenResponse;
     }
 
-    @Transactional(readOnly = true)
-    public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email)
-                               .orElseThrow(() -> new MemberException(ErrorCode.EMAIL_NOT_FOUND));
+
+    @Transactional
+    public void joinMember(String email, MemberJoinRequest memberJoinRequest) {
+        // 나머지 정보 저장
+        Member member = findByEmail(email);
+        member.joinMember(memberJoinRequest);
+        nutrientService.createNutrient(email);
     }
 
+    @Transactional
+    public void logout(LoginInfo loginInfo) {
+        if(redisTemplate.hasKey(loginInfo.email())) {
+            redisTemplate.delete(loginInfo.email());
+        }
+    }
 
+    @Transactional
+    public RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        String accessToken = jwtProvider.recreateAccessToken(refreshTokenRequest.refreshToken(), secretKey);
+
+        return new RefreshTokenResponse(accessToken);
+    }
+
+    @Transactional
+    public void modifyMember(String email, MemberInfoModifyRequest memberInfoModifyRequest) {
+        Member member = findByEmail(email);
+
+        member.modifyMember(memberInfoModifyRequest);
+    }
+
+    @Transactional
+    public Long save(Member member) {
+        return memberRepository.save(member).getId();
+    }
+
+    public NicknameResponse getNickname(String email) {
+        Member member = findByEmail(email);
+
+        return new NicknameResponse(member.getNickname());
+    }
 }

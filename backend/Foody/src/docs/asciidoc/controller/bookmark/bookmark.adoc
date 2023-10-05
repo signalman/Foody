@@ -1,0 +1,23 @@
+== 북마크 API
+
+=== 나의 북마크 조회
+
+==== HTTP Request
+include::{snippets}/bookmark/list/http-request.adoc[]
+include::{snippets}/bookmark/list/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/bookmark/list/http-response.adoc[]
+include::{snippets}/bookmark/list/response-body.adoc[]
+include::{snippets}/bookmark/list/response-fields.adoc[]
+
+=== 북마크 상태 변경
+=== post 요청만 보내면, 유저가 북마크로 저장했던 레시피면 취소, 아니면 등록
+
+==== HTTP Request
+include::{snippets}/bookmark/status/http-request.adoc[]
+include::{snippets}/bookmark/status/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/bookmark/status/http-response.adoc[]
+include::{snippets}/bookmark/status/response-body.adoc[]

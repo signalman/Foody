@@ -11,7 +11,8 @@ member = Table(
     Column("gender", Integer),
     Column("age", Integer),
     Column("activity_level", Integer),
-    Column("mbti_id", Integer)
+    Column("mbti_id", Integer),
+    Column("height", Float)
 )
 
 mbti = Table(

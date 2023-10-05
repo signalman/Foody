@@ -1,0 +1,41 @@
+== 추천 시스템
+
+=== 냉장고 재료 + 부족한 영양소 기반 추천
+=== (새로고침 해도 바뀔 가능성 거의 없음, 영양소 + 재료 기반의 추천이라 한정적임)
+
+==== HTTP Request
+include::{snippets}/recommend/ingredients/http-request.adoc[]
+include::{snippets}/recommend/ingredients/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/recommend/ingredients/http-response.adoc[]
+include::{snippets}/recommend/ingredients/response-body.adoc[]
+include::{snippets}/recommend/ingredients/response-fields.adoc[]
+
+=== 하이브리드 추천 시스템
+==== 해당 유저의 취향 + 비슷한 다른 유저들의 취향을 기반으로 추천
+==== 영양소 고려 안함(해달라하면 해줄 순 있긴 함)
+==== 새로고침 할 때 마다 바뀔 가능성 매우큼 (다양한 추천 가능)
+
+==== HTTP Request
+include::{snippets}/recommend/hybrid/http-request.adoc[]
+include::{snippets}/recommend/hybrid/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/recommend/hybrid/http-response.adoc[]
+include::{snippets}/recommend/hybrid/response-body.adoc[]
+include::{snippets}/recommend/hybrid/response-fields.adoc[]
+
+=== 유저의 선호도 + 현재 시간의 부족한 영양소 추천
+==== 다른 유저와는 비교하지 않고, 나의 선호도와 부족 영양소만 고려
+==== 새로고침 할 때 마다 바뀔 가능성 매우 낮음
+
+==== HTTP Request
+include::{snippets}/recommend/preference/http-request.adoc[]
+include::{snippets}/recommend/preference/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/recommend/preference/http-response.adoc[]
+include::{snippets}/recommend/preference/response-body.adoc[]
+include::{snippets}/recommend/preference/response-fields.adoc[]
+

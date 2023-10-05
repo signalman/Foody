@@ -1,0 +1,69 @@
+=== 재료 검색
+
+==== HTTP Request
+include::{snippets}/refrigerators/searchIngredient/http-request.adoc[]
+include::{snippets}/refrigerators/searchIngredient/request-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/searchIngredient/http-response.adoc[]
+include::{snippets}/refrigerators/searchIngredient/response-body.adoc[]
+
+=== 사용자 냉장고에 재료 등록
+
+==== HTTP Request
+include::{snippets}/refrigerators/register/http-request.adoc[]
+include::{snippets}/refrigerators/register/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/register/http-response.adoc[]
+include::{snippets}/refrigerators/register/response-body.adoc[]
+
+=== 사용자 냉장고 조회
+
+==== HTTP Request
+include::{snippets}/refrigerators/getUserRefrigerator/http-request.adoc[]
+include::{snippets}/refrigerators/getUserRefrigerator/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/getUserRefrigerator/http-response.adoc[]
+include::{snippets}/refrigerators/getUserRefrigerator/response-body.adoc[]
+
+=== 사용자 냉장고 초기화
+
+==== HTTP Request
+include::{snippets}/refrigerators/reset/http-request.adoc[]
+include::{snippets}/refrigerators/reset/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/reset/http-response.adoc[]
+include::{snippets}/refrigerators/reset/response-body.adoc[]
+
+=== 냉장고 재료 삭제
+
+==== HTTP Request
+include::{snippets}/refrigerators/delete/http-request.adoc[]
+include::{snippets}/refrigerators/delete/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/delete/http-response.adoc[]
+include::{snippets}/refrigerators/delete/response-body.adoc[]
+
+=== 냉장고 재료 한꺼번에 삭제
+
+==== HTTP Request
+include::{snippets}/refrigerators/deleteList/http-request.adoc[]
+include::{snippets}/refrigerators/deleteList/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/deleteList/http-response.adoc[]
+include::{snippets}/refrigerators/deleteList/response-body.adoc[]
+
+=== 영수증 재료 인식
+
+==== HTTP Request
+include::{snippets}/refrigerators/receipt/http-request.adoc[]
+include::{snippets}/refrigerators/receipt/request-body.adoc[]
+
+==== HTTP Response
+include::{snippets}/refrigerators/receipt/http-response.adoc[]
+include::{snippets}/refrigerators/receipt/response-body.adoc[]

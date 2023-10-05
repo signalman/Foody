@@ -167,6 +167,7 @@ public class MealPlanService {
             for (MealType mealType : MealType.values()) {
                 Meal otherMeal = getMealByType(mealPlan, mealType);
                 if (!otherMeal.getFoods().isEmpty()) {
+                    if(!otherMeal.getRepImg().equals("")) amazonS3Service.deleteFile(otherMeal.getRepImg());
                     allMealsEmpty = false;
                     break;
                 }

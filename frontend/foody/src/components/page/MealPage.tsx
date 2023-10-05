@@ -86,7 +86,7 @@ function MealPage() {
 	}, [selectedDate, deleteOk, meal, breakfast.foods.length, searchOpen, detailOpen, setTabbarOn]);
 
 	if (searchOpen === true && meal) {
-		return <MealSearch setOpen={setSearchOpen} meal={meal} selectedDate={getDate} />;
+		return <MealSearch setOpen={setSearchOpen} meal={meal} selectedDate={getDate} isplus={false} />;
 	}
 
 	if (detailOpen === true && meal) {

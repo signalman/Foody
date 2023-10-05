@@ -22,6 +22,7 @@ interface IngredientSearchProps {
 	setOpen: Dispatch<React.SetStateAction<boolean>>;
 	meal: string;
 	selectedDate: string;
+	isplus: boolean;
 }
 
 function removeItemFromArray(item: string, array: string[]): string[] {
@@ -41,7 +42,7 @@ function removeItemByName(name: string, array: RegistMeal[]): RegistMeal[] {
 }
 
 function MealSearch(props: IngredientSearchProps) {
-	const { setOpen, meal, selectedDate } = props;
+	const { setOpen, meal, selectedDate, isplus } = props;
 	const [tabbarOn, setTabbarOn] = useRecoilState(tabbarState);
 	const [searchKeyword, setSearchKeyword] = useState<string>('');
 	const [searchResultList, setSearchResultList] = useState<string[] | null>(null);
@@ -66,6 +67,9 @@ function MealSearch(props: IngredientSearchProps) {
 	const handleMove = () => {
 		setOpen((prev) => !prev);
 		setTabbarOn(!tabbarOn);
+		if (isplus) {
+			setTabbarOn(false);
+		}
 	};
 
 	const handleWrite = () => {
@@ -75,6 +79,7 @@ function MealSearch(props: IngredientSearchProps) {
 	};
 
 	const handleMealSelect = (data: string) => {
+		console.log(data);
 		getMealNutrient(data).then((response) => {
 			console.log(response);
 			setRegistMeal({
@@ -166,7 +171,7 @@ function MealSearch(props: IngredientSearchProps) {
 		if (selectedMenu === 'camera')
 			return <MealCamera sendMeal={sendMeal} selectedDate={selectedDate} setOpen={setOpen} />;
 		if (selectedMenu === 'album') return <IngredientRegistAlbum setOpen={setMenuOpen} />;
-		return <MealSearch meal={meal} setOpen={setMenuOpen} selectedDate={selectedDate} />;
+		return <MealSearch meal={meal} setOpen={setMenuOpen} selectedDate={selectedDate} isplus={false} />;
 	}
 
 	if (tabbarOn === true) {

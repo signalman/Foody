@@ -15,7 +15,17 @@ interface NutrientInformationProps {
 function NutrientInformation({ nutrient, totalNutrient, valueNutrient, previewValue = 0 }: NutrientInformationProps) {
 	return (
 		<div className="nutrient-little-box">
-			<p className="nutrient-name">{nutrient}</p>
+			<div className="nutrient-name-wrap">
+				<span className="nutrient-name">{nutrient}</span>
+				<NutrientInfo
+					total={totalNutrient}
+					value={
+						previewValue !== 0
+							? parseFloat(previewValue.toFixed(0))
+							: parseFloat((valueNutrient + previewValue).toFixed(0))
+					}
+				/>
+			</div>
 			<div className="nutrient">
 				{previewValue !== 0 ? (
 					<PreviewBarChart
@@ -27,14 +37,6 @@ function NutrientInformation({ nutrient, totalNutrient, valueNutrient, previewVa
 				) : (
 					<BarChart barcolor={BarColor.Null} total={totalNutrient} value={valueNutrient} previewValue={previewValue} />
 				)}
-				<NutrientInfo
-					total={totalNutrient}
-					value={
-						previewValue !== 0
-							? parseFloat(previewValue.toFixed(0))
-							: parseFloat((valueNutrient + previewValue).toFixed(0))
-					}
-				/>
 			</div>
 		</div>
 	);

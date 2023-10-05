@@ -2,14 +2,14 @@
 @use 'styles/mixins/flex.scss' as f;
 
 .small-box {
-	width: 80px;
 	@include f.flex(row, around, center, 0px);
 	flex-wrap: nowrap;
 
 	.nutrient-value {
 		font-weight: var.$fw-500;
-		font-size: var.$p2;
+		font-size: var.$p3;
 		color: var.$black-400;
+		padding-right: 4px;
 	}
 
 	.nutrient-total {

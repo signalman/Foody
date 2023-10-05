@@ -50,6 +50,9 @@ function RecommendList({ index, title }: RecommendListProps) {
 					</button>
 				)}
 			</div>
+			{index === 'ingredients' && (
+				<div className="warning">※ 냉장고 재료가 3개 이하일 경우, 정확도가 떨어질 수 있습니다.</div>
+			)}
 			<div className="recommend-list-body">
 				<ul className="recipe-list slider-container no-scrollbar" onWheel={handleScroll} ref={containerRef}>
 					{index === 'ingredients' && data.length === 0 ? (

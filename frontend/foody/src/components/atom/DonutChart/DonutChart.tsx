@@ -69,7 +69,7 @@ function DonutChart({
 	};
 
 	return (
-		<div style={{ width: '180px', height: '180px', position: 'relative' }}>
+		<div style={{ width: '150px', height: '150px', position: 'relative' }}>
 			<Doughnut data={Data} options={options} />
 			<div className="text-box carolie-text">
 				<p className="carolie-title">총열량</p>

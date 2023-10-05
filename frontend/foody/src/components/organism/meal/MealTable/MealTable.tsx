@@ -4,7 +4,13 @@ import React from 'react';
 import './MealTable.scss';
 import { Meal, NutrientTotal } from 'types/meal';
 import { useRecoilValue } from 'recoil';
-import nutrientState, { breakfastState, dinnerState, lunchState, snackState } from 'recoil/atoms/nutrientState';
+import nutrientState, {
+	breakfastState,
+	dinnerState,
+	lunchState,
+	snackState,
+	userInfoState,
+} from 'recoil/atoms/nutrientState';
 
 interface DailyMeals {
 	breakfast: Meal;
@@ -15,6 +21,7 @@ interface DailyMeals {
 }
 
 function MealTable({ breakfast, lunch, dinner, snack, total }: DailyMeals) {
+	const userInfo = useRecoilValue(userInfoState);
 	const nutriState = useRecoilValue(nutrientState);
 	const breakState = useRecoilValue(breakfastState);
 	const lunState = useRecoilValue(lunchState);
@@ -23,7 +30,7 @@ function MealTable({ breakfast, lunch, dinner, snack, total }: DailyMeals) {
 
 	return (
 		<div className="meal-table">
-			<h3>OO님의 식단표</h3>
+			<h3>{userInfo && userInfo.nickname} 님의 식단표</h3>
 			<div className="meal-data">
 				<DonutChart
 					breakfast={breakfast.total.energy}

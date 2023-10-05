@@ -206,6 +206,7 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 				setIsLoading(false);
 				setTabbarOn(true);
 				setOpen(false);
+				toast.success('식단이 등록되었습니다.');
 			});
 		}
 	}, [captureImg, complete, selectedDate, sendData, sendMeal, setOpen, setTabbarOn, subImgArray, test.length]);

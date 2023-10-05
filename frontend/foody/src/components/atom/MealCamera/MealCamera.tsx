@@ -8,6 +8,7 @@ import { getMealNutrient, mealCamera, postRegistMeal } from 'utils/api/meal';
 import { RegistMeal, RegistSendData } from 'types/meal';
 import toast from 'react-hot-toast';
 import SubHeader from 'components/organism/SubHeader/SubHeader';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 interface MealCameraProps {
 	sendMeal: string;
@@ -24,15 +25,15 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 	const [captureImg, setCaptureImg] = useState<File | null>(null);
 	const [subImg, setSubImg] = useState<File | null>(null);
 	const [photoImg, setPhotoImg] = useState<HTMLCanvasElement | null>(null);
-	// const [croppedImages, setCroppedImages] = useState<string[]>([]);
 
 	// 사진 찍었을 때 음식 데이터 영양소 값 가져오기
-	// const [registMeal, setRegistMeal] = useState<RegistMeal | null>(null);
 	const [sendData, setSendData] = useState<RegistMeal[]>([]);
 	const [subImgArray, setSubImgArray] = useState<File[] | []>([]);
 	const [test, setTest] = useState<{ name: string; x1: number; y1: number; x2: number; y2: number }[] | []>([]);
-
 	const [complete, setComplete] = useState<boolean>(false);
+
+	// loading처리
+	const [isLoading, setIsLoading] = useState(false);
 
 	const takePhoto = () => {
 		const video = videoRef.current;
@@ -72,6 +73,7 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 
 	const handleMove = () => {
 		setOpen(false);
+		setTabbarOn(true);
 	};
 
 	useEffect(() => {
@@ -143,16 +145,10 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 					croppedCanvas.toBlob((blob) => {
 						if (blob) {
 							setSubImg(new File([blob], 'cropped_image.jpg', { type: 'image/jpeg' }));
-
-							// croppedImgFile을 API로 전송하거나 사용할 작업 수행
-							// console.log(croppedImgFile);
-							URL.createObjectURL(blob);
-							// setCroppedImages((prevImages) => [...prevImages, URL.createObjectURL(blob)]);
 						}
 					}, 'image/jpeg');
 
 					getMealNutrient(name).then((nutrientResponse) => {
-						console.log(nutrientResponse);
 						setSendData((prev) => [
 							...prev,
 							{
@@ -190,6 +186,7 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 
 	useEffect(() => {
 		if (test.length !== 0 && test.length === sendData.length) {
+			setIsLoading(true);
 			const totalData: RegistSendData = {
 				type: sendMeal,
 				date: selectedDate,
@@ -206,13 +203,16 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 				setComplete(false);
 				setTest([]);
 				setSendData([]);
+				setIsLoading(false);
+				setTabbarOn(true);
 				setOpen(false);
 			});
 		}
-	}, [captureImg, complete, selectedDate, sendData, sendMeal, setOpen, subImgArray, test.length]);
+	}, [captureImg, complete, selectedDate, sendData, sendMeal, setOpen, setTabbarOn, subImgArray, test.length]);
 
 	return (
 		<>
+			{isLoading && <LoadingSpinner />}
 			<SubHeader handleMove={handleMove} isBack title="카메라로 등록하기" />
 			<div className="video-container">
 				<video ref={videoRef} className="video" />
@@ -225,15 +225,6 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 					<BiCamera size={25} />
 				</button>
 			</div>
-			{/* <div className="cropped-images-container"> */}
-			{/* 크롭된 이미지의 URL 목록을 매핑하고 이미지를 표시합니다. */}
-			{/* {croppedImages.map((imageUrl) => (
-					<div>
-						<img key={imageUrl} src={imageUrl} alt="" className="cropped-image" />
-						<p>{imageUrl}</p>
-					</div>
-				))} */}
-			{/* </div> */}
 		</>
 	);
 }

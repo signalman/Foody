@@ -1,5 +1,17 @@
 @use 'styles/base/variable.scss' as var;
 
+.desc-wrap {
+	text-align: center;
+
+	h2 {
+		font-weight: var.$fw-500;
+		margin-bottom: 4px;
+	}
+	p {
+		font-size: var.$p2;
+	}
+}
+
 .food-MBTI-count {
 	margin-top: 50px;
 	margin-bottom: 20px;

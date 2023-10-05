@@ -6,7 +6,7 @@
 
 	.meal-search-result-list {
 		@include f.flex(column, start, start, 10px);
-		max-height: calc(100vh - 420px);
+		max-height: calc(100vh - 510px);
 		overflow: scroll;
 
 		.meal-search-result-item {
@@ -23,9 +23,7 @@
 				width: 20%;
 				padding: 15px;
 				color: var.$black-400;
-				background-color: var.$white;
-				border: 1px solid var.$border-300;
-				border-radius: 10px;
+				border-left: 1px solid var.$border-300;
 				font-size: var.$p1;
 				transition: 0.05s all ease-out;
 

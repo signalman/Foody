@@ -139,6 +139,11 @@ function RecipeNutrient({
 					totalCarolie={todayCurrentNutrient ? todayCurrentNutrient.energy + recipeNutrient.energy : 0}
 					percentage={parseFloat(percentage.toFixed(2))}
 				/>
+				<p className="nutrient-bar-desc-wrap">
+					<span>현재 영양소</span>
+					<span>섭취 후 영양소</span>
+					<span>부족 혹은 과섭취</span>
+				</p>
 				<PreviewNutrientBar title="영양소" mealNutrient={mealNutrient1} previewMealNutrient={previewMealNutrient1} />
 				<PreviewNutrientBar
 					title="다량 무기질"

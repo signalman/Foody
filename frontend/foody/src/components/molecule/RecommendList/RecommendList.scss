@@ -2,6 +2,13 @@
 @use 'styles/mixins/flex.scss' as f;
 
 .recommend-list-container {
+	.warning {
+		padding: 0 10px;
+		font-size: var.$p3;
+		color: var.$black-200;
+		margin-bottom: 4px;
+	}
+
 	.recommend-list-header {
 		@include f.flex(row, between, center);
 		margin-bottom: 10px;

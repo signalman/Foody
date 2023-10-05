@@ -19,7 +19,7 @@ function PreviewBarChart({ total, value, previewValue = 0, barcolor }: PreviewBa
 	let checkColor = barcolor; // 기본 색상은 barcolor 그대로 사용
 	let previewColor: PreviewBarColor = PreviewBarColor.Null;
 
-	if (previewBarWidth >= 34 && previewBarWidth <= 105) {
+	if (previewBarWidth >= 34 && previewBarWidth <= 110) {
 		checkColor = BarColor.Green; // 초록색
 		previewColor = PreviewBarColor.Green;
 	} else {

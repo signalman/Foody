@@ -1,15 +1,15 @@
 import React from 'react';
 import './RecommendListSkeleton.scss';
-import { FiRefreshCw } from 'react-icons/fi';
+// import { FiRefreshCw } from 'react-icons/fi';
 
 function RecommendListSkeleton({ title }: { title: string }) {
 	return (
 		<div className="recommend-list-skeleton-container">
 			<div className="recommend-list-header">
 				<h2>{title}</h2>
-				<button type="button">
+				{/* <button type="button">
 					<FiRefreshCw size={12} />
-				</button>
+				</button> */}
 			</div>
 			<div className="recommend-list-body">
 				<ul className="recipe-list slider-container no-scrollbar">

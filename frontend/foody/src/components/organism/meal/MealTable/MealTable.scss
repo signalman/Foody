@@ -7,6 +7,6 @@
 	gap: 10px;
 
 	.meal-data {
-		@include f.flex(row, around, center);
+		@include f.flex(row, normal, center, 10px);
 	}
 }

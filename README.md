@@ -91,6 +91,11 @@ BE/feat/user#1
 - 스토리 포인트 하나 당 4 넘지 않도록 할당
 ```
 
+**5. 요구사항 명세서**
+<img src="https://github.com/kkyu-min/AlgoRhythmAndBlues/assets/81220782/a31eb431-dc86-469f-ad0f-e9fb08417071">
+
+[자세히 보기](./exec/requirements/requirements.md)
+
 ## 기술 특이점
 
 - OCR 기술 활용한 영수증 인식 및 카테고리화

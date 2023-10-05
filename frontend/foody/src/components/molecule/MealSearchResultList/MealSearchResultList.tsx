@@ -18,7 +18,7 @@ function MealSearchResultList({ searchKeyword, searchResultList, handleMealSelec
 							<div className="meal-search-result-item">
 								<p>{item}</p>
 								<button type="button" onClick={() => handleMealSelect(item)}>
-									추가하기
+									추가
 								</button>
 							</div>
 						))}

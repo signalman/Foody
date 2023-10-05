@@ -34,7 +34,7 @@ class RecipeServiceTest extends ServiceTest {
         Mbti mbti = member.getMbti();
         System.out.println(mbti.toString());
         System.out.println(recipeResponse);
-        assertEquals(recipeResponse.name(), "브라우니");
+        assertEquals(recipeResponse.name(), "꼬마 스팸 쌈밥 만들기");
     }
 
     @Test

@@ -161,7 +161,22 @@ public class MealPlanService {
         log.info("음식들 전: {}", meal.getFoods());
 
         meal.getFoods().remove(idx);
-        log.info("음식들 gn: {}", meal.getFoods());
+        if (meal.getFoods().isEmpty()) {
+            // 나머지 아침, 점심, 저녁, 간식에 대해서도 비어있다면
+            boolean allMealsEmpty = true;
+            for (MealType mealType : MealType.values()) {
+                Meal otherMeal = getMealByType(mealPlan, mealType);
+                if (!otherMeal.getFoods().isEmpty()) {
+                    if(!otherMeal.getRepImg().equals("")) amazonS3Service.deleteFile(otherMeal.getRepImg());
+                    allMealsEmpty = false;
+                    break;
+                }
+            }
+            if (allMealsEmpty) {
+                mealPlanRepository.delete(mealPlan);
+            }
+        }
+        log.info("음식들 후: {}", meal.getFoods());
     }
 
     @Transactional

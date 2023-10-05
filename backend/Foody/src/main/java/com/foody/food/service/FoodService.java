@@ -80,7 +80,7 @@ public class FoodService {
     private List<FoodSearch> readFoodsFromCSV() throws Exception {
         List<FoodSearch> foods = new ArrayList<>();
 
-        ClassPathResource resource = new ClassPathResource("food/foody_food.csv");
+        ClassPathResource resource = new ClassPathResource("food/food_search.csv");
         try (Reader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             CSVReader csvReader = new CSVReader(reader)) {
             // 첫 번째 줄은 헤더이므로 생략

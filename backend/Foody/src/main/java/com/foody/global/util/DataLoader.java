@@ -168,7 +168,7 @@ public class DataLoader {
     public CommandLineRunner foodDataLoad() {
         return (args) -> {
             boolean exists = foodSearchRepository.isExistsData();
-            ClassPathResource resource = new ClassPathResource("food/foody_food.csv");
+            ClassPathResource resource = new ClassPathResource("food/food_search.csv");
 
             try (InputStream inputStream = resource.getInputStream();
                 Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {

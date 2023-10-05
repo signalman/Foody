@@ -35,10 +35,11 @@
 		bottom: 100px;
 		left: 50%;
 		transform: translateX(-50%);
-		// background-color: red;
+		width: 90%;
 
 		.receipt-data-list {
 			@include f.flex(row, center, center, 10px);
+			flex-wrap: wrap;
 
 			.receipt-data-item {
 				background-color: var.$primary-green-alpa-50;

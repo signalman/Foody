@@ -123,12 +123,13 @@ BE/feat/user#1
     - Prettier
 - BackEnd
     - JAVA : 17
-    - Kotlin - smile(python의 sklearn과 대응, kmath - numpy와 대응)
     - Spring : 2.7.15
         - Spring Data JPA
         - Spring Security
         - Spring Rest Docs
     - MySQL
+    - Python
+    - FastAPI
     - Redis
 - CI/CD
     - AWS EC2

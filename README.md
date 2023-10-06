@@ -35,12 +35,12 @@
 **3. 팀원 소개**
 | 이름 | 역할 | 개발 내용 |
 |:--:|:--:|:--:|
-|신호인|팀장, Back-end| 추후 작성 예정|
-|신상원|Back-end| 추후 작성 예정|
-|이규민|Back-end| 추후 작성 예정|
-|조희라|Back-end| 추후 작성 예정|
-|임희선|Front-end| 추후 작성 예정|
-|김승현|Front-end| 추후 작성 예정|
+|신호인|팀장, Back-end|YOLO 모델 학습, CI/CD 구축|
+|신상원|Back-end| 추천 알고리즘, 빅데이터 서버 구축, 북마크/레시피/추천 API|
+|이규민|Back-end|OAuth2, 소셜 로그인, 영양소 API|
+|조희라|Back-end|영수증 OCR, 냉장고 API 및 재료 데이터 정제|
+|임희선|Front-end| 냉장고 관리 구현, 레시피/마이페이지 구현|
+|김승현|Front-end|회원가입/로그인/먹BTI 구현, 식단 관리 구현|
 
 
 
@@ -123,12 +123,13 @@ BE/feat/user#1
     - Prettier
 - BackEnd
     - JAVA : 17
-    - Kotlin - smile(python의 sklearn과 대응, kmath - numpy와 대응)
     - Spring : 2.7.15
         - Spring Data JPA
         - Spring Security
         - Spring Rest Docs
     - MySQL
+    - Python
+    - FastAPI
     - Redis
 - CI/CD
     - AWS EC2
@@ -151,7 +152,7 @@ BE/feat/user#1
 
 1. 아키텍쳐
 
-    추후 추가 예정
+    <img src="https://github.com/kkyu-min/AlgoRhythmAndBlues/assets/81220782/f227af51-33a3-4135-9836-c15a502a48fc">
 
 
 2. 와이어 프레임

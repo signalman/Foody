@@ -52,7 +52,6 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 		ctx.drawImage(video, 0, 0, width, height);
 
 		photo.toBlob((blob) => {
-			// console.log(blob);
 			if (blob) {
 				setCaptureImg(new File([blob], 'capture.jpg', { type: 'image/jpeg' }));
 			}
@@ -180,7 +179,6 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 	useEffect(() => {
 		if (subImg !== null) {
 			setSubImgArray((prev) => {
-				console.log('subImg', [...prev, subImg]);
 				return [...prev, subImg];
 			});
 		}
@@ -195,13 +193,7 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 				foodRequestList: sendData,
 			};
 
-			console.log('요청!!!!!!!!!!!!!!!!!!!!');
-			console.log('totalData', totalData);
-			console.log('captureImg', captureImg);
-			console.log('subImgArray', subImgArray);
-
 			postRegistMeal(totalData, captureImg, subImgArray).then((response) => {
-				console.log('postRegistMeal!!!!!', response);
 				setComplete(false);
 				setTest([]);
 				setSendData([]);

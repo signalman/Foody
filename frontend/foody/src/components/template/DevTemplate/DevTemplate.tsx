@@ -18,9 +18,6 @@ function DevTemplate() {
 		// 여기에서 `selectedFile`을 서버로 업로드하거나 필요한 처리를 수행할 수 있습니다.
 		if (selectedFile) {
 			// 파일을 업로드하는 로직을 여기에 추가할 수 있습니다.
-			console.log('업로드할 파일:', selectedFile);
-		} else {
-			console.log('파일을 선택해주세요.');
 		}
 	};
 

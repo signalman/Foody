@@ -34,9 +34,8 @@ function DetailMealTable({ foods, meal, selectedDate, setDeleteOk }: DetailMealT
 			time = 'SNACK';
 		}
 
-		deleteMealInfo(selectedDate, num, time).then((response) => {
+		deleteMealInfo(selectedDate, num, time).then(() => {
 			setDeleteOk(true);
-			console.log('response', response);
 			toast.success('식단이 삭제 되었습니다.');
 		});
 	};

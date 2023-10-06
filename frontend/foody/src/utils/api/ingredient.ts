@@ -8,7 +8,6 @@ export const getAllIngredientList = async () => {
 
 export const getSearchIngredients = async (keyword: string) => {
 	const response = await instance.get(`/refrigerators/ingredient?keyword=${keyword}`);
-	console.log('response', response);
 	return response;
 };
 
@@ -25,7 +24,6 @@ export const getOCRReceiptIngredients = async (uuid: string, data: string, forma
 		version: 'V2',
 		timestamp: Date.now(),
 	};
-	console.log('body', body);
 	const response = await instance.post('/refrigerators/receipt', body);
 	return response;
 };
@@ -40,7 +38,7 @@ export const createIngredientList = async (ingredients: number[], customIngredie
 		ingredients,
 		customIngredients,
 	};
-	console.log('body', body);
+
 	const response = await instance.post('/refrigerators', body);
 	return response;
 };

@@ -3,8 +3,8 @@ import LocalStorage from 'constants/LocalStorage';
 import toast from 'react-hot-toast';
 
 export const instance: AxiosInstance = axios.create({
-	// baseURL: process.env.REACT_APP_DEVELOP_BASE_URL,
-	baseURL: process.env.REACT_APP_SERVER_BASE_URL,
+	baseURL: process.env.REACT_APP_DEVELOP_BASE_URL,
+	// baseURL: process.env.REACT_APP_SERVER_BASE_URL,
 	headers: {
 		'Content-Type': 'application/json',
 	},

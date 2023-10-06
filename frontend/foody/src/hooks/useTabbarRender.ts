@@ -15,7 +15,6 @@ function useTabbarRender(newPath: string | RegExp = '') {
 
 	useEffect(() => {
 		const handleBackButton = () => {
-			console.log('뒤로가기');
 			// 뒤로가기 버튼이 눌릴 때 Recoil Atom 초기화
 			setTabbar(true); // initialValue에는 Atom의 초기값을 넣어주세요
 		};

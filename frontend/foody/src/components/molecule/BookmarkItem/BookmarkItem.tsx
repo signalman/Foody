@@ -12,7 +12,6 @@ function BookmarkItem({ item, handleChange }: { item: BookmarkItemType; handleCh
 	useEffect(() => {
 		if (!data) {
 			getRecipeDetail(item.id).then((res) => {
-				console.log(res.data);
 				setData(res.data);
 			});
 		}

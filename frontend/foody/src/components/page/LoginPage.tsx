@@ -15,8 +15,6 @@ function LoginPage() {
 
 	const [user, setUser] = useState<string | null>(null);
 
-	console.log(location.search);
-
 	useEffect(() => {
 		const urlParams = new URLSearchParams(location.search);
 
@@ -25,9 +23,6 @@ function LoginPage() {
 			const refreshToken = urlParams.get('refreshToken');
 			const userd = urlParams.get('user');
 
-			console.log(accesstoken);
-			console.log(refreshToken);
-			console.log(userd);
 			if (!accesstoken || !refreshToken || !userd) {
 				throw new Error('No saved Token');
 			}

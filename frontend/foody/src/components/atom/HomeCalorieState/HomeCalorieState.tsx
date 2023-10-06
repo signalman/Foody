@@ -36,7 +36,6 @@ function HomeCalorieState() {
 	const isChangeMealNutrient = useRecoilValue(isChangeMealNutrientState);
 
 	useEffect(() => {
-		console.log('실행');
 		if (!todayCurrentEnergy) {
 			const dateObject = new Date();
 

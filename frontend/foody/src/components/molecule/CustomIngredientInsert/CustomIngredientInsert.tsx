@@ -77,7 +77,7 @@ function CustomIngredientInsert({
 							? LargeButtonColor.Green
 							: LargeButtonColor.Gray
 					}
-					value="입력 완료"
+					value="등록하기"
 					buttonClick={handleSubmit}
 				/>
 			</BottomButtonLayout>

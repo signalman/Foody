@@ -201,7 +201,7 @@ function RegisterMealSelf({ setWrite, setRegistMealk, setSelfName }: RegisterMea
 				<LargeButton
 					buttonClick={registerButton}
 					buttonColor={check ? LargeButtonColor.Green : LargeButtonColor.Gray}
-					value="입력 완료하기"
+					value="등록하기"
 					imgsrc=""
 				/>
 			</Layout>

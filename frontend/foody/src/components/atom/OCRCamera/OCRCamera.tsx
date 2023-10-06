@@ -101,8 +101,6 @@ function OCRCamera({ setReceiptList }: { setReceiptList: Dispatch<React.SetState
 	useEffect(() => {
 		// TODOS: API 요청해서 값 가져오기
 		if (base64Image !== undefined && base64Image !== '') {
-			console.log('base64Image', base64Image);
-			console.log('decoing', decodingImage(base64Image));
 			getOCRReceiptIngredients(uuid(), decodingImage(base64Image))
 				.then((res) => {
 					if (res.status === 200) {
@@ -112,7 +110,6 @@ function OCRCamera({ setReceiptList }: { setReceiptList: Dispatch<React.SetState
 				})
 				.catch((err) => {
 					if (err.response.status === 500 || err.response.status === 400) {
-						console.log('에러ㅠㅠ');
 						toast.error('인식할 수 없는 영수증입니다. 다시 찍어주세요.');
 						setHasPhoto(false);
 						setIsLoading(false);

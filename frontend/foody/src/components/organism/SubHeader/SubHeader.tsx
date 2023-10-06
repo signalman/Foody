@@ -25,7 +25,6 @@ function SubHeader({
 
 	const handleClose = () => {
 		if (!handleMove) {
-			console.log('닫기');
 			return;
 		}
 		handleMove();

@@ -5,7 +5,6 @@ import HomePage from 'components/page/HomePage';
 import MealPage from 'components/page/MealPage';
 import RefriPage from 'components/page/RefriPage';
 import RecommendPage from 'components/page/RecommendPage';
-import DevPage from 'components/page/DevPage';
 import LoginPage from 'components/page/LoginPage';
 import NotFoundPage from 'components/page/NotFoundPage';
 import SignupPage from 'components/page/SignupPage';
@@ -30,7 +29,6 @@ function AppRouter() {
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/signup" element={<SignupPage />} />
 				<Route path="/fbti" element={<FoodMBTI />} />
-				<Route path="/dev" element={<DevPage />} />
 
 				{/* <Route path="/*" element={<Navigate replace to="/notfound" />} /> */}
 				<Route path="/notfound" element={<NotFoundPage />} />

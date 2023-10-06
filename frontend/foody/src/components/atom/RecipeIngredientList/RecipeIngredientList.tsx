@@ -4,9 +4,7 @@ import { HiOutlineChevronRight } from 'react-icons/hi';
 import RecipeIngredientItem from '../RecipeIngredientItem/RecipeIngredientItem';
 
 function RecipeIngredientList({ ingredient, servers, difficulty }: RecipeType) {
-	const handleIngredientsDelete = () => {
-		console.log('레시피 관련 재료 삭제');
-	};
+	const handleIngredientsDelete = () => {};
 
 	return (
 		<section className="recipe-ingredient-list-container">

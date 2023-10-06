@@ -37,7 +37,6 @@ function NutrientOfDay({ total }: MealTotal) {
 	const openMore = () => {
 		setOpen(true);
 		setTabbarOn(false);
-		console.log(open);
 	};
 
 	return (

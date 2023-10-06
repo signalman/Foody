@@ -26,8 +26,6 @@ function SignupStep1({ nickname, setNickname, nextButton }: SignupStep1Props) {
 	};
 
 	useEffect(() => {
-		console.log(nickname);
-		console.log(check);
 		if (nickname.length === 0) {
 			setCheck(true);
 		} else {

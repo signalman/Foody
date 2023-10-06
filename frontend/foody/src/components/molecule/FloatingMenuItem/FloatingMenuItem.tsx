@@ -23,7 +23,6 @@ function FloatingMenuItem({
 			<button
 				type="button"
 				onClick={() => {
-					console.log(item);
 					onMenuSelect(item);
 					if (item !== 'album') {
 						setTabbarOn(!tabbarOn);

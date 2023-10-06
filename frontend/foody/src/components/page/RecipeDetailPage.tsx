@@ -14,7 +14,6 @@ function RecipeDetailPage() {
 	useEffect(() => {
 		if (id && !data) {
 			getRecipeDetail(parseInt(id, 10)).then((res) => {
-				console.log(res);
 				setData(res.data);
 			});
 		}

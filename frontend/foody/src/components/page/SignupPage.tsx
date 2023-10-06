@@ -60,9 +60,7 @@ function SignupPage() {
 			activityLevel,
 		};
 
-		console.log(information);
-		getSignupInformation(information).then((res) => {
-			console.log(res);
+		getSignupInformation(information).then(() => {
 			movePage('/fbti', null);
 		});
 	};

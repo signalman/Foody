@@ -20,7 +20,6 @@ export const getDaoyofNutrient = async () => {
 
 export const getUserMealInfo = async () => {
 	const response = await instance.get('/nutrient/alltype');
-	console.log(response);
 	return response;
 };
 
@@ -31,7 +30,6 @@ export const getMealNutrient = async (data: string) => {
 
 export const getSearchMeal = async (data: string) => {
 	const response = await instance.get(`food/autocomplete?query=${data}`);
-	console.log(response);
 	return response;
 };
 
@@ -39,7 +37,6 @@ export const mealCamera = async (data: File) => {
 	const formData = new FormData();
 	formData.append('image', data);
 	const response = await instanceYolo.post('/detect', formData);
-	console.log(response);
 	return response;
 };
 

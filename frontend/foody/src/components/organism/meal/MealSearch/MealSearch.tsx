@@ -79,15 +79,12 @@ function MealSearch(props: IngredientSearchProps) {
 	};
 
 	const handleWrite = () => {
-		console.log('handleWrite');
 		// toast.success('재료 직접 등록');
 		setWrite(true);
 	};
 
 	const handleMealSelect = (data: string) => {
-		console.log(data);
 		getMealNutrient(data).then((response) => {
-			console.log(response);
 			setRegistMeal({
 				name: response.data.name,
 				nutrientRequest: {
@@ -124,10 +121,6 @@ function MealSearch(props: IngredientSearchProps) {
 
 	const handleSubmitMealRegist = () => {
 		if (selectedMealList && selectedMealList.length !== 0) {
-			console.log('등록');
-
-			console.log(meal);
-			console.log(sendMeal);
 			const totalData: RegistSendData = {
 				type: sendMeal,
 				date: selectedDate,

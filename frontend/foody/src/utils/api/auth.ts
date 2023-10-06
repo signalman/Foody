@@ -23,7 +23,6 @@ export const getSignupInformation = async (data: SignupInformationParams) => {
 
 export const getMBTIImage = async () => {
 	const response = await instance.get('/mbti/');
-	console.log(response);
 	return response;
 };
 

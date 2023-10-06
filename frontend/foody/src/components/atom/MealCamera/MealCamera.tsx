@@ -193,7 +193,7 @@ function MealCamera({ sendMeal, selectedDate, setOpen }: MealCameraProps) {
 				foodRequestList: sendData,
 			};
 
-			postRegistMeal(totalData, captureImg, subImgArray).then((response) => {
+			postRegistMeal(totalData, captureImg, subImgArray).then(() => {
 				setComplete(false);
 				setTest([]);
 				setSendData([]);

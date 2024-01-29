@@ -21,7 +21,7 @@ public class FoodController {
     /* 자동완성 기능 */
     @GetMapping("/autocomplete")
     public ResponseEntity<Set<String>> getFoodSuggestion(@RequestParam String query){
-        Set<String> suggestion = foodService.getFoodSuggestions(query, 10);
+        Set<String> suggestion = foodService.getFoodSuggestionsV1(query, 10);
         return ResponseEntity.ok()
                              .body(suggestion);
     }

@@ -62,6 +62,29 @@ public class FoodService {
         }
     }
 
+    /*
+    redis에서 네이티브 쿼리사용
+    */
+
+    /*
+    * db에서 조회 - 1 모든 요소 탐색 후 스프링 단에서 처리
+    * */
+    public Set<String> getFoodSuggestionsV1(String prefix, int limit){
+        return foodSearchRepository.findByNameContaining(prefix)
+                                                  .stream()
+                                                  .limit(limit)
+                                                  .map(food -> food.getName())
+                                                  .collect(Collectors.toSet());
+    }
+    /*
+    * db에서 조회 - 2 쿼리 시 가져오기
+    *
+    * */
+
+
+    /*
+    * redis에서 가져온 후
+    * */
 
 
     public void saveFoodsFromCSV() throws Exception {

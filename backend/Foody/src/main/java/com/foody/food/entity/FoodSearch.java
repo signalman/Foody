@@ -52,4 +52,10 @@ public class FoodSearch {
     @Column
     double vitaminC; // 비타민C, mg
 
+    @Column
+    double score;
+
+    public void increaseScore(double value) {
+        score += value;
+    }
 }

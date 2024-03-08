@@ -1,8 +1,10 @@
 package com.foody.global.config;
 
+import com.foody.food.sub.MessageSubscriber;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +15,16 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @EnableRedisRepositories
 @Configuration
+@RequiredArgsConstructor
 public class RedisConfig {
 
     @Value("${spring.cache.redis.host}")
@@ -48,6 +54,23 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new StringRedisSerializer()); // 키와 값에 대한 직렬화를
 
         return redisTemplate;
+    }
+
+    @Bean
+    public RedisMessageListenerContainer redisMessageListenerContainer(
+        RedisConnectionFactory connectionFactory,
+        MessageListenerAdapter messageListenerAdapter
+        ) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.addMessageListener(messageListenerAdapter, new ChannelTopic("HOT-KEYWORD"));
+        return container;
+    }
+
+
+    @Bean
+    public MessageListenerAdapter messageListenerAdapter(MessageSubscriber messageSubscriber) {
+        return new MessageListenerAdapter(messageSubscriber, "redisToDB");
     }
 
     @Bean

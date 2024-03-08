@@ -40,3 +40,8 @@ spring:
             scope:
               - email
               - profile
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50

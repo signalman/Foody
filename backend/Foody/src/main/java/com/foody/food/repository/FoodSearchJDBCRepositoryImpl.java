@@ -34,8 +34,8 @@ public class FoodSearchJDBCRepositoryImpl implements FoodSearchJDBCRepository {
 
     private void batchInsert(List<FoodSearch> foodSearchList) {
 
-        String sql = "INSERT INTO food_search (id, name, energy, carbohydrates, protein, dietary_fiber, calcium, sodium, iron, fats, vitamina, vitaminc) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO food_search (id, name, energy, carbohydrates, protein, dietary_fiber, calcium, sodium, iron, fats, vitamina, vitaminc, score) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, foodSearchList, 1000, (ps, foodSearch) -> {
             ps.setLong(1, foodSearch.getId());
@@ -50,6 +50,7 @@ public class FoodSearchJDBCRepositoryImpl implements FoodSearchJDBCRepository {
             ps.setDouble(10, foodSearch.getFats());
             ps.setDouble(11, foodSearch.getVitaminA());
             ps.setDouble(12, foodSearch.getVitaminC());
+            ps.setDouble(13, 0);
         });
     }
 

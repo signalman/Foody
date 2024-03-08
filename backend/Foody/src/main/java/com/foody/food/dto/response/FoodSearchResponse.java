@@ -3,6 +3,7 @@ package com.foody.food.dto.response;
 import com.foody.food.entity.FoodSearch;
 
 public record FoodSearchResponse(
+    long id,
     String name,
     double energy,
     double carbohydrates,
@@ -16,7 +17,7 @@ public record FoodSearchResponse(
     double vitaminC
 ) {
     public FoodSearchResponse(FoodSearch foodSearch){
-        this(foodSearch.getName(), foodSearch.getEnergy(), foodSearch.getCarbohydrates(),
+        this(foodSearch.getId(), foodSearch.getName(), foodSearch.getEnergy(), foodSearch.getCarbohydrates(),
             foodSearch.getProtein(), foodSearch.getDietaryFiber(), foodSearch.getCalcium(),
             foodSearch.getSodium(), foodSearch.getIron(), foodSearch.getFats(),
             foodSearch.getVitaminA(), foodSearch.getVitaminC());

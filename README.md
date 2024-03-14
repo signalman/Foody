@@ -16,9 +16,11 @@
 
 냉장고 재료를 분석하여 냉장고 재료를 활용할 수 있는 음식 레시피 제공 서비스
 
-[>FOODY 바로가기<](https://j9c106.p.ssafy.io)
-
 </div>
+
+## 프로젝트와 관련한 개인 Blog입니다.
+<a href="https://siino.tistory.com/category/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8">블로그에서 자세히 알아보기</a>
+
 
 ## 🍎주요 기능🍎
 
@@ -56,8 +58,7 @@
 [**> 화면 GIF 보러가기 <**](./exec/UI/UI.md)
 
 ## 🍅시스템 아키텍쳐🍅
-
-<img src="https://github.com/kkyu-min/AlgoRhythmAndBlues/assets/81220782/f227af51-33a3-4135-9836-c15a502a48fc">
+![image](https://github.com/signalman/Foody/assets/32051350/81c222ca-a98d-42d4-848d-2d4774113cc6)
 
 ## 🍅ERD🍅
 

@@ -6,16 +6,19 @@ from PIL import Image
 import sys
 import uuid
 
+from security import token_required
+
 sys.path.append('./yolov5')
 from detect import run
 
-# YOLOv5 모델 로드 (여기서는 yolov5s 모델을 사용한다고 가정)
-model_path = './models/best.pt'  # 모델 파일의 경로 (적절하게 수정)
+# YOLOv5 모델 로드
+model_path = './models/best.pt'  # 모델 파일의 경로
 model = torch.load(model_path, map_location=torch.device('cpu'))
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/detect', methods=['POST'])
+# @token_required
 def detect():
     if not os.path.exists('tmp'):
         os.makedirs('tmp')
